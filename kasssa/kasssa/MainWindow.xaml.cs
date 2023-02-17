@@ -35,16 +35,48 @@ namespace kasssa
         }
         private void Btn_Numbers(object sender, RoutedEventArgs e)
         {
+            //checks the 'content' of each button and adds it to an string
             Button button = (Button)sender;
             string digit = button.Content.ToString();
             _currentString += digit;
             CurrentStringTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget(); // Update the binding
         }
 
+
+
         private void Add_price(object sender, RoutedEventArgs e)
         {
+            StackPanel sp = new StackPanel()
+            {
+                Background = Brushes.AliceBlue
+            };
+            if (_currentString == "")
+            {
+                MessageBox.Show("undefined value");
+            }
+            else
+            {
+                // transfers string into decimal
+                decimal d = decimal.Parse(_currentString);
+                string s = d.ToString("0.00");
+                MessageBox.Show(s);
+                TextBlock Pricing;
 
-            MessageBox.Show(_currentString);
+                Pricing = new TextBlock()
+                {
+                    Foreground = Brushes.Black,
+                    Text = " " + s.ToString(),
+                };
+                sp.Children.Add(Pricing);
+                LbPrices.Items.Add(sp);
+                _currentString = "";
+                CurrentStringTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
+            }
+
+            
+           
+          
+
         }
     }
 }
