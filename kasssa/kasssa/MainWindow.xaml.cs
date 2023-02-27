@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace kasssa
 {
     /// <summary>
@@ -23,6 +24,7 @@ namespace kasssa
 
         private string _currentString = "";
         private decimal _totalPrice = 0;
+      
         public MainWindow()
         {
             InitializeComponent();
@@ -69,7 +71,9 @@ namespace kasssa
                 };
                 sp.Children.Add(Pricing);
                 LbPrices.Items.Add(sp);
+                _totalPrice = _totalPrice + d;
                 _currentString = "";
+                TXTTotal.Text = string.Format("{0:c2}", Math.Round(_totalPrice, 2));
                 CurrentStringTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
             }
 
