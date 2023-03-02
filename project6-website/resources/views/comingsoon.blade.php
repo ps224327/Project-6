@@ -18,6 +18,7 @@
                 <p class="pr-4">Zwanenburg <br> 1161 AM <br> Kruiswaal 16</p>
                 <p>Soesterberg <br> 3769 DH <br> Kampweg 47</p>
             </div>
+            <a href="{{url(' /contact)}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg border-t border-b border-r border-blue-500 border-gray-200">Contact</a>
         </div>
     </div>
     <div class="absolute top-0 left-0 flex flex-col justify-center h-full w-full px-8 text-center">
