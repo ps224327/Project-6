@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:kasssa"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Background="LightBlue">
+    <Grid Background="LightGreen">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="10px"></RowDefinition>
@@ -35,7 +35,7 @@
             <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="10px"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="1" Grid.Row="10" Background="Red" FontSize="20" x:Name="BtnClear">C</Button>
+        <Button Grid.Column="1" Grid.Row="10" Background="Red" FontSize="20" x:Name="BtnClear" Click="Btn_Remove_Digit">C</Button>
         <Button Grid.Column="1" Grid.Row="8" x:Name="Btn1" Content="1" Click="Btn_Numbers"></Button>
         <Button Grid.Column="1" Grid.Row="6" x:Name="Btn4" Content="4" Click="Btn_Numbers"></Button>
         <Button Grid.Column="1" Grid.Row="4" x:Name="Btn7" Content="7" Click="Btn_Numbers"></Button>
@@ -46,24 +46,27 @@
         <Button Grid.Column="3" Grid.Row="4" x:Name="Btn8" Content="8" Click="Btn_Numbers"></Button>
 
         <Button Grid.Column="5" Grid.Row="2" Background="Green" x:Name="BtnVoegToe" Click="Add_price">voeg toe</Button>
-        <Button Grid.Column="5" Grid.Row="10" x:Name="BtnKomma" FontSize="20" Content=","></Button>
+        <Button Grid.Column="5" Grid.Row="10" x:Name="BtnKomma" FontSize="20" Content="," Click="Btn_Numbers"></Button>
         <Button Grid.Column="5" Grid.Row="8" x:Name="Btn3" Content="3" Click="Btn_Numbers"></Button>
         <Button Grid.Column="5" Grid.Row="6" x:Name="Btn6" Content="6" Click="Btn_Numbers"></Button>
         <Button Grid.Column="5" Grid.Row="4" x:Name="Btn9" Content="9" Click="Btn_Numbers"></Button>
         <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="10" Orientation="Horizontal">
-            <TextBlock  VerticalAlignment="Center">$</TextBlock>
+            <TextBlock  VerticalAlignment="Center">€</TextBlock>
             <TextBlock  VerticalAlignment="Center" x:Name="CurrentStringTextBlock"  Text="{Binding CurrentString}"></TextBlock>
         </StackPanel>
-        <StackPanel Grid.Row="8" Grid.Column="8">
+        <StackPanel Grid.Row="8" Grid.Column="8" Grid.ColumnSpan="3" Orientation="Horizontal" >
         <TextBlock  Text="Totaal prijs" FontSize="20" Margin="10" 
                    HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <TextBlock></TextBlock>
+            <TextBlock VerticalAlignment="Center" FontSize="20">€</TextBlock>
+            <TextBlock x:Name="TXTTotal" VerticalAlignment="Center" FontSize="20"></TextBlock>
         </StackPanel>
 
         <Border Grid.Column="8" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="5">
-            <ListBox x:Name="LbPrices">
+            <ListBox x:Name="LbPrices" MouseDoubleClick="LbPrices_MouseDoubleClick">
                 
             </ListBox>
         </Border>
+
+        <Button Grid.Column="10" Grid.Row="10" Background="Blue" FontSize="20" Foreground="White">Print bon</Button>
     </Grid>
 </Window>
