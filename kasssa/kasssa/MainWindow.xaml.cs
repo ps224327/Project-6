@@ -24,33 +24,62 @@ namespace kasssa
         private string _currentString = "";
         private decimal _totalPrice = 0;
         private string s;
+
         
         public MainWindow()
         {
             InitializeComponent();
             CurrentStringTextBlock.DataContext = this;
+
+            this.KeyDown += Add_Num_key;
         }
         public string CurrentString
         {
             get { return _currentString; }
             set { _currentString = value; }
         }
+
+        public void UpdateTextBlock()
+        {
+            CurrentStringTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
+        }
+        private void Add_Num_key(object sender, KeyEventArgs e)
+        {
+            if (e.Key >= Key.D0 && e.Key <= Key.D9)
+            {
+                _currentString += e.Key.ToString().Substring(1); // append the digit to the string
+                UpdateTextBlock();
+            }
+            else if (e.Key == Key.Back && _currentString.Length > 0)
+            {
+                _currentString = _currentString.Substring(0, _currentString.Length - 1); // remove the last digit from the string
+                UpdateTextBlock();
+            }
+            else if (e.Key == Key.Enter && _currentString.Length > 0)
+            {
+                Add_price();
+            }
+           
+        }
+        
         private void Btn_Numbers(object sender, RoutedEventArgs e)
         {
             //checks the 'content' of each button and adds it to an string
             Button button = (Button)sender;
             string digit = button.Content.ToString();
             _currentString += digit;
-            CurrentStringTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget(); // Update the binding
+            UpdateTextBlock();
         }
 
         private void Btn_Remove_Digit(object sender, RoutedEventArgs e)
         {
             _currentString = _currentString.Remove(_currentString.Length - 1);
-            CurrentStringTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
+            UpdateTextBlock();
         }
 
-        private void Add_price(object sender, RoutedEventArgs e)
+       
+
+        public void Add_price(object sender, RoutedEventArgs e)
         {
             StackPanel sp = new StackPanel()
             {
@@ -90,13 +119,10 @@ namespace kasssa
                 string total = _totalPrice.ToString("0.00");
                 TXTTotal.Text = total;
                 _currentString = "";
-                CurrentStringTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
+                UpdateTextBlock();
             }
 
             
-           
-          
-
         }
 
         private void LbPrices_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -133,5 +159,7 @@ namespace kasssa
         {
 
         }
+       
+
     }
 }
