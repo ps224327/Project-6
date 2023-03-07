@@ -18,3 +18,9 @@ C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\BouncyCastle.Crypto.dll
 C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\itextsharp.dll
 C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\itextsharp.xml
 C:\school\leerjaar 3\project 6\kasssa\kasssa\obj\Debug\kasssa.csproj.CopyComplete
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\PdfSharp.Charting.dll
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\PdfSharp.dll
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\PdfSharp.xml
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\PdfSharp.Charting.xml
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\de\PdfSharp.resources.dll
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\de\PdfSharp.Charting.resources.dll
