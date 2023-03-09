@@ -193,20 +193,44 @@ namespace kasssa
             // Set the font for the text
             XFont font = new XFont("Arial", 12);
 
+
+
             string TotalPrice = '€' + _totalPrice.ToString("0.00");
             // Loop through the items in the listbox and draw them on the page
-            for (int i = 0; i < LbPrices.Items.Count; i++)
+            int i = 0;
+            foreach (var item in LbPrices.Items)
             {
-                string item = LbPrices.Items[i].ToString();
-                gfx.DrawString(item, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+                // retrieve the StackPanel containing the TextBlocks
+                StackPanel stackPanel = item as StackPanel;
+
+                if (stackPanel != null)
+                {
+                    
+                    // loop through each TextBlock in the StackPanel
+                    foreach (var child in stackPanel.Children)
+                    {
+                        
+                        TextBlock textBlock = child as TextBlock;
+
+                        if (textBlock.Name == "SinglePrice")
+                        {
+                            i++;
+                            // retrieve the text from the TextBlock
+                            string text = '€' + textBlock.Text;
+                            gfx.DrawString(text, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+                        }
+                    }
+                }
             }
+
+          
 
             //creates a red line
             XPen lineRed = new XPen(XColors.Red, 5);
-            gfx.DrawLine(lineRed, 0, page.Height / 2, page.Width, page.Height / 3);
+            gfx.DrawLine(lineRed, 0,750, page.Width,750);
 
             //output of the total price
-            gfx.DrawString(TotalPrice, font, XBrushes.Black, new XRect(50,50, page.Width, page.Height), XStringFormats.CenterLeft);
+            gfx.DrawString(TotalPrice, font, XBrushes.Black, new XRect(50,800, 0, 0));
             // Save the PDF document to a file
             string filePath = "listbox.pdf";
             document.Save(filePath);
