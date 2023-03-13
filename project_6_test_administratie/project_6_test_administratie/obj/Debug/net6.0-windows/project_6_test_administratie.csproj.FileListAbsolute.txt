@@ -1,14 +1,10 @@
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.exe
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.csproj.AssemblyReference.cache
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\MainWindow.g.cs
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\App.g.cs
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie_MarkupCompile.cache
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie_MarkupCompile.lref
-D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.exe
-D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.deps.json
-D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.runtimeconfig.json
-D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.dll
-D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.pdb
-D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\MainWindow.baml
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.g.resources
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.GeneratedMSBuildEditorConfig.editorconfig
@@ -19,5 +15,9 @@ D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_admin
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.dll
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\refint\project_6_test_administratie.dll
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.pdb
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.deps.json
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.runtimeconfig.json
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.dll
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.genruntimeconfig.cache
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.pdb
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\ref\project_6_test_administratie.dll

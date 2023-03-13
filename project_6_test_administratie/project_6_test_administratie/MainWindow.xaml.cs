@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using project_6_test_administratie.Models;
 
 namespace project_6_test_administratie
 {
@@ -26,9 +27,6 @@ namespace project_6_test_administratie
         public MainWindow()
         {
             InitializeComponent();
-            var token = "19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ";
-            var result = ReadApiAsync(token).Result;
-            listView.ItemsSource = result;
         }
         private async Task<List<Product>> ReadApiAsync(string token)
         {
@@ -41,10 +39,27 @@ namespace project_6_test_administratie
                 return data;
             }
         }
-         
-        private class Product
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            public string Name { get; set; }
+            var token = "19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ";
+            var result = await ReadApiAsync(token);
+            listView.ItemsSource = result;
+        }
+        private void myListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //DetailLb.ItemsSource = new List<Product> { DetailLb.SelectedItem as Product };
+
+            ListBoxItem? selectedItem = listView.SelectedItem as ListBoxItem;
+            if(selectedItem != null)
+            {
+                ListBoxItem newItem = new ListBoxItem();
+                newItem.Content = selectedItem.Content;
+
+                DetailLb.Items.Add(newItem);
+            }
+            MessageBox.Show("kaas");
+
         }
     }
 }
