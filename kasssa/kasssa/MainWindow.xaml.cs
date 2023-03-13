@@ -1,4 +1,8 @@
-﻿using System;
+﻿using PdfSharp.Drawing;
+using System;
+using PdfSharp.Drawing;
+using System.IO;
+using PdfSharp.Pdf;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,19 +49,22 @@ namespace kasssa
         }
         private void Add_Num_key(object sender, KeyEventArgs e)
         {
+            //cope logic for the numbers, adds number to string
             if (e.Key >= Key.D0 && e.Key <= Key.D9)
             {
                 _currentString += e.Key.ToString().Substring(1); // append the digit to the string
                 UpdateTextBlock();
             }
+            //code logic for the backspace key, removes item from string
             else if (e.Key == Key.Back && _currentString.Length > 0)
             {
                 _currentString = _currentString.Substring(0, _currentString.Length - 1); // remove the last digit from the string
                 UpdateTextBlock();
             }
-            else if (e.Key == Key.Enter && _currentString.Length > 0)
+            //code logic for the enter key, 
+            else if (e.Key == Key.Return && _currentString.Length > 0)
             {
-                Add_price();
+                MessageBox.Show("hello");
             }
            
         }
@@ -73,8 +80,12 @@ namespace kasssa
 
         private void Btn_Remove_Digit(object sender, RoutedEventArgs e)
         {
-            _currentString = _currentString.Remove(_currentString.Length - 1);
-            UpdateTextBlock();
+            if (_currentString.Length > 0)
+            {
+                _currentString = _currentString.Remove(_currentString.Length - 1);
+                UpdateTextBlock();
+            }
+           
         }
 
        
@@ -157,9 +168,76 @@ namespace kasssa
         }
         private void Btn_Bon(object sender, RoutedEventArgs e)
         {
+            if (LbPrices.Items.Count < 1)
+            {
+                MessageBox.Show("Please add items before printing a PDF");
+            }
+            else
+            {
 
+                PrintListBox(LbPrices, _totalPrice);
+            }
+           
         }
-       
+        private void PrintListBox(ListBox LbPrices, decimal _totalPrice)
+        {
+            // Create a new PDF document
+            PdfDocument document = new PdfDocument();
+
+            // Add a new page to the document
+            PdfPage page = document.AddPage();
+
+            // Create a new XGraphics object for the page
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            // Set the font for the text
+            XFont font = new XFont("Arial", 12);
+
+
+
+            string TotalPrice = '€' + _totalPrice.ToString("0.00");
+            // Loop through the items in the listbox and draw them on the page
+            int i = 0;
+            foreach (var item in LbPrices.Items)
+            {
+                // retrieve the StackPanel containing the TextBlocks
+                StackPanel stackPanel = item as StackPanel;
+
+                if (stackPanel != null)
+                {
+                    
+                    // loop through each TextBlock in the StackPanel
+                    foreach (var child in stackPanel.Children)
+                    {
+                        
+                        TextBlock textBlock = child as TextBlock;
+
+                        if (textBlock.Name == "SinglePrice")
+                        {
+                            i++;
+                            // retrieve the text from the TextBlock
+                            string text = '€' + textBlock.Text;
+                            gfx.DrawString(text, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+                        }
+                    }
+                }
+            }
+
+          
+
+            //creates a red line
+            XPen lineRed = new XPen(XColors.Red, 5);
+            gfx.DrawLine(lineRed, 0,750, page.Width,750);
+
+            //output of the total price
+            gfx.DrawString(TotalPrice, font, XBrushes.Black, new XRect(50,800, 0, 0));
+            // Save the PDF document to a file
+            string filePath = "listbox.pdf";
+            document.Save(filePath);
+
+            // Open the PDF document using the default PDF viewer
+            System.Diagnostics.Process.Start(filePath);
+        }
 
     }
 }
