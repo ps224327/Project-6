@@ -35,8 +35,9 @@
             <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="10px"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+
         <Button Grid.Column="1" Grid.Row="10" Background="Red" FontSize="20" x:Name="BtnClear" Click="Btn_Remove_Digit">C</Button>
-        <Button Grid.Column="1" Grid.Row="8" x:Name="Btn1" Content="1" Click="Btn_Numbers"></Button>
+        <Button Grid.Column="1" Grid.Row="8" x:Name="Btn1" Content="1" Click="Btn_Numbers" FontSize="20"></Button>
         <Button Grid.Column="1" Grid.Row="6" x:Name="Btn4" Content="4" Click="Btn_Numbers"></Button>
         <Button Grid.Column="1" Grid.Row="4" x:Name="Btn7" Content="7" Click="Btn_Numbers"></Button>
 
