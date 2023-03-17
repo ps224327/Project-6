@@ -5,15 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:project_6_test_administratie"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid Background="LightGreen">
-        <ListView Name="listView" Width="150" Height="200">
+        <ListView Name="listView" Width="190" Height="300" Margin="0,0,250,0" SelectionChanged="myListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
                 </GridView>
             </ListView.View>
         </ListView>
+        <ListBox x:Name="DetailLb" Width="200" Height="300" Margin="350,0,0,0">
+            <StackPanel>
+                
+            </StackPanel>
+        </ListBox>
+
 
 
     </Grid>

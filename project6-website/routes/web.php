@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImageController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +22,8 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::post('/', 'FormController@submit');
+Route::get('/', [ImageController::class, 'fetchImagesFromApi'])->name('comingsoon');
+
 
 
 
