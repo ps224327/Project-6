@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace kasssa
 {
@@ -28,6 +29,7 @@ namespace kasssa
         private string _currentString = "";
         private decimal _totalPrice = 0;
         private string s;
+        private int SPItems;
 
         
         public MainWindow()
@@ -131,6 +133,7 @@ namespace kasssa
                 TXTTotal.Text = total;
                 _currentString = "";
                 UpdateTextBlock();
+                SPItems =+ 1;
             }
 
             
@@ -193,11 +196,18 @@ namespace kasssa
             // Set the font for the text
             XFont font = new XFont("Arial", 12);
 
+            // Set the font for the header
+            XFont HeaderFont = new XFont("Arial", 22);
+            //text for header of the pdf
+            string CompanyName = "Groene Vingers";
 
+            //text for total price stirng
+            string TotalText = "totaal ";
+            string TotalPrice = TotalText + '€' +  _totalPrice.ToString("0.00");
 
-            string TotalPrice = '€' + _totalPrice.ToString("0.00");
+            gfx.DrawString(CompanyName, HeaderFont, XBrushes.Black, new XRect(225, 50 ,0 , 20), XStringFormats.TopLeft);
             // Loop through the items in the listbox and draw them on the page
-            int i = 0;
+            int i = 2;
             foreach (var item in LbPrices.Items)
             {
                 // retrieve the StackPanel containing the TextBlocks
@@ -230,7 +240,7 @@ namespace kasssa
             gfx.DrawLine(lineRed, 0,750, page.Width,750);
 
             //output of the total price
-            gfx.DrawString(TotalPrice, font, XBrushes.Black, new XRect(50,800, 0, 0));
+            gfx.DrawString(TotalPrice, font, XBrushes.Black, new XRect(500,800, 0, 0));
             // Save the PDF document to a file
             string filePath = "listbox.pdf";
             document.Save(filePath);
