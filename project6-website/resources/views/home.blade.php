@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
+    <title>Home</title>
     <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
 </head>
 
@@ -47,6 +47,7 @@
             </div>
         </nav>
     </header>
+
     <div class="relative">
         <div class="bg-cover bg-center h-96" style="background-image: url('{{ asset('images/intratuin.png') }}');">
         </div>
@@ -57,9 +58,43 @@
                 <p>Soesterberg <br> 3769 DH <br> Kampweg 47</p>
             </div>
             <div class="center">
-                <a href="/"
-                    class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-r-lg rounded-l-lg border border-gray-200 w-32 text-center">Home</a>
+                <a href="/contact"
+                    class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-r-lg rounded-l-lg border border-gray-200 w-32 text-center">Contact</a>
             </div>
+        </div>
+    </div>
+    <h1 class="text-2xl font-bold text-center py-5">Products</h1>
+
+    <div class="grid grid-cols-5 gap-4 py-5 px-5 lg:w-3/4 mx-auto">
+        
+        @foreach ($products->take(5) as $product)
+            <div class="relative">
+                <a href="{{ $product['image'] }}" target="_blank" class="block overflow-hidden h-max">
+                    <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="object-cover w-full h-full">
+                </a>
+                <div class="p-4 bg-white shadow-lg rounded-lg flex flex-col justify-between">
+                    <div class="mb-2">
+                        <h2 class="text-lg font-bold mb-2">{{ $product['name'] }}</h2>
+                    </div>
+                    <div class="flex gap-4 justify-between items-center">
+                        <p class="text-black font-bold text-lg">${{ $product['price'] }}</p>
+                        <form method="POST" action="{{ route('cart.add') }}"
+                            class="flex gap-4 items-center justify-evenly">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product['id'] }}">
+                            <input type="number" name="quantity" value="1" min="1" max="10"
+                                class="w-10 outline-none">
+                            <button type="submit"
+                                class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+        <div class="flex center">
+            <a href="/products"
+                class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-r-lg rounded-l-lg border border-green-800 w-32 text-center">Show
+                more</a>
         </div>
     </div>
 

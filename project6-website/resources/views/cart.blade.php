@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
-    <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
 </head>
-
-<body class="bg-green-100">
+<body>
     <header class="bg-gray-900 px-5">
         <nav class="flex items-center justify-between flex-wrap py-6">
             <div class="flex items-center flex-shrink-0 text-white mr-6">
@@ -47,22 +45,41 @@
             </div>
         </nav>
     </header>
-    <div class="relative">
-        <div class="bg-cover bg-center h-96" style="background-image: url('{{ asset('images/intratuin.png') }}');">
-        </div>
-        <div class="absolute top-10 left-0 flex flex-col justify-top h-max w-max bg-white bg-opacity-50 py-8 px-8">
-            <div class="flex text-black mb-4">
-                <p class="pr-4">Nuenen <br> 2587 WD <br> Tuinstraat 167</p>
-                <p class="pr-4">Zwanenburg <br> 1161 AM <br> Kruiswaal 16</p>
-                <p>Soesterberg <br> 3769 DH <br> Kampweg 47</p>
-            </div>
-            <div class="center">
-                <a href="/"
-                    class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-r-lg rounded-l-lg border border-gray-200 w-32 text-center">Home</a>
-            </div>
-        </div>
-    </div>
+    <h1>Shopping Cart</h1>
+
+@if(count($cartItems) > 0)
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($cartItems as $cartItem)
+                <tr>
+                    <td>
+                        <img src="{{ $cartItem['image'] }}" alt="{{ $cartItem['name'] }}" width="100">
+                        <h2>{{ $cartItem['name'] }}</h2>
+                    </td>
+                    <td>{{ $cartItem['quantity'] }}</td>
+                    <td>{{ $cartItem['price'] }}</td>
+                    <td>{{ $cartItem['totalPrice'] }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total:</td>
+                <td>{{ $cartItems->sum('totalPrice') }}</td>
+            </tr>
+        </tfoot>
+    </table>
+@else
+    <p>Your cart is empty</p>
+@endif
 
 </body>
-
 </html>

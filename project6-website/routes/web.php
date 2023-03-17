@@ -1,7 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ImageController;
+use Illuminate\Http\Request;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\MapController;
+
 
 
 /*
@@ -16,13 +20,27 @@ use App\Http\Controllers\ImageController;
 */
 
 Route::get('/', function () {
-    return view('comingsoon');
+    return view('home');
 });
 Route::get('/contact', function () {
-    return view('contact');
+    return view('contact'); 
 });
 
-Route::get('/', [ImageController::class, 'fetchImagesFromApi'])->name('comingsoon');
+// Show Products
+Route::get('/products', [ProductController::class, 'fetchImagesFromApiProducts'])->name('products');
+Route::get('/', [ProductController::class, 'fetchImagesFromApiHome'])->name('home');    
+
+// Search Function
+Route::get('/search', [ProductController::class, 'search'])->name('product.search');
+
+// Cart 
+Route::post('/cart/add', [CartController::class, 'addItem'])->name('cart.add');
+Route::get('/cart', [CartController::class , 'showCart'])->name('cart.show');
+
+// Map 
+
+
+
 
 
 
