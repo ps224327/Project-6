@@ -24,3 +24,13 @@ C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\PdfSharp.xml
 C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\PdfSharp.Charting.xml
 C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\de\PdfSharp.resources.dll
 C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\de\PdfSharp.Charting.resources.dll
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\AForge.dll
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\AForge.Video.DirectShow.dll
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\AForge.Video.dll
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\zxing.dll
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\zxing.presentation.dll
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\AForge.xml
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\AForge.Video.xml
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\AForge.Video.DirectShow.xml
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\zxing.xml
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\zxing.presentation.xml

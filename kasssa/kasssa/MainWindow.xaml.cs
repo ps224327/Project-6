@@ -17,6 +17,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
+using AForge.Video.DirectShow;
+using AForge.Video;
+using System.Drawing;
+using Brushes = System.Windows.Media.Brushes;
+using ZXing;
 
 namespace kasssa
 {
@@ -39,6 +44,9 @@ namespace kasssa
 
             this.KeyDown += Add_Num_key;
         }
+
+        FilterInfoCollection filterInfoCollection;
+        VideoCaptureDevice LocalWebCam;
         public string CurrentString
         {
             get { return _currentString; }
@@ -168,6 +176,16 @@ namespace kasssa
                     TXTTotal.Text = total;
                 }
             }
+        }
+
+        void Cam_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
+        {
+            Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
+            BarcodeReader reader = new BarcodeReader();
+        }
+        private void ScanBarCode(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("hello");
         }
         private void Btn_Bon(object sender, RoutedEventArgs e)
         {
