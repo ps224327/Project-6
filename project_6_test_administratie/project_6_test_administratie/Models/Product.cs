@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,8 +27,13 @@ namespace project_6_test_administratie.Models
             get { return description; }
             set { description = value; }
         }
-        //public int Price { get; set; }
-        //public int Image { get; set; }
+        public decimal price;
+         public decimal Price
+         {
+            get { return price; }
+            set { price = value; }
+         }
+     
         public string color;
         public string Color
         {

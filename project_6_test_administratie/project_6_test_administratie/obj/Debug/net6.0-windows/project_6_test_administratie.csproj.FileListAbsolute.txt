@@ -21,3 +21,26 @@ D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_admin
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.genruntimeconfig.cache
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.pdb
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\ref\project_6_test_administratie.dll
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.exe
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.deps.json
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.runtimeconfig.json
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.dll
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.pdb
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.csproj.AssemblyReference.cache
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\MainWindow.g.cs
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\App.g.cs
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie_MarkupCompile.cache
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie_MarkupCompile.lref
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\MainWindow.baml
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.g.resources
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.GeneratedMSBuildEditorConfig.editorconfig
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.AssemblyInfoInputs.cache
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.AssemblyInfo.cs
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.csproj.CoreCompileInputs.cache
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.csproj.CopyComplete
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.dll
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\refint\project_6_test_administratie.dll
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.pdb
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\project_6_test_administratie.genruntimeconfig.cache
+C:\school\leerjaar 3\project 6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\ref\project_6_test_administratie.dll

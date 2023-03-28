@@ -48,17 +48,21 @@ namespace project_6_test_administratie
         }
         private void myListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //DetailLb.ItemsSource = new List<Product> { DetailLb.SelectedItem as Product };
+            
+           
+            DetailLb.ItemsSource = new List<Product> { listView.SelectedItem as Product };
+         
 
-            ListBoxItem? selectedItem = listView.SelectedItem as ListBoxItem;
-            if(selectedItem != null)
-            {
-                ListBoxItem newItem = new ListBoxItem();
-                newItem.Content = selectedItem.Content;
+            //ListBoxItem selectedItem = listView.SelectedItem as ListBoxItem;
+            //if(selectedItem != null)
+            //{
+            //    ListBoxItem newItem = new ListBoxItem();
+            //    newItem.Content = selectedItem.Content;
 
-                DetailLb.Items.Add(newItem);
-            }
-            MessageBox.Show("kaas");
+            //    DetailLb.Items.Add(newItem);
+
+            //    MessageBox.Show("t");
+            //}
 
         }
     }

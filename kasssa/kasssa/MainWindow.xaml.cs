@@ -84,7 +84,15 @@ namespace kasssa
             //checks the 'content' of each button and adds it to an string
             Button button = (Button)sender;
             string digit = button.Content.ToString();
-            _currentString += digit;
+            if (digit == "," && _currentString.Contains(","))
+            {
+                MessageBox.Show("De prijs heeft al een komma");
+            }
+            else
+            {
+                _currentString += digit;
+            }
+            
             UpdateTextBlock();
         }
 

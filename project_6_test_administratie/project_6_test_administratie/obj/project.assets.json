@@ -55,24 +55,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Teun\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Dilli\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\school\\leerjaar 3\\Project-6\\project_6_test_administratie\\project_6_test_administratie\\project_6_test_administratie.csproj",
+      "projectUniqueName": "C:\\school\\leerjaar 3\\project 6\\project_6_test_administratie\\project_6_test_administratie\\project_6_test_administratie.csproj",
       "projectName": "project_6_test_administratie",
-      "projectPath": "D:\\school\\leerjaar 3\\Project-6\\project_6_test_administratie\\project_6_test_administratie\\project_6_test_administratie.csproj",
-      "packagesPath": "C:\\Users\\Teun\\.nuget\\packages\\",
-      "outputPath": "D:\\school\\leerjaar 3\\Project-6\\project_6_test_administratie\\project_6_test_administratie\\obj\\",
+      "projectPath": "C:\\school\\leerjaar 3\\project 6\\project_6_test_administratie\\project_6_test_administratie\\project_6_test_administratie.csproj",
+      "packagesPath": "C:\\Users\\Dilli\\.nuget\\packages\\",
+      "outputPath": "C:\\school\\leerjaar 3\\project 6\\project_6_test_administratie\\project_6_test_administratie\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Teun\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Dilli\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -80,7 +75,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -123,7 +117,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

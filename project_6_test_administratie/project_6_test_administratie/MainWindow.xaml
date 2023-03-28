@@ -15,12 +15,10 @@
             </ListView.View>
         </ListView>
         <ListBox x:Name="DetailLb" Width="200" Height="300" Margin="350,0,0,0">
-            <StackPanel>
+            <!--<StackPanel>
                 
-            </StackPanel>
+            </StackPanel>-->
         </ListBox>
-
-
-
+        
     </Grid>
 </Window>
