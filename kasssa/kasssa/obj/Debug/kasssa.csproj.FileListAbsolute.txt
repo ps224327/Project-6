@@ -34,3 +34,6 @@ C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\AForge.Video.xml
 C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\AForge.Video.DirectShow.xml
 C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\zxing.xml
 C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\zxing.presentation.xml
+C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\OpenCsv.dll
+C:\school\leerjaar 3\project 6\kasssa\kasssa\obj\Debug\scanner.g.cs
+C:\school\leerjaar 3\project 6\kasssa\kasssa\obj\Debug\scanner.baml

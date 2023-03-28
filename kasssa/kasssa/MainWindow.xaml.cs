@@ -193,6 +193,8 @@ namespace kasssa
         }
         private void ScanBarCode(object sender, RoutedEventArgs e)
         {
+            scanner scan = new scanner();
+            scan.Show();
             MessageBox.Show("hello");
         }
         private void Btn_Bon(object sender, RoutedEventArgs e)
