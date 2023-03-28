@@ -62,6 +62,19 @@
             </div>
         </div>
     </div>
+    <div id="mapid" style="height: 500px;"></div>
+    <script>
+        var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(mymap);
+
+        @foreach ($locations->take(3) as $location)
+            L.marker([{{ $location->latitude }}, {{ $location->longitude }}]).addTo(mymap)
+                .bindPopup("<b>{{ $location->name }}</b><br>{{ $location->address }}");
+        @endforeach
+    </script>
+
 
 </body>
 

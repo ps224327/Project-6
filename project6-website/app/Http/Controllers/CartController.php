@@ -16,12 +16,13 @@ class CartController extends Controller
         $cart = session('cart', []);
         if (isset($cart[$productId])) {
             $cart[$productId] += $quantity;
-        } else {
+        } 
+        else {
             $cart[$productId] = $quantity;
         }
         session(['cart' => $cart]);
 
-        $product = Http::withToken('your-api-token')->get('https://kuin.summaict.nl/api/product/' . $productId)->json();
+        $product = Http::withToken('19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ')->get('https://kuin.summaict.nl/api/product/' . $productId)->json();
         $message = $quantity . ' ' . $product['name'] . ' added to cart';
         return redirect()->back()->with('success', $message);
     }

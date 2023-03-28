@@ -123,7 +123,7 @@
                 </div>
                 <nav class="flex items-center justify-between mt-4">
                     <div>
-                        <p class="text-gray-700">Showing 1-52 of 500 products</p>
+                        <p class="text-gray-700">Showing 52 of 500 products</p>
                     </div>
                     <div>
                         <a href="#" class="text-blue-500 hover:text-blue-700 mr-3">Previous</a>

@@ -14,7 +14,7 @@ class ProductController extends Controller
         $token = '19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ';
         $search = $request->input('search');
         $url = "https://kuin.summaict.nl/api/product/search/{$search}";
-        
+
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->withOptions([
@@ -47,7 +47,7 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
-        $url = "https://kuin.summaict.nl/api/product/search/{$search}";
+        $url = "https://kuin.summaict.nl/api/product/search?query={$search}";
         $response = Http::get($url);
         $products = $response->json();
 
