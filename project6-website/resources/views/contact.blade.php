@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
     <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
+    <!-- Add these CSS and JavaScript files to your HTML -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 </head>
 
 <body class="bg-green-100">
@@ -62,7 +66,62 @@
             </div>
         </div>
     </div>
+    <div id="mapid" class="absolute bottom-0 left-0 w-1/2" style="height: 500px"></div>
+    <script>
+        var mymap = L.map('mapid');
+        var routingControl;
 
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    mymap.setView([lat, lng], 12);
+
+                    @foreach ($locations->take(3) as $location)
+                        // Add routing control
+                        routingControl = L.Routing.control({
+                            waypoints: [
+                                L.latLng(lat, lng),
+                                L.latLng({{ $location->latitude }}, {{ $location->longitude }})
+                            ],
+                            routeWhileDragging: true,
+                            geocoder: L.Control.Geocoder.nominatim(),
+                            router: L.Routing.osrmv1({
+                                serviceUrl: 'https://router.project-osrm.org/route/v1'
+                            })
+                        }).addTo(mymap);
+                    @endforeach
+                });
+            } else {
+                console.log('Geolocation is not supported by this browser.');
+            }
+        }
+
+        // Call the getLocation function to center the map on the user's location and add routing control
+        getLocation();
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(mymap);
+
+        @foreach ($locations->take(3) as $location)
+            L.marker([{{ $location->latitude }}, {{ $location->longitude }}]).addTo(mymap)
+                .bindPopup("<b>{{ $location->name }}</b><br>{{ $location->address }}");
+        @endforeach
+    </script>
+    <style>
+        .leaflet-routing-container-hide {
+            display: none;
+        }
+
+        .leaflet-routing-container {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 1px 7px rgba(0, 0, 0, 0.65);
+        }
+    </style>
 </body>
 
 </html>

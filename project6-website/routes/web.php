@@ -38,6 +38,7 @@ Route::post('/cart/add', [CartController::class, 'addItem'])->name('cart.add');
 Route::get('/cart', [CartController::class , 'showCart'])->name('cart.show');
 
 // Map 
+Route::get('/contact', [MapController::class, 'showMap'])->name('contact');
 
 
 
