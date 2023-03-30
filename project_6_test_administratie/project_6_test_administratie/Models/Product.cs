@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace project_6_test_administratie.Models
 {
-    internal class Product
+    public class Product
     {
         public int id;
         public int Id
@@ -26,8 +26,18 @@ namespace project_6_test_administratie.Models
             get { return description; }
             set { description = value; }
         }
-        //public int Price { get; set; }
-        //public int Image { get; set; }
+        public decimal price;
+         public decimal Price
+         {
+            get { return price; }
+            set { price = value; }
+         }
+        public string image;
+        public string Image
+        {
+            get { return image; }
+            set { image = value; }
+        }
         public string color;
         public string Color
         {

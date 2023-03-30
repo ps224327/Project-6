@@ -24,3 +24,29 @@ C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\PdfSharp.xml
 C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\PdfSharp.Charting.xml
 C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\de\PdfSharp.resources.dll
 C:\school\leerjaar 3\project 6\kasssa\kasssa\bin\Debug\de\PdfSharp.Charting.resources.dll
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\kasssa.exe.config
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\kasssa.exe
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\kasssa.pdb
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\BouncyCastle.Crypto.dll
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\itextsharp.dll
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\PdfSharp.Charting.dll
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\PdfSharp.dll
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\itextsharp.xml
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\PdfSharp.xml
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\PdfSharp.Charting.xml
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\de\PdfSharp.resources.dll
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\bin\Debug\de\PdfSharp.Charting.resources.dll
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\kasssa.csproj.AssemblyReference.cache
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\kasssa.csproj.SuggestedBindingRedirects.cache
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\MainWindow.g.cs
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\App.g.cs
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\kasssa_MarkupCompile.cache
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\kasssa_MarkupCompile.lref
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\MainWindow.baml
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\kasssa.g.resources
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\kasssa.Properties.Resources.resources
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\kasssa.csproj.GenerateResource.cache
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\kasssa.csproj.CoreCompileInputs.cache
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\kasssa.csproj.CopyComplete
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\kasssa.exe
+D:\school\leerjaar 3\Project-6\kasssa\kasssa\obj\Debug\kasssa.pdb

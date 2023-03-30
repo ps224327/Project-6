@@ -7,20 +7,45 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid Background="LightGreen">
-        <ListView Name="listView" Width="190" Height="300" Margin="0,0,250,0" SelectionChanged="myListView_SelectionChanged">
+        <ListView ItemsSource="{Binding Products}" Width="190" Height="300" Margin="61,67,549,67" SelectedItem="{Binding SelectedProduct}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
+
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListBox x:Name="DetailLb" Width="200" Height="300" Margin="350,0,0,0">
-            <StackPanel>
-                
+
+        <ScrollViewer Height="{Binding RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type StackPanel}}, Path=ActualHeight}" Width="200" Margin="324,70,276,64">
+            <StackPanel  Background="White" DataContext="{Binding SelectedProduct}" CanVerticallyScroll="True">
+                <TextBlock Text="{Binding Id, StringFormat=Id: {0}}"/>
+                <TextBlock Text="{Binding Name, StringFormat=Name: {0}}"/>
+                <TextBlock Text="{Binding Description, StringFormat=Description: {0}}" TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding Price, StringFormat=Price: €{0}}"/>
+                <Image Source="{Binding Image}"/>
+                <TextBlock Text="{Binding Color, StringFormat=Color: {0}}"/>
+                <TextBlock Text="{Binding Height_cm, StringFormat=Height: {0}cm}"/>
+                <TextBlock Text="{Binding Width_cm, StringFormat=Width: {0}cm}"/>
+                <TextBlock Text="{Binding Depth_cm, StringFormat=Depth: {0}cm}"/>
+                <TextBlock Text="{Binding Weight_gr, StringFormat=Weight: {0}gr}"/>
             </StackPanel>
-        </ListBox>
+        </ScrollViewer>
+        
+        <ScrollViewer Height="{Binding RelativeSource={RelativeSource FindAncestor, 
+                        AncestorType={x:Type StackPanel}}, Path=ActualHeight}" Width="200" Margin="578,70,22,64">
+            <StackPanel x:Name="SpOrder" Background="White" CanVerticallyScroll="True" DataContext="{Binding SelectedProduct}">
+                
+
+            </StackPanel>
+        </ScrollViewer>
 
 
+        <TextBlock Text="Telefoonnummer: 06-91204657" VerticalAlignment="Bottom" Margin="30"/>
+
+        <Button x:Name="btnAdd" Width="120" Height="30" VerticalAlignment="Bottom" Margin="40,0,0,16" Content="Toevoegen" Click="BtnAdd_Click"/>
+
+        <Button Width="120" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,66,16" Content="Bestellen"/>
 
     </Grid>
 </Window>

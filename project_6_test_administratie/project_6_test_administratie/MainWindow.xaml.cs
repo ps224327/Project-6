@@ -16,19 +16,46 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using project_6_test_administratie.Models;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace project_6_test_administratie
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window ,INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private ObservableCollection<Product> _products = new ObservableCollection<Product>();
+
+        public ObservableCollection<Product> Products
+        {
+            get { return _products; }
+            set { _products = value; }
+        }
+
+        private Product _selectedProduct;
+
+        public Product SelectedProduct
+        {
+            get { return _selectedProduct; }
+            set { _selectedProduct = value; OnPropertyChanged(); }
+        }
+
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
         }
-        private async Task<List<Product>> ReadApiAsync(string token)
+        private async Task ReadApiAsync(string token)
         {
             using (var client = new HttpClient())
             {
@@ -36,30 +63,21 @@ namespace project_6_test_administratie
                 var response = await client.GetAsync("https://kuin.summaict.nl/api/product");
                 var content = await response.Content.ReadAsStringAsync();
                 var data = JsonConvert.DeserializeObject<List<Product>>(content);
-                return data;
+                data.ForEach(data => { Products.Add(data); });
             }
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var token = "19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ";
-            var result = await ReadApiAsync(token);
-            listView.ItemsSource = result;
+            ReadApiAsync(token);
         }
-        private void myListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            //DetailLb.ItemsSource = new List<Product> { DetailLb.SelectedItem as Product };
-
-            ListBoxItem? selectedItem = listView.SelectedItem as ListBoxItem;
-            if(selectedItem != null)
-            {
-                ListBoxItem newItem = new ListBoxItem();
-                newItem.Content = selectedItem.Content;
-
-                DetailLb.Items.Add(newItem);
-            }
-            MessageBox.Show("kaas");
-
+            TextBlock printTextBlock = new TextBlock();
+            printTextBlock.Text = SelectedProduct.Name;
+            SpOrder.Children.Add(printTextBlock);
         }
     }
 }
