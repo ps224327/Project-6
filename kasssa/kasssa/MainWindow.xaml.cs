@@ -17,6 +17,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
+using AForge.Video.DirectShow;
+using AForge.Video;
+using System.Drawing;
+using Brushes = System.Windows.Media.Brushes;
+using ZXing;
 
 namespace kasssa
 {
@@ -39,6 +44,9 @@ namespace kasssa
 
             this.KeyDown += Add_Num_key;
         }
+
+        FilterInfoCollection filterInfoCollection;
+        VideoCaptureDevice LocalWebCam;
         public string CurrentString
         {
             get { return _currentString; }
@@ -66,7 +74,7 @@ namespace kasssa
             //code logic for the enter key, 
             else if (e.Key == Key.Return && _currentString.Length > 0)
             {
-                MessageBox.Show("hello");
+               
             }
            
         }
@@ -76,7 +84,15 @@ namespace kasssa
             //checks the 'content' of each button and adds it to an string
             Button button = (Button)sender;
             string digit = button.Content.ToString();
-            _currentString += digit;
+            if (digit == "," && _currentString.Contains(","))
+            {
+                MessageBox.Show("De prijs heeft al een komma");
+            }
+            else
+            {
+                _currentString += digit;
+            }
+            
             UpdateTextBlock();
         }
 
@@ -168,6 +184,17 @@ namespace kasssa
                     TXTTotal.Text = total;
                 }
             }
+        }
+
+        void Cam_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
+        {
+            Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
+            BarcodeReader reader = new BarcodeReader();
+        }
+        private void ScanBarCode(object sender, RoutedEventArgs e)
+        {
+            scanner scan = new scanner();
+            scan.Show();
         }
         private void Btn_Bon(object sender, RoutedEventArgs e)
         {

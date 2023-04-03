@@ -1,0 +1,27 @@
+﻿<Window x:Class="kasssa.scanner"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:kasssa"
+        mc:Ignorable="d"
+        Loaded="Scanner_load"
+        Title="scanner" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <ComboBox Margin="20,20,20,20" x:Name="CBCams"></ComboBox>
+        <TextBlock Grid.Column="1" Margin="20,20,20,20" Background="Green" x:Name="txtBarcode" Foreground="White"></TextBlock>
+        <Image x:Name="IMGCam" Grid.ColumnSpan="2"></Image>
+        <Button Grid.Row="2" Margin="50,20,50,20" FontSize="25" Click="RunScanner">Start</Button>
+        <Button Grid.Column="1" Grid.Row="2"  Margin="50,20,50,20" FontSize="25">Stop</Button>
+    </Grid>
+</Window>
