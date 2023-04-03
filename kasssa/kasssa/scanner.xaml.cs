@@ -1,7 +1,10 @@
 ﻿using AForge.Video.DirectShow;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +28,7 @@ namespace kasssa
         public scanner()
         {
             InitializeComponent();
+            
         }
 
         FilterInfoCollection filterInfoCollection;
@@ -38,6 +42,7 @@ namespace kasssa
                 CBCams.Items.Add(device.Name);
                 CBCams.SelectedIndex = 0;
             }
+          MessageBox.Show("Number of video input devices: " + filterInfoCollection.Count);
         }
         private void RunScanner(object sender, EventArgs e)
         {
@@ -54,11 +59,19 @@ namespace kasssa
             Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
             BarcodeReader reader = new BarcodeReader();
             var result = reader.Decode(bitmap);
-            if (result != null)
+
+            var bitmapImage = new BitmapImage();
+            using (var stream = new MemoryStream())
             {
-                MessageBox.Show(result.ToString);
+                bitmap.Save(stream, ImageFormat.Bmp);
+                stream.Position = 0;
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.StreamSource = stream;
+                bitmapImage.EndInit();
             }
-            IMGCam.image = bitmap;
+          
+            IMGCam.Source = bitmapImage;
         }
     }
   
