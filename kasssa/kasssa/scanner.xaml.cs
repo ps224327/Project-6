@@ -42,7 +42,7 @@ namespace kasssa
                 CBCams.Items.Add(device.Name);
                 CBCams.SelectedIndex = 0;
             }
-          MessageBox.Show("Number of video input devices: " + filterInfoCollection.Count);
+      
         }
         private void RunScanner(object sender, EventArgs e)
         {
@@ -70,8 +70,12 @@ namespace kasssa
                 bitmapImage.StreamSource = stream;
                 bitmapImage.EndInit();
             }
-          
-            IMGCam.Source = bitmapImage;
+
+            bitmapImage.Freeze();
+            IMGCam.Dispatcher.Invoke(() =>
+            {
+                IMGCam.Source = bitmapImage;
+            });
         }
     }
   

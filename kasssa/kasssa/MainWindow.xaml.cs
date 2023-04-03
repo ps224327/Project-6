@@ -74,7 +74,7 @@ namespace kasssa
             //code logic for the enter key, 
             else if (e.Key == Key.Return && _currentString.Length > 0)
             {
-                MessageBox.Show("hello");
+               
             }
            
         }
@@ -195,7 +195,6 @@ namespace kasssa
         {
             scanner scan = new scanner();
             scan.Show();
-            MessageBox.Show("hello");
         }
         private void Btn_Bon(object sender, RoutedEventArgs e)
         {
