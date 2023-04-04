@@ -59,7 +59,14 @@ namespace kasssa
             Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
             BarcodeReader reader = new BarcodeReader();
             var result = reader.Decode(bitmap);
+            if (result != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    txtBarcode.Text = result.ToString();
+                });
 
+            }
             var bitmapImage = new BitmapImage();
             using (var stream = new MemoryStream())
             {
@@ -70,7 +77,6 @@ namespace kasssa
                 bitmapImage.StreamSource = stream;
                 bitmapImage.EndInit();
             }
-
             bitmapImage.Freeze();
             IMGCam.Dispatcher.Invoke(() =>
             {

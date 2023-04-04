@@ -20,7 +20,7 @@
 
         <ComboBox Margin="20,20,20,20" x:Name="CBCams"></ComboBox>
         <TextBlock Grid.Column="1" Margin="20,20,20,20" Background="Green" x:Name="txtBarcode" Foreground="White"></TextBlock>
-        <Image x:Name="IMGCam" Grid.ColumnSpan="2"></Image>
+        <Image x:Name="IMGCam" Grid.ColumnSpan="2" Grid.Row="1"></Image>
         <Button Grid.Row="2" Margin="50,20,50,20" FontSize="25" Click="RunScanner">Start</Button>
         <Button Grid.Column="1" Grid.Row="2"  Margin="50,20,50,20" FontSize="25">Stop</Button>
     </Grid>
