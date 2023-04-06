@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->increments('id')->unsigned(false);
             $table->string('name');
-            $table->string('address');
-            $table->decimal('latitude');
-            $table->decimal('longitude');
+            $table->string('address')->nullable(false);
+            $table->integer('phone')->value(11);
+            $table->string('email');
+            $table->decimal('latitude')->nullable(false);
+            $table->decimal('longitude')->nullable(false);
             $table->timestamps();
         });
     }
