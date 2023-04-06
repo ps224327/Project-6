@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid Background="LightGreen">
-        <ListView ItemsSource="{Binding Products}" Width="190" Height="300" Margin="61,67,549,67" SelectedItem="{Binding SelectedProduct}">
+        <ListView ItemsSource="{Binding Products}" Width="190" Height="300" Margin="66,32,544,102" SelectedItem="{Binding SelectedProduct}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
@@ -17,9 +17,9 @@
         </ListView>
 
         <ScrollViewer Height="{Binding RelativeSource={RelativeSource FindAncestor, 
-                        AncestorType={x:Type StackPanel}}, Path=ActualHeight}" Width="200" Margin="324,70,276,64">
-            <StackPanel  Background="White" DataContext="{Binding SelectedProduct}" CanVerticallyScroll="True">
-                <TextBlock Text="{Binding Id, StringFormat=Id: {0}}"/>
+                        AncestorType={x:Type StackPanel}}, Path=ActualHeight}" Width="200" Margin="320,36,280,98">
+            <StackPanel x:Name="SpDetails" Background="White" DataContext="{Binding SelectedProduct}" CanVerticallyScroll="True">
+                <TextBlock x:Name="TbDetailId" Text="{Binding Id, StringFormat=Id: {0}}"/>
                 <TextBlock Text="{Binding Name, StringFormat=Name: {0}}"/>
                 <TextBlock Text="{Binding Description, StringFormat=Description: {0}}" TextWrapping="Wrap"/>
                 <TextBlock Text="{Binding Price, StringFormat=Price: €{0}}"/>
@@ -31,9 +31,11 @@
                 <TextBlock Text="{Binding Weight_gr, StringFormat=Weight: {0}gr}"/>
             </StackPanel>
         </ScrollViewer>
-        
+        <TextBlock Text="Aantal:" Height="20" Width="40" VerticalAlignment="Bottom" Margin="0,0,0,63"/>
+        <TextBox x:Name="QuantityTextBox" Height="20" Width="30" VerticalAlignment="Bottom" Margin="70,0,0,63"/>
+
         <ScrollViewer Height="{Binding RelativeSource={RelativeSource FindAncestor, 
-                        AncestorType={x:Type StackPanel}}, Path=ActualHeight}" Width="200" Margin="578,70,22,64">
+                        AncestorType={x:Type StackPanel}}, Path=ActualHeight}" Width="200" Margin="574,36,26,98">
             <StackPanel x:Name="SpOrder" Background="White" CanVerticallyScroll="True" DataContext="{Binding SelectedProduct}">
                 
 

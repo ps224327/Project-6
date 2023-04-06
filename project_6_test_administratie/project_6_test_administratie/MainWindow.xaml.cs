@@ -49,7 +49,6 @@ namespace project_6_test_administratie
             set { _selectedProduct = value; OnPropertyChanged(); }
         }
 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -76,8 +75,37 @@ namespace project_6_test_administratie
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             TextBlock printTextBlock = new TextBlock();
-            printTextBlock.Text = SelectedProduct.Name;
-            SpOrder.Children.Add(printTextBlock);
+            TextBlock quantityTextBlock = new TextBlock();
+            TextBlock times = new TextBlock();
+            StackPanel orderItem = new StackPanel();
+
+            orderItem.Orientation = Orientation.Horizontal;
+            int quantity;
+
+            if (TbDetailId.Text != "")
+            {
+                if (int.TryParse(QuantityTextBox.Text, out quantity))
+                {
+                    quantityTextBlock.Text = quantity.ToString();
+                    times.Text = "x  ";
+                    printTextBlock.Text = SelectedProduct.Name;
+
+                    orderItem.Children.Add(quantityTextBlock);
+                    orderItem.Children.Add(times);
+                    orderItem.Children.Add(printTextBlock);
+
+                    SpOrder.Children.Add(orderItem);                
+                }
+                else
+                {
+                    MessageBox.Show("Geef een aantal op.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Selecteer eerst een artikel.");
+            }
         }
+
     }
 }
