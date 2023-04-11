@@ -53,17 +53,23 @@ namespace kasssa
 
 
         }
+        private void StopScanner (object sender, EventArgs e)
+        {
+            IMGCam.Source = null;
+            this.Close();
+
+        }
 
         private void VideoCaptureDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
             Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
             BarcodeReader reader = new BarcodeReader();
-            var result = reader.Decode(bitmap);
-            if (result != null)
+            var BarCodeResult = reader.Decode(bitmap);
+            if (BarCodeResult != null)
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    txtBarcode.Text = result.ToString();
+                    txtBarcode.Text = BarCodeResult.ToString();
                 });
 
             }

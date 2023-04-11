@@ -211,6 +211,9 @@ namespace kasssa
         }
         private void PrintListBox(ListBox LbPrices, decimal _totalPrice)
         {
+            //Strings that needs to be added in the pdf
+          
+            string KVKNummer = "KVK: 18057469";
             // Create a new PDF document
             PdfDocument document = new PdfDocument();
 
@@ -233,6 +236,8 @@ namespace kasssa
             string TotalPrice = TotalText + '€' +  _totalPrice.ToString("0.00");
 
             gfx.DrawString(CompanyName, HeaderFont, XBrushes.Black, new XRect(225, 50 ,0 , 20), XStringFormats.TopLeft);
+            gfx.DrawString(CompanyName, font, XBrushes.Black, new XRect(500, 50, 0, 0));
+            gfx.DrawString(KVKNummer, font, XBrushes.Black, new XRect(500, 70, 0, 0));
             // Loop through the items in the listbox and draw them on the page
             int i = 2;
             foreach (var item in LbPrices.Items)
@@ -260,7 +265,7 @@ namespace kasssa
                 }
             }
 
-          
+            
 
             //creates a red line
             XPen lineRed = new XPen(XColors.Red, 5);
@@ -276,5 +281,9 @@ namespace kasssa
             System.Diagnostics.Process.Start(filePath);
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("hello");
+        }
     }
 }
