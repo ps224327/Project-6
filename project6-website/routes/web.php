@@ -29,6 +29,7 @@ Route::get('/contact', function () {
 // Show Products
 Route::get('/products', [ProductController::class, 'fetchImagesFromApiProducts'])->name('products');
 Route::get('/', [ProductController::class, 'fetchImagesFromApiHome'])->name('home');    
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
 
 // Search Function
 Route::get('/search', [ProductController::class, 'search'])->name('product.search');
@@ -39,6 +40,8 @@ Route::get('/cart', [CartController::class , 'showCart'])->name('cart.show');
 
 // Map 
 Route::get('/contact', [MapController::class, 'showMap'])->name('contact');
+Route::get('/route/{lat1}/{lng1}/{lat2}/{lng2}', [MapController::class, 'getRoute'])->name('getRoute');
+
 
 
 

@@ -56,7 +56,7 @@
             <div class="w-full lg:w-1/4 px-4">
                 <h2 class="text-lg font-bold mb-2">Filters</h2>
 
-                    {{-- Search --}}
+                {{-- Search --}}
 
                 <form method="GET" action="{{ route('products') }}" class="mb-4">
                     <div class="mb-4">
@@ -103,14 +103,14 @@
                             </a>
                             <div class="p-4 bg-white shadow-lg rounded-lg flex flex-col justify-between">
                                 <div class="mb-2">
-                                    <h2 class="text-lg font-bold mb-2">{{ $product['name'] }}</h2>
+                                    <h2 class="text-lg font-bold mb-2">{{ $product->name }}</h2>
                                 </div>
                                 <div class="flex gap-4 justify-between items-center">
-                                    <p class="text-black font-bold text-lg">${{ $product['price'] }}</p>
+                                    <p class="text-black font-bold text-lg">${{ $product->price }}</p>
                                     <form method="POST" action="{{ route('cart.add') }}"
                                         class="flex gap-4 items-center justify-evenly">
                                         @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product['id'] }}">
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <input type="number" name="quantity" value="1" min="1"
                                             max="10" class="w-10 outline-none">
                                         <button type="submit"
@@ -121,18 +121,11 @@
                         </div>
                     @endforeach
                 </div>
-                <nav class="flex items-center justify-between mt-4">
-                    <div>
-                        <p class="text-gray-700">Showing 1-52 of 500 products</p>
-                    </div>
-                    <div>
-                        <a href="#" class="text-blue-500 hover:text-blue-700 mr-3">Previous</a>
-                        <a href="#" class="text-blue-500 hover:text-blue-700">Next</a>
-                    </div>
-                </nav>
+                <div class="mt-4">
+                    {{ $products->links() }}
+                </div>
             </div>
-        </div>
-    </div>
+
 </body>
 
 </body>
