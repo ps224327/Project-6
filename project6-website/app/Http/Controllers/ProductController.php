@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
-
 class ProductController extends Controller
 {
     // Show Products products.blade.php
@@ -25,6 +24,9 @@ class ProductController extends Controller
 
         $products = collect($response->json());
         // dd($images);
+
+        // Paginate the results
+        $products = DB::table('response')->paginate(20);
 
         return view('products', ['products' => $products, 'search' => $search]);
     }
@@ -60,16 +62,5 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         return view('product', ['product' => $product]);
-    }
-
-    public function index()
-    {
-        $products = Product::paginate(12);
-
-        return view('products.index', [
-            'products' => $products,
-            'totalProducts' => $products->total(),
-            'firstProduct' => $products->first(),
-        ]);
     }
 }

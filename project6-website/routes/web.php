@@ -40,7 +40,7 @@ Route::get('/cart', [CartController::class , 'showCart'])->name('cart.show');
 
 // Map 
 Route::get('/contact', [MapController::class, 'showMap'])->name('contact');
-Route::get('/route/{lat1}/{lng1}/{lat2}/{lng2}', [MapController::class, 'getRoute'])->name('getRoute');
+// Route::get('/route/{lat1}/{lng1}/{lat2}/{lng2}', [MapController::class, 'getRoute'])->name('getRoute');
 
 
 

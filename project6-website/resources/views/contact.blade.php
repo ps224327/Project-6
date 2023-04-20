@@ -72,7 +72,7 @@
             </div>
         </div>
     </div>
-    <div id="mapid" class="absolute bottom-0 left-0 w-1/2" style="height: 500px"></div>
+    <div id="mapid" class="absolute left-0 w-full h-full"></div>
 
     <script>
         var mymap = L.map('mapid');
@@ -86,7 +86,7 @@
                     var lng = position.coords.longitude;
                     mymap.setView([lat, lng], 12);
 
-                    // Add user marker
+                    // Add user location marker
                     var userMarker = L.marker([lat, lng]).addTo(mymap);
                     userMarker.bindPopup("<b>Your Location</b>").openPopup();
 
@@ -124,7 +124,11 @@
                                 marker.options.interactive = true; // make markers clickable
                             });
                             marker.setOpacity(0);
-                            marker.unbindPopup();
+                            marker.unbindPopup(); 
+                            console.log(mymap.getZoom());
+                            if (mymap.getZoom() > 8) {
+                                mymap.closePopup();
+                            }
                         }
                     });
 
@@ -138,7 +142,7 @@
             }
         }
 
-        // Call the getLocation function to center the map on the user's location and add routing control
+        // Call the getLocation function to center the map on the user's location
         getLocation();
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

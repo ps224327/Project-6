@@ -97,8 +97,8 @@
                 <div class="grid grid-cols-4 gap-4">
                     @foreach ($products as $product)
                         <div class="relative">
-                            <a href="{{ $product['image'] }}" target="_blank" class="block overflow-hidden h-max">
-                                <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
+                            <a href="{{ $product->image }}" target="_blank" class="block overflow-hidden h-max">
+                                <img src="{{ $product->image }}" alt="{{ $product->name }}"
                                     class="object-cover w-full h-full">
                             </a>
                             <div class="p-4 bg-white shadow-lg rounded-lg flex flex-col justify-between">
@@ -121,8 +121,8 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-4">
-                    {{ $products->links() }}
+                <div class="pagination flex justify-center items-center mt-8">
+                    {{ $products->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
 
