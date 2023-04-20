@@ -26,7 +26,7 @@ class ProductController extends Controller
         // dd($images);
 
         // Paginate the results
-        $products = DB::table('response')->paginate(20);
+        $products = DB::table('products')->paginate(20);
 
         return view('products', ['products' => $products, 'search' => $search]);
     }
