@@ -1,5 +1,6 @@
 ﻿using PdfSharp.Drawing;
 using System;
+using Newtonsoft.Json;
 using PdfSharp.Drawing;
 using System.IO;
 using PdfSharp.Pdf;
@@ -22,6 +23,9 @@ using AForge.Video;
 using System.Drawing;
 using Brushes = System.Windows.Media.Brushes;
 using ZXing;
+using System.Windows.Controls.Primitives;
+using System.Drawing.Text;
+using System.Net.Http;
 
 namespace kasssa
 {
@@ -32,7 +36,10 @@ namespace kasssa
     {
 
         private string _currentString = "";
+        //decimal for total price
         private decimal _totalPrice = 0;
+
+        private decimal _ChangedTotal = 0;
         private string s;
         private int SPItems;
 
@@ -101,6 +108,7 @@ namespace kasssa
             if (_currentString.Length > 0)
             {
                 _currentString = _currentString.Remove(_currentString.Length - 1);
+             
                 UpdateTextBlock();
             }
            
@@ -110,6 +118,7 @@ namespace kasssa
 
         public void Add_price(object sender, RoutedEventArgs e)
         {
+            string CBSelectedCurrency = ((ComboBoxItem)CBCurrency.SelectedItem).Name.ToString();
             StackPanel sp = new StackPanel()
             {
                 Background = Brushes.AliceBlue,
@@ -146,9 +155,10 @@ namespace kasssa
                 LbPrices.Items.Add(sp);
                 _totalPrice = _totalPrice + d;
                 string total = _totalPrice.ToString("0.00");
-                TXTTotal.Text = total;
+            //    TXTTotal.Text = total;
                 _currentString = "";
                 UpdateTextBlock();
+                UpdateCurrency(CBSelectedCurrency);
                 SPItems =+ 1;
             }
 
@@ -157,7 +167,8 @@ namespace kasssa
 
         private void LbPrices_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(LbPrices.SelectedIndex > -1)
+            string CBSelectedCurrency = ((ComboBoxItem)CBCurrency.SelectedItem).Name.ToString();
+            if (LbPrices.SelectedIndex > -1)
             {
                 if ((MessageBox.Show("weet u zeker dat u dit wilt verwijderen?", "", MessageBoxButton.YesNo) == MessageBoxResult.No))
                 {
@@ -181,7 +192,8 @@ namespace kasssa
                     LbPrices.Items.Remove(LbPrices.SelectedItem);
                     _totalPrice = _totalPrice - prijsRegel;
                     string total = _totalPrice.ToString("0.00");
-                    TXTTotal.Text = total;
+                //    TXTTotal.Text = total;
+                    UpdateCurrency(CBSelectedCurrency);
                 }
             }
         }
@@ -212,8 +224,12 @@ namespace kasssa
         private void PrintListBox(ListBox LbPrices, decimal _totalPrice)
         {
             //Strings that needs to be added in the pdf
-          
-            string KVKNummer = "KVK: 18057469";
+            //text for header of the pdf
+            string CompanyName = "Groene Vingers";
+
+            //data for the company to add to the invoice
+            string KVKNummer = "KVK: 18057469"; 
+            string Invoice = "23041";
             // Create a new PDF document
             PdfDocument document = new PdfDocument();
 
@@ -228,9 +244,12 @@ namespace kasssa
 
             // Set the font for the header
             XFont HeaderFont = new XFont("Arial", 22);
-            //text for header of the pdf
-            string CompanyName = "Groene Vingers";
 
+            //color of the red line
+            XPen lineRed = new XPen(XColors.Red, 5);
+
+            //color of the black line for the data that needs to be paid
+            XPen lineBlack = new XPen(XColors.Black, 2);
             //text for total price stirng
             string TotalText = "totaal ";
             string TotalPrice = TotalText + '€' +  _totalPrice.ToString("0.00");
@@ -260,7 +279,11 @@ namespace kasssa
                             // retrieve the text from the TextBlock
                             string text = '€' + textBlock.Text;
                             gfx.DrawString(text, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+
+                            gfx.DrawLine(lineBlack, 50, 50 + i * 25, page.Width - 50, 50 + i * 25);
                         }
+                        
+                       
                     }
                 }
             }
@@ -268,7 +291,7 @@ namespace kasssa
             
 
             //creates a red line
-            XPen lineRed = new XPen(XColors.Red, 5);
+         
             gfx.DrawLine(lineRed, 0,750, page.Width,750);
 
             //output of the total price
@@ -281,9 +304,78 @@ namespace kasssa
             System.Diagnostics.Process.Start(filePath);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+      private async void UpdateCurrency( string CBSelectedcurrency)
         {
-            MessageBox.Show("hello");
+            switch (CBSelectedcurrency)
+            {
+                case "EURO":
+                    TXTTotal.Text = _totalPrice.ToString("0.00");
+                    break;
+                case "USD":
+                    using (HttpClient client = new HttpClient())
+                    {
+                        try
+                        {
+                            HttpResponseMessage USDResponse = await client.GetAsync("https://api.freecurrencyapi.com/v1/latest?apikey=meYps5nLQL78E4cz5oNAAz13I6DWWnClVP9OAgCt&currencies=USD&base_currency=EUR");
+                            USDResponse.EnsureSuccessStatusCode();
+
+                            string UsdResponse = await USDResponse.Content.ReadAsStringAsync();
+
+                            dynamic jsonResponse = JsonConvert.DeserializeObject(UsdResponse);
+                            decimal usdRate = jsonResponse.data.USD;
+
+
+                            decimal usd = _totalPrice * usdRate;
+
+                            TXTTotal.Text = usd.ToString("0.00");
+
+                        }
+                        catch (HttpRequestException ex)
+                        {
+                            MessageBox.Show("error returning USD");
+                        }
+                    }
+
+                    break;
+
+                case "CAD":
+                    using (HttpClient client = new HttpClient())
+                    {
+                        try
+                        {
+                            HttpResponseMessage CADRespone = await client.GetAsync("https://api.freecurrencyapi.com/v1/latest?apikey=meYps5nLQL78E4cz5oNAAz13I6DWWnClVP9OAgCt&currencies=CAD&base_currency=EUR");
+                            CADRespone.EnsureSuccessStatusCode();
+
+                            string CadResponse = await CADRespone.Content.ReadAsStringAsync();
+
+                            dynamic jsonResponse = JsonConvert.DeserializeObject(CadResponse);
+                            decimal cadRate = jsonResponse.data.CAD;
+
+
+                            decimal cad = _totalPrice * cadRate;
+
+                            TXTTotal.Text = cad.ToString("0.00");
+
+                        }
+                        catch (HttpRequestException ex)
+                        {
+                            MessageBox.Show("error returning CAD");
+                        }
+                    }
+                    break;
+
+            }
+        }
+
+        private async void Currency_Changed(object sender, SelectionChangedEventArgs e)
+        {
+
+            string CBSelectedCurrency = ((ComboBoxItem)CBCurrency.SelectedItem).Name.ToString();
+            UpdateCurrency(CBSelectedCurrency);
+           
+
+
         }
     }
 }

@@ -41,7 +41,7 @@
         <Button Grid.Column="1" Grid.Row="6" x:Name="Btn4" Content="4" Click="Btn_Numbers"></Button>
         <Button Grid.Column="1" Grid.Row="4" x:Name="Btn7" Content="7" Click="Btn_Numbers"></Button>
         <Button Grid.Column="1" Grid.Row="2" Background="LightBlue" x:Name="ScanBarcode" Click="ScanBarCode">Scan Barcode</Button>
-        <Button Grid.Column="3" Grid.Row="2" Click="Button_Click"></Button>
+        <Button Grid.Column="3" Grid.Row="2"></Button>
 
         <Button Grid.Column="3" Grid.Row="10" x:Name="Btn0" Content="0" Click="Btn_Numbers"></Button>
         <Button Grid.Column="3" Grid.Row="8" x:Name="Btn2" Content="2" Click="Btn_Numbers"></Button>
@@ -70,6 +70,12 @@
             </ListBox>
         </Border>
 
+        <ComboBox x:Name="CBCurrency" Grid.Row="10" Grid.Column="8" SelectionChanged="Currency_Changed" Margin="20,20,20,20">
+            <ComboBoxItem Name="EURO" IsSelected="True">EURO</ComboBoxItem>
+            <ComboBoxItem Name="USD">USD</ComboBoxItem>
+            <ComboBoxItem Name="CAD">CAD</ComboBoxItem>
+            
+        </ComboBox>
         <Button Grid.Column="10" Grid.Row="10" Background="Blue" FontSize="20" Foreground="White" Click="Btn_Bon">Print bon</Button>
     </Grid>
 </Window>

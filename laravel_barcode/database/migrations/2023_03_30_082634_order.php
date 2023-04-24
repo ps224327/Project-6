@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('order', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('deliverd');
+            $table->integer('invoice')->unique(true);
             $table->timestamps();
         });
     }
