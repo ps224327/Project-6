@@ -58,9 +58,9 @@
             <TextBlock  VerticalAlignment="Center" x:Name="CurrentStringTextBlock"  Text="{Binding CurrentString}"></TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="8" Grid.Column="8" Grid.ColumnSpan="3" Orientation="Horizontal" >
-        <TextBlock  Text="Totaal prijs" FontSize="20" Margin="10" 
+            <TextBlock x:Name="TextTekens"  Text="Totaal prijs €" FontSize="20" Margin="10" 
                    HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <TextBlock VerticalAlignment="Center" FontSize="20">€</TextBlock>
+           
             <TextBlock x:Name="TXTTotal" VerticalAlignment="Center" FontSize="20"></TextBlock>
         </StackPanel>
 

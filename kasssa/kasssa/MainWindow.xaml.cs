@@ -26,6 +26,7 @@ using ZXing;
 using System.Windows.Controls.Primitives;
 using System.Drawing.Text;
 using System.Net.Http;
+using com.itextpdf.text.pdf;
 
 namespace kasssa
 {
@@ -43,7 +44,10 @@ namespace kasssa
         private string s;
         private int SPItems;
 
-        
+        //stackpanel
+        private StackPanel sp;
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -118,8 +122,10 @@ namespace kasssa
 
         public void Add_price(object sender, RoutedEventArgs e)
         {
+            int i = 0;
+            
             string CBSelectedCurrency = ((ComboBoxItem)CBCurrency.SelectedItem).Name.ToString();
-            StackPanel sp = new StackPanel()
+             sp = new StackPanel()
             {
                 Background = Brushes.AliceBlue,
                 Orientation = Orientation.Horizontal,
@@ -135,7 +141,8 @@ namespace kasssa
                 string s = d.ToString("0.00");
                 TextBlock Pricing;
                 TextBlock Valuta;
-
+                TextBlock USDPricing;
+                TextBlock CADPricing;
                 Valuta = new TextBlock()
                 {
                     Foreground = Brushes.Black,
@@ -147,11 +154,30 @@ namespace kasssa
                     Foreground = Brushes.Black,
                     Text = " " + s.ToString(),
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Name = "SinglePrice",
+                    Name = "SinglePrice"+i,
                 };
+                USDPricing = new TextBlock()
 
+                {
+                    Foreground = Brushes.Black,
+                    Text = " " + s.ToString(),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Name = "USDSinglePrice"+i,
+                    Visibility = Visibility.Collapsed,
+                };
+                CADPricing = new TextBlock()
+
+                {
+                    Foreground = Brushes.Black,
+                    Text = " " + s.ToString(),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Name = "CADSinglePrice"+i,
+                    Visibility = Visibility.Collapsed,
+                };
                 sp.Children.Add(Valuta);
                 sp.Children.Add(Pricing);
+                sp.Children.Add(USDPricing);
+                sp.Children.Add(CADPricing);
                 LbPrices.Items.Add(sp);
                 _totalPrice = _totalPrice + d;
                 string total = _totalPrice.ToString("0.00");
@@ -160,8 +186,9 @@ namespace kasssa
                 UpdateTextBlock();
                 UpdateCurrency(CBSelectedCurrency);
                 SPItems =+ 1;
+                i++;
             }
-
+          
             
         }
 
@@ -181,14 +208,14 @@ namespace kasssa
 
                     foreach(TextBlock item in sp.Children.OfType<TextBlock>())
                     {
-                        if (item.Name == "SinglePrice")
+                        if (item.Name.StartsWith("SinglePrice"))
                         {
                             string prijs = item.Text;
                             prijsRegel = decimal.Parse(prijs);
                         }
                     }
 
-
+                  
                     LbPrices.Items.Remove(LbPrices.SelectedItem);
                     _totalPrice = _totalPrice - prijsRegel;
                     string total = _totalPrice.ToString("0.00");
@@ -223,6 +250,21 @@ namespace kasssa
         }
         private void PrintListBox(ListBox LbPrices, decimal _totalPrice)
         {
+            string CurrencySign = "$";
+            string CBSelectedCurrency = ((ComboBoxItem)CBCurrency.SelectedItem).Name.ToString();
+            switch (CBSelectedCurrency)
+            {
+                case "EURO":
+                    CurrencySign = "€";
+                        break;
+                case "USD":
+                    CurrencySign = "USD $";
+                    break;
+                case "CAD":
+                    CurrencySign = "CAD $";
+                    break;
+            };
+            MessageBox.Show(CBSelectedCurrency);
             //Strings that needs to be added in the pdf
             //text for header of the pdf
             string CompanyName = "Groene Vingers";
@@ -252,7 +294,18 @@ namespace kasssa
             XPen lineBlack = new XPen(XColors.Black, 2);
             //text for total price stirng
             string TotalText = "totaal ";
-            string TotalPrice = TotalText + '€' +  _totalPrice.ToString("0.00");
+            string TotalPrice = TotalText + '€' + _totalPrice.ToString("0.00");
+            
+             if (CBSelectedCurrency == "USD")
+            {
+                TotalPrice = TotalText + "USD $" + TXTTotal.Text;
+            }
+            else if (CBSelectedCurrency == "CAD")
+            {
+                 TotalPrice = TotalText + "CAD $" + TXTTotal.Text;
+            }
+         
+        
 
             gfx.DrawString(CompanyName, HeaderFont, XBrushes.Black, new XRect(225, 50 ,0 , 20), XStringFormats.TopLeft);
             gfx.DrawString(CompanyName, font, XBrushes.Black, new XRect(500, 50, 0, 0));
@@ -273,11 +326,12 @@ namespace kasssa
                         
                         TextBlock textBlock = child as TextBlock;
 
-                        if (textBlock.Name == "SinglePrice")
+                        if (textBlock.Name.StartsWith("SinglePrice"))
                         {
                             i++;
                             // retrieve the text from the TextBlock
-                            string text = '€' + textBlock.Text;
+                            
+                            string text = CurrencySign + textBlock.Text;
                             gfx.DrawString(text, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
 
                             gfx.DrawLine(lineBlack, 50, 50 + i * 25, page.Width - 50, 50 + i * 25);
@@ -295,7 +349,7 @@ namespace kasssa
             gfx.DrawLine(lineRed, 0,750, page.Width,750);
 
             //output of the total price
-            gfx.DrawString(TotalPrice, font, XBrushes.Black, new XRect(500,800, 0, 0));
+            gfx.DrawString(TotalPrice, font, XBrushes.Black, new XRect(400,800, 0, 0));
             // Save the PDF document to a file
             string filePath = "listbox.pdf";
             document.Save(filePath);
@@ -307,16 +361,44 @@ namespace kasssa
 
       private async void UpdateCurrency( string CBSelectedcurrency)
         {
+            int i = 0;
+            decimal prijsRegel = 0;
             switch (CBSelectedcurrency)
             {
                 case "EURO":
                     TXTTotal.Text = _totalPrice.ToString("0.00");
+                    TextTekens.Text = "Totaal prijs €";
+
+                 
+
+                    //for the listbox items
+                    foreach (StackPanel number in LbPrices.Items)
+                    {
+                        foreach (TextBlock item in sp.Children.OfType<TextBlock>())
+                        {
+                            if (item.Name.StartsWith("SinglePrice"))
+                            {
+                              
+                                item.Visibility = Visibility.Visible;
+
+                            }
+                            if (item.Name.StartsWith("USDSinglePrice"))
+                            {
+                                item.Visibility = Visibility.Hidden;
+                            }
+                            if (item.Name.StartsWith("CADSinglePrice"))
+                            {
+                                item.Visibility = Visibility.Hidden;
+                            }
+                        }
+                    }
                     break;
                 case "USD":
                     using (HttpClient client = new HttpClient())
                     {
                         try
                         {
+                            // for the API to fetch data
                             HttpResponseMessage USDResponse = await client.GetAsync("https://api.freecurrencyapi.com/v1/latest?apikey=meYps5nLQL78E4cz5oNAAz13I6DWWnClVP9OAgCt&currencies=USD&base_currency=EUR");
                             USDResponse.EnsureSuccessStatusCode();
 
@@ -324,19 +406,48 @@ namespace kasssa
 
                             dynamic jsonResponse = JsonConvert.DeserializeObject(UsdResponse);
                             decimal usdRate = jsonResponse.data.USD;
-
+                            //convert total price to usd price
 
                             decimal usd = _totalPrice * usdRate;
 
+                      
                             TXTTotal.Text = usd.ToString("0.00");
+                            TextTekens.Text = "Totaal prijs USD $";
 
+
+
+                            //for the listbox items
+                            foreach (StackPanel number in LbPrices.Items)
+                            {
+                                foreach (TextBlock item in sp.Children.OfType<TextBlock>())
+                                {
+                                    if (item.Name.StartsWith("SinglePrice"))
+                                    {
+                                        string prijs = item.Text;
+                                        prijsRegel = decimal.Parse(prijs);
+                                        item.Visibility = Visibility.Collapsed;
+
+                                    }
+                                    if (item.Name.StartsWith("USDSinglePrice"))
+                                    {
+                                        item.Visibility = Visibility.Visible;
+                                        decimal PrijsRegel = prijsRegel * usdRate;
+                                        item.Text = PrijsRegel.ToString("0.00");
+                                    }
+                                    if (item.Name.StartsWith("CADSinglePrice"))
+                                    {
+                                        item.Visibility = Visibility.Hidden;
+                                    }
+                                }
+                            }
+                         
                         }
                         catch (HttpRequestException ex)
                         {
                             MessageBox.Show("error returning USD");
                         }
                     }
-
+                
                     break;
 
                 case "CAD":
@@ -356,7 +467,33 @@ namespace kasssa
                             decimal cad = _totalPrice * cadRate;
 
                             TXTTotal.Text = cad.ToString("0.00");
+                            TextTekens.Text = "Totaal prijs CAD $";
 
+
+                            foreach (StackPanel number in LbPrices.Items)
+                            {
+                                foreach (TextBlock item in sp.Children.OfType<TextBlock>())
+                                {
+                                    if (item.Name.StartsWith("SinglePrice"))
+                                    {
+                                        string prijs = item.Text;
+                                        prijsRegel = decimal.Parse(prijs);
+                                        item.Visibility = Visibility.Collapsed;
+
+                                    }
+                                    if (item.Name.StartsWith("USDSinglePrice"))
+                                    {
+                                        item.Visibility = Visibility.Collapsed;
+
+                                    }
+                                    if (item.Name.StartsWith("CADSinglePrice"))
+                                    {
+                                        item.Visibility = Visibility.Visible;
+                                        decimal PrijsRegel = prijsRegel * cadRate;
+                                        item.Text = PrijsRegel.ToString("0.00");
+                                    }
+                                }
+                            }
                         }
                         catch (HttpRequestException ex)
                         {
@@ -368,6 +505,27 @@ namespace kasssa
             }
         }
 
+        private T FindVisualChild<T>(DependencyObject parentElement) where T : DependencyObject
+        {
+            var count = VisualTreeHelper.GetChildrenCount(parentElement);
+            for (int i = 0; i < count; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parentElement, i);
+                if (child is T typedChild)
+                {
+                    return typedChild;
+                }
+                else
+                {
+                    var result = FindVisualChild<T>(child);
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+            return null;
+        }
         private async void Currency_Changed(object sender, SelectionChangedEventArgs e)
         {
 
@@ -379,3 +537,4 @@ namespace kasssa
         }
     }
 }
+
