@@ -35,12 +35,13 @@ class ProductController extends Controller
     public function fetchImagesFromApiHome()
     {
         $token = '19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ';
+        $url = "https://kuin.summaict.nl/api/product";
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->withOptions([
             'verify' => false,
-        ])->get('https://kuin.summaict.nl/api/product');
+        ])->get($url);
 
         $products = collect($response->json());
         // dd($images);
@@ -51,12 +52,11 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
-        $url = "https://kuin.summaict.nl/api/product/search/{$search}";
-        $response = Http::get($url);
-        $products = $response->json();
+        $products = DB::table('products')->where('name', 'LIKE', "%{$search}%")->paginate(20);
 
         return view('products', ['products' => $products]);
     }
+
 
     public function getProduct($id)
     {

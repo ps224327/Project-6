@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $table = 'response';
+    protected $table = 'products';
     use HasFactory;
 }

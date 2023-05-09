@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-hEjKDGnCxl72J1DlEk57mcKjZl6lZBb+iJ7xhqOaIbK/c/Es2QJwB/1ZNYCjKSRNNcZkClNvOorKgU0/g6UaA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body class="bg-green-100">
@@ -27,18 +31,27 @@
                     </a>
                 </div>
                 <div>
-                    <a href="{{ route('cart.show') }}"
-                        class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Cart
-                        ({{ count(session('cart', [])) }})</a>
+                    {{-- Cart --}}
+                    <a href="{{ route('cart.show') }}" class="relative">
+                        <span
+                            class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
+                            {{ array_sum(session('cart', [])) }}
+                        </span>
+                        <span class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Cart</span>
+                    </a>
+
+
                     @if (session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-4" role="alert">
                             <p class="font-bold">{{ session('success') }}</p>
                         </div>
                     @endif
+                    {{-- Login --}}
                     <a href="/login"
                         class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
                         Log In
                     </a>
+                    {{-- Signup --}}
                     <a href="/singup"
                         class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
                         Sign Up
@@ -66,7 +79,7 @@
     <h1 class="text-2xl font-bold text-center py-5">Products</h1>
 
     <div class="grid grid-cols-5 gap-4 py-5 px-5 lg:w-3/4 mx-auto">
-        
+
         @foreach ($products->take(5) as $product)
             <div class="relative">
                 <a href="{{ $product['image'] }}" target="_blank" class="block overflow-hidden h-max">

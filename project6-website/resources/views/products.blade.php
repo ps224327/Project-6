@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Producten</title>
     <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-hEjKDGnCxl72J1DlEk57mcKjZl6lZBb+iJ7xhqOaIbK/c/Es2QJwB/1ZNYCjKSRNNcZkClNvOorKgU0/g6UaA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body class="bg-green-100">
@@ -28,9 +32,15 @@
                 </div>
                 <div>
                     {{-- Cart --}}
-                    <a href="{{ route('cart.show') }}"
-                        class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Cart
-                        ({{ count(session('cart', [])) }})</a>
+                    <a href="{{ route('cart.show') }}" class="relative">
+                        <span
+                            class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
+                            {{ array_sum(session('cart', [])) }}
+                        </span>
+                        <span class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Cart</span>
+                    </a>
+
+
                     @if (session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-4" role="alert">
                             <p class="font-bold">{{ session('success') }}</p>
@@ -106,7 +116,7 @@
                                     <h2 class="text-lg font-bold mb-2">{{ $product->name }}</h2>
                                 </div>
                                 <div class="flex gap-4 justify-between items-center">
-                                    <p class="text-black font-bold text-lg">${{ $product->price }}</p>
+                                    <p class="text-black font-bold text-lg">&euro;{{ $product->price }}</p>
                                     <form method="POST" action="{{ route('cart.add') }}"
                                         class="flex gap-4 items-center justify-evenly">
                                         @csrf
@@ -114,7 +124,8 @@
                                         <input type="number" name="quantity" value="1" min="1"
                                             max="10" class="w-10 outline-none">
                                         <button type="submit"
-                                            class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Add</button>
+                                            class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Voeg
+                                            toe</button>
                                     </form>
                                 </div>
                             </div>

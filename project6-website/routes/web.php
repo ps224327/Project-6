@@ -5,8 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MapController;
-
-
+use App\Http\Controllers\WebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +36,16 @@ Route::get('/search', [ProductController::class, 'search'])->name('product.searc
 // Cart 
 Route::post('/cart/add', [CartController::class, 'addItem'])->name('cart.add');
 Route::get('/cart', [CartController::class , 'showCart'])->name('cart.show');
+Route::put('/cart/{id}', [CartController::class, 'updateItem'])->name('cart.update');
+Route::delete('/cart/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
 
 // Map 
 Route::get('/contact', [MapController::class, 'showMap'])->name('contact');
 // Route::get('/route/{lat1}/{lng1}/{lat2}/{lng2}', [MapController::class, 'getRoute'])->name('getRoute');
+
+// Webhook
+Route::post('/webhook', [WebhookController::class, 'handleWebhook']);
+
 
 
 

@@ -15,6 +15,10 @@
         href="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-hEjKDGnCxl72J1DlEk57mcKjZl6lZBb+iJ7xhqOaIbK/c/Es2QJwB/1ZNYCjKSRNNcZkClNvOorKgU0/g6UaA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 
@@ -37,18 +41,27 @@
                     </a>
                 </div>
                 <div>
-                    <a href="{{ route('cart.show') }}"
-                        class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Cart
-                        ({{ count(session('cart', [])) }})</a>
+                    {{-- Cart --}}
+                    <a href="{{ route('cart.show') }}" class="relative">
+                        <span
+                            class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
+                            {{ array_sum(session('cart', [])) }}
+                        </span>
+                        <span class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Cart</span>
+                    </a>
+
+
                     @if (session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-4" role="alert">
                             <p class="font-bold">{{ session('success') }}</p>
                         </div>
                     @endif
+                    {{-- Login --}}
                     <a href="/login"
                         class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
                         Log In
                     </a>
+                    {{-- Signup --}}
                     <a href="/singup"
                         class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
                         Sign Up
@@ -124,7 +137,7 @@
                                 marker.options.interactive = true; // make markers clickable
                             });
                             marker.setOpacity(0);
-                            marker.unbindPopup(); 
+                            marker.unbindPopup();
                             console.log(mymap.getZoom());
                             if (mymap.getZoom() > 8) {
                                 mymap.closePopup();

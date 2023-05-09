@@ -12,6 +12,8 @@ class CartController extends Controller
     {
         $productId = $request->input('product_id');
         $quantity = $request->input('quantity');
+        $url = "http://kuin.summaict.nl/api/product";
+        $token = '19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ';
 
         $cart = session('cart', []);
         if (isset($cart[$productId])) {
@@ -21,15 +23,19 @@ class CartController extends Controller
         }
         session(['cart' => $cart]);
 
-        $product = Http::withToken('your-api-token')->get('https://kuin.summaict.nl/api/product/' . $productId)->json();
+        $product = Http::withToken($token)->get($url . $productId)->json();
         $message = $quantity . ' ' . $product['name'] . ' added to cart';
         return redirect()->back()->with('success', $message);
     }
+
     public function showCart()
     {
+        $token = '19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ';
+        $url = "http://kuin.summaict.nl/api/product";
         $cart = session('cart', []);
+
         $productIds = collect($cart)->keys()->toArray();
-        $response = Http::withToken('19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ')->get('https://kuin.summaict.nl/api/product', [
+        $response = Http::withToken($token)->get($url, [
             'ids' => $productIds,
         ]);
 
@@ -42,6 +48,7 @@ class CartController extends Controller
                     'id' => $productId,
                     'name' => $product['name'],
                     'image' => $product['image'],
+                    'description' => $product['description'],
                     'quantity' => $quantity,
                     'price' => $product['price'],
                     'totalPrice' => $totalPrice
@@ -52,5 +59,29 @@ class CartController extends Controller
             // Handle error response
             return response()->json(['message' => 'Error retrieving products'], $response->status());
         }
+    }
+
+    public function updateItem(Request $request, $id)
+    {
+        $quantity = $request->input('quantity');
+        $cart = session('cart', []);
+
+        if ($quantity <= 0) {
+            unset($cart[$id]);
+        } else {
+            $cart[$id] = $quantity;
+        }
+        session(['cart' => $cart]);
+
+        return redirect()->route('cart.show');
+    }
+
+    public function removeItem($productId)
+    {
+        $cart = session('cart', []);
+        unset($cart[$productId]);
+        session(['cart' => $cart]);
+
+        return redirect()->route('cart.show');
     }
 }
