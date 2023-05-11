@@ -27,6 +27,8 @@ using System.Windows.Controls.Primitives;
 using System.Drawing.Text;
 using System.Net.Http;
 using com.itextpdf.text.pdf;
+using static iTextSharp.text.pdf.AcroFields;
+using PdfSharp.Pdf.Content.Objects;
 
 namespace kasssa
 {
@@ -264,7 +266,6 @@ namespace kasssa
                     CurrencySign = "CAD $";
                     break;
             };
-            MessageBox.Show(CBSelectedCurrency);
             //Strings that needs to be added in the pdf
             //text for header of the pdf
             string CompanyName = "Groene Vingers";
@@ -312,35 +313,104 @@ namespace kasssa
             gfx.DrawString(KVKNummer, font, XBrushes.Black, new XRect(500, 70, 0, 0));
             // Loop through the items in the listbox and draw them on the page
             int i = 2;
-            foreach (var item in LbPrices.Items)
+
+            switch (CBSelectedCurrency)
             {
-                // retrieve the StackPanel containing the TextBlocks
-                StackPanel stackPanel = item as StackPanel;
-
-                if (stackPanel != null)
-                {
-                    
-                    // loop through each TextBlock in the StackPanel
-                    foreach (var child in stackPanel.Children)
+                case "EURO":
+                    foreach (var item in LbPrices.Items)
                     {
-                        
-                        TextBlock textBlock = child as TextBlock;
+                        // retrieve the StackPanel containing the TextBlocks
+                        StackPanel stackPanel = item as StackPanel;
 
-                        if (textBlock.Name.StartsWith("SinglePrice"))
+                        if (stackPanel != null)
                         {
-                            i++;
-                            // retrieve the text from the TextBlock
-                            
-                            string text = CurrencySign + textBlock.Text;
-                            gfx.DrawString(text, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
 
-                            gfx.DrawLine(lineBlack, 50, 50 + i * 25, page.Width - 50, 50 + i * 25);
+                            // loop through each TextBlock in the StackPanel
+                            foreach (var child in stackPanel.Children)
+                            {
+
+                                TextBlock textBlock = child as TextBlock;
+
+                                if (textBlock.Name.StartsWith("SinglePrice"))
+                                {
+                                    i++;
+                                    // retrieve the text from the TextBlock
+
+                                    string text = CurrencySign + textBlock.Text;
+                                    gfx.DrawString(text, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+
+                                    gfx.DrawLine(lineBlack, 50, 50 + i * 25, page.Width - 50, 50 + i * 25);
+                                }
+
+
+                            }
                         }
-                        
-                       
                     }
-                }
-            }
+                    break;
+                case "USD":
+                    foreach (var item in LbPrices.Items)
+                    {
+                        // retrieve the StackPanel containing the TextBlocks
+                        StackPanel stackPanel = item as StackPanel;
+
+                        if (stackPanel != null)
+                        {
+
+                            // loop through each TextBlock in the StackPanel
+                            foreach (var child in stackPanel.Children)
+                            {
+
+                                TextBlock textBlock = child as TextBlock;
+
+                                if (textBlock.Name.StartsWith("USDSinglePrice"))
+                                {
+                                    i++;
+                                    // retrieve the text from the TextBlock
+
+                                    string text = CurrencySign + textBlock.Text;
+                                    gfx.DrawString(text, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+
+                                    gfx.DrawLine(lineBlack, 50, 50 + i * 25, page.Width - 50, 50 + i * 25);
+                                }
+
+
+                            }
+                        }
+                    }
+                    break;
+                case "CAD":
+                    foreach (var item in LbPrices.Items)
+                    {
+                        // retrieve the StackPanel containing the TextBlocks
+                        StackPanel stackPanel = item as StackPanel;
+
+                        if (stackPanel != null)
+                        {
+
+                            // loop through each TextBlock in the StackPanel
+                            foreach (var child in stackPanel.Children)
+                            {
+
+                                TextBlock textBlock = child as TextBlock;
+
+                                if (textBlock.Name.StartsWith("CADSinglePrice"))
+                                {
+                                    i++;
+                                    // retrieve the text from the TextBlock
+
+                                    string text = CurrencySign + textBlock.Text;
+                                    gfx.DrawString(text, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+
+                                    gfx.DrawLine(lineBlack, 50, 50 + i * 25, page.Width - 50, 50 + i * 25);
+                                }
+
+
+                            }
+                        }
+                    }
+                    break;
+            };
+           
 
             
 
@@ -396,6 +466,7 @@ namespace kasssa
                 case "USD":
                     using (HttpClient client = new HttpClient())
                     {
+                        
                         try
                         {
                             // for the API to fetch data
@@ -414,11 +485,30 @@ namespace kasssa
                             TXTTotal.Text = usd.ToString("0.00");
                             TextTekens.Text = "Totaal prijs USD $";
 
-
+                            foreach (var item in LbPrices.Items)
+                            {
+                             
+                                if (item is StackPanel)
+                                {
+                                    MessageBox.Show("helol");
+                                   
+                
+                                        var stackPanel = (StackPanel)listBoxItem.Content;
+                                        if (stackPanel.Children[0] is TextBlock)
+                                        {
+                                            var textBlock = (TextBlock)stackPanel.Children[0];
+                                            MessageBox.Show(textBlock.Text);
+                                        }
+                                    }
+                                } 
+                            }
+                          
 
                             //for the listbox items
                             foreach (StackPanel number in LbPrices.Items)
                             {
+                          
+
                                 foreach (TextBlock item in sp.Children.OfType<TextBlock>())
                                 {
                                     if (item.Name.StartsWith("SinglePrice"))
@@ -430,6 +520,7 @@ namespace kasssa
                                     }
                                     if (item.Name.StartsWith("USDSinglePrice"))
                                     {
+                                       // MessageBox.Show(item.Text);
                                         item.Visibility = Visibility.Visible;
                                         decimal PrijsRegel = prijsRegel * usdRate;
                                         item.Text = PrijsRegel.ToString("0.00");
