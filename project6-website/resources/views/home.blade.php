@@ -7,9 +7,8 @@
     <title>Home</title>
     <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
     <!-- Fontawesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        integrity="sha512-hEjKDGnCxl72J1DlEk57mcKjZl6lZBb+iJ7xhqOaIbK/c/Es2QJwB/1ZNYCjKSRNNcZkClNvOorKgU0/g6UaA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+
 </head>
 
 <body class="bg-green-100">
@@ -52,7 +51,7 @@
                         Log In
                     </a>
                     {{-- Signup --}}
-                    <a href="/singup"
+                    <a href="/signup"
                         class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
                         Sign Up
                     </a>

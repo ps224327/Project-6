@@ -3,58 +3,45 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
 use App\Models\Product;
+use Illuminate\Support\Facades\Http;
 
 class UpdateDatabaseCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'app:update-database-command';
+    protected $description = 'Update the database with product data from the API';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Fetches products from API and updates the database';
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
-        // Get the products from the API
-        $response = Http::get('http://kuin.summaict.nl/api/product');
-        $apiProducts = $response->json();
+        $apiUrl = 'http://kuin.summaict.nl/api/product';
+        $apiResponse = Http::get($apiUrl);
 
-        // Update the products in the database
-        foreach ($apiProducts as $apiProduct) {
-            $product = Product::where('id', $apiProduct['id'])->first();
+        if ($apiResponse->successful()) {
+            $apiProduct = $apiResponse->json();
 
-            if ($product) {
-                // If the product exists in the database, update its fields
-                $product->name = $apiProduct['name'];
-                $product->description = $apiProduct['description'];
-                $product->price = $apiProduct['price'];
-                $product->image = $apiProduct['image'];
-                $product->color = $apiProduct['color'];
-                $product->height_cm = $apiProduct['height_cm'];
-                $product->width_cm = $apiProduct['width_cm'];
-                $product->depth_cm = $apiProduct['depth_cm'];
-                $product->weight_gr = $apiProduct['weight_gr'];
-                $product->save();
+            if (!empty($apiProduct)) {
+                $product = Product::where('id', $apiProduct['id'])->first();
+                if ($product) {
+                    $product->name = $apiProduct['name'];
+                    $product->description = $apiProduct['description'];
+                    $product->price = $apiProduct['price'];
+                    $product->image = $apiProduct['image'];
+                    $product->color = $apiProduct['color'];
+                    $product->height_cm = $apiProduct['height_cm'];
+                    $product->width_cm = $apiProduct['width_cm'];
+                    $product->depth_cm = $apiProduct['depth_cm'];
+                    $product->weight_gr = $apiProduct['weight_gr'];
+                    $product->save();
+
+                    $this->info('Product updated successfully.');
+                } else {
+                    $this->error('Product not found in the database.');
+                }
             } else {
-                // If the product does not exist in the database, create a new one
-                Product::create($apiProduct);
+                $this->error('Empty API response or invalid product data.');
             }
+        } else {
+            $this->error('Failed to fetch product data from the API.');
         }
-
-        $this->info('Products updated successfully!');
     }
 }

@@ -30,6 +30,7 @@ class ProductController extends Controller
 
         return view('products', ['products' => $products, 'search' => $search]);
     }
+    
 
     // Show Products home.blade.php
     public function fetchImagesFromApiHome()

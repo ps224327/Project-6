@@ -63,18 +63,27 @@ class CartController extends Controller
 
     public function updateItem(Request $request, $id)
     {
-        $quantity = $request->input('quantity');
+        $action = $request->input('action');
         $cart = session('cart', []);
+        $quantity = $cart[$id] ?? 0;
+
+        if ($action === 'decrease') {
+            $quantity--;
+        } elseif ($action === 'increase') {
+            $quantity++;
+        }
 
         if ($quantity <= 0) {
             unset($cart[$id]);
         } else {
             $cart[$id] = $quantity;
         }
+
         session(['cart' => $cart]);
 
         return redirect()->route('cart.show');
     }
+
 
     public function removeItem($productId)
     {

@@ -7,9 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
     <!-- Fontawesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        integrity="sha512-hEjKDGnCxl72J1DlEk57mcKjZl6lZBb+iJ7xhqOaIbK/c/Es2QJwB/1ZNYCjKSRNNcZkClNvOorKgU0/g6UaA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+
     <title>cart</title>
 </head>
 
@@ -55,7 +55,7 @@
                         Log In
                     </a>
                     {{-- Signup --}}
-                    <a href="/singup"
+                    <a href="/signup"
                         class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
                         Sign Up
                     </a>
@@ -95,18 +95,22 @@
                                 <form method="POST" action="{{ route('cart.update', ['id' => $cartItem['id']]) }}">
                                     @csrf
                                     @method('PUT')
-                                    <div class="flex items-center">
-                                        <button type="submit"
-                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                            name="quantity" value="{{ $cartItem['quantity'] - 1 }}">-</button>
-                                        <input type="number" name="quantity" value="{{ $cartItem['quantity'] }}"
-                                            readonly class="form-input w-16 mx-2 text-center">
-                                        <button type="submit"
-                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                            name="quantity" value="{{ $cartItem['quantity'] + 1 }}">+</button>
-                                    </div>
-                                </form>
-
+                                    <form method="POST" action="{{ route('cart.update', ['id' => $cartItem['id']]) }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="flex items-center">
+                                            <button type="submit"
+                                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                    name="action" value="decrease">-</button>
+                                            <input type="number" name="quantity" id="quantity_{{ $cartItem['id'] }}"
+                                                   value="{{ $cartItem['quantity'] }}" readonly
+                                                   class="form-input w-16 mx-2 text-center">
+                                            <button type="submit"
+                                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                    name="action" value="increase">+</button>
+                                        </div>
+                                    </form>
+                                    
                             </td>
                             <td class="border px-4 py-2">&euro;{{ $cartItem['price'] }}</td>
                             <td class="border px-4 py-2">&euro;{{ number_format($cartItem['totalPrice'], 2) }}</td>
@@ -118,23 +122,22 @@
                                         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">Verwijder</button>
                                 </form>
                             </td>
-                        </tr>
-                    @endforeach
+                        </tr> @endforeach
                 </tbody>
                 <tfoot>
                     <tr class="bg-gray-100">
-                        <td class="px-4 py-2" colspan="3">Total:</td>
-                        <td class="px-4 py-2">&euro;{{ number_format($cartItems->sum('totalPrice'), 2) }}</td>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </table>
-        @else
-            <p>Your cart is empty</p>
-        @endif
+    <td class="px-4 py-2" colspan="3">Total:</td>
+    <td class="px-4 py-2">&euro;{{ number_format($cartItems->sum('totalPrice'), 2) }}</td>
+    <td></td>
+    </tr>
+    </tfoot>
+    </table>
+@else
+    <p>Your cart is empty</p>
+    @endif
 
     </div>
 
-</body>
+    </body>
 
 </html>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProductController;
@@ -34,7 +35,7 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.
 Route::get('/search', [ProductController::class, 'search'])->name('product.search');
 
 // Cart 
-Route::post('/cart/add', [CartController::class, 'addItem'])->name('cart.add');
+Route::post('/products', [CartController::class, 'addItem'])->name('cart.add');
 Route::get('/cart', [CartController::class , 'showCart'])->name('cart.show');
 Route::put('/cart/{id}', [CartController::class, 'updateItem'])->name('cart.update');
 Route::delete('/cart/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
@@ -46,12 +47,9 @@ Route::get('/contact', [MapController::class, 'showMap'])->name('contact');
 // Webhook
 Route::post('/webhook', [WebhookController::class, 'handleWebhook']);
 
+// Login / Signup
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-
-
-
-
-
-
-
-
+Route::get('/signup', [AuthController::class, 'showSignupForm'])->name('signup');
+Route::post('/signup', [AuthController::class, 'signup'])->name('signup');

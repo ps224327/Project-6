@@ -7,9 +7,9 @@
     <title>Producten</title>
     <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
     <!-- Fontawesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        integrity="sha512-hEjKDGnCxl72J1DlEk57mcKjZl6lZBb+iJ7xhqOaIbK/c/Es2QJwB/1ZNYCjKSRNNcZkClNvOorKgU0/g6UaA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+
 </head>
 
 <body class="bg-green-100">
@@ -37,9 +37,10 @@
                             class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
                             {{ array_sum(session('cart', [])) }}
                         </span>
-                        <span class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Cart</span>
+                        <span class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </span>
                     </a>
-
 
                     @if (session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-4" role="alert">
@@ -52,7 +53,7 @@
                         Log In
                     </a>
                     {{-- Signup --}}
-                    <a href="/singup"
+                    <a href="/signup"
                         class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
                         Sign Up
                     </a>
@@ -68,7 +69,7 @@
 
                 {{-- Search --}}
 
-                <form method="GET" action="{{ route('products') }}" class="mb-4">
+                <form method="GET" action="{{ route('product.search') }}" class="mb-4">
                     <div class="mb-4">
                         <label class="block text-gray-700 font-bold mb-2" for="search">Search</label>
                         <input type="text" name="search" id="search"
@@ -80,14 +81,14 @@
                             class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Search</button>
                     </div>
                 </form>
+                
 
                 {{-- Price Filter --}}
 
-                <form action="/products" method="GET">
+                <form action="{{ route('products') }}" method="GET">
                     <div class="mb-4">
                         <label class="block text-gray-700 font-bold mb-2" for="price">Price</label>
-                        <select name="price" id="price"
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <select name="price" id="price" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                             <option value="">All Prices</option>
                             <option value="0-5">$0 - $5</option>
                             <option value="5-10">$5 - $10</option>
@@ -95,10 +96,9 @@
                             <option value="15+">$15+</option>
                         </select>
                     </div>
-                    <button type="submit"
-                        class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Apply
-                        Filters</button>
+                    <button type="submit" class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Apply Filters</button>
                 </form>
+                
             </div>
 
             {{-- Products --}}
@@ -129,16 +129,16 @@
                                     </form>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        </div> @endforeach
                 </div>
-                <div class="pagination flex justify-center items-center mt-8">
-                    {{ $products->links('vendor.pagination.tailwind') }}
-                </div>
-            </div>
+                <div class="pagination
+        flex justify-center items-center mt-8">
+    {{ $products->links('vendor.pagination.tailwind') }}
+    </div>
+    </div>
 
-</body>
+    </body>
 
-</body>
+    </body>
 
 </html>
