@@ -485,23 +485,7 @@ namespace kasssa
                             TXTTotal.Text = usd.ToString("0.00");
                             TextTekens.Text = "Totaal prijs USD $";
 
-                            foreach (var item in LbPrices.Items)
-                            {
-                             
-                                if (item is StackPanel)
-                                {
-                                    MessageBox.Show("helol");
-                                   
-                
-                                        var stackPanel = (StackPanel)listBoxItem.Content;
-                                        if (stackPanel.Children[0] is TextBlock)
-                                        {
-                                            var textBlock = (TextBlock)stackPanel.Children[0];
-                                            MessageBox.Show(textBlock.Text);
-                                        }
-                                    }
-                                } 
-                            }
+                          
                           
 
                             //for the listbox items
