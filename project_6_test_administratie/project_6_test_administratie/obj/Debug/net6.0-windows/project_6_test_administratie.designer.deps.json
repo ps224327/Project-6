@@ -554,9 +554,33 @@
           }
         }
       },
+      "Pluralize.NET/1.0.2": {
+        "runtime": {
+          "lib/netstandard2.0/Pluralize.NET.dll": {
+            "assemblyVersion": "1.0.2.0",
+            "fileVersion": "1.0.2.0"
+          }
+        }
+      },
       "PluralNet/1.0.5": {
         "runtime": {
           "lib/portable-net45+win8+wpa81/PluralNet.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Soluling/1.0.69": {
+        "runtime": {
+          "lib/net6.0/Soluling.Translator.Forms.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          },
+          "lib/net6.0/Soluling.Translator.WPF.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          },
+          "lib/net6.0/Soluling.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -922,12 +946,26 @@
       "path": "newtonsoft.json/13.0.3",
       "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
     },
+    "Pluralize.NET/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kr/sOAem5NPH7Ft0tNiaQOO7f/W7ExcLRERpgvg5BlVZimQ/d/MCxhnwnk+WL4dy5Bj/KjToHUl1azYYDfqzpA==",
+      "path": "pluralize.net/1.0.2",
+      "hashPath": "pluralize.net.1.0.2.nupkg.sha512"
+    },
     "PluralNet/1.0.5": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-N/mN+IP1ZKkb0rqAyY+wyeGtpLk4y4JxKGeXXWnKSFllzqQ5L8YbHaD8U6oYQ3tK06yRSn6CC3j0hQer1aODuQ==",
       "path": "pluralnet/1.0.5",
       "hashPath": "pluralnet.1.0.5.nupkg.sha512"
+    },
+    "Soluling/1.0.69": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-xjv+wFPCAwjNGOiPujC3dS42bqtDlTukljEZwa4LcujG4a0CCdf0YSdhi522S6IVqBWIgd+EsYZvY2BqibAtdA==",
+      "path": "soluling/1.0.69",
+      "hashPath": "soluling.1.0.69.nupkg.sha512"
     }
   }
 }

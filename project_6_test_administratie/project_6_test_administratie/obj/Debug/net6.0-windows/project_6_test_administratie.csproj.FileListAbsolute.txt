@@ -71,3 +71,7 @@ D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_admin
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\zh-CN\Humanizer.resources.dll
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\zh-Hans\Humanizer.resources.dll
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\zh-Hant\Humanizer.resources.dll
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\Pluralize.NET.dll
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\Soluling.Translator.Forms.dll
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\Soluling.Translator.WPF.dll
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\Soluling.dll

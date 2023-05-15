@@ -19,6 +19,8 @@ using project_6_test_administratie.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Pluralize.NET;
+using System.Globalization;
 
 namespace project_6_test_administratie
 {
@@ -46,7 +48,11 @@ namespace project_6_test_administratie
         public Product SelectedProduct
         {
             get { return _selectedProduct; }
-            set { _selectedProduct = value; OnPropertyChanged(); }
+            set {
+                btnConvert.Content = value.IsCm ? "Naar meters" : "Naar centimeters" ;
+                _selectedProduct = value;
+                OnPropertyChanged(); 
+            }
         }
 
         public MainWindow()
@@ -54,6 +60,12 @@ namespace project_6_test_administratie
             InitializeComponent();
             DataContext = this;
         }
+
+        //IPluralize pluralizer = new Pluralizer();
+
+
+
+        //Connect to the api
         private async Task ReadApiAsync(string token)
         {
             using (var client = new HttpClient())
@@ -66,46 +78,90 @@ namespace project_6_test_administratie
             }
         }
 
+        //Send the token to the api
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var token = "19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ";
             ReadApiAsync(token);
         }
 
+        //Add the selected item to the orderlist
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
+            int quantity;
+
+            if (string.IsNullOrEmpty(TbDetailId.Text))
+            {
+                MessageBox.Show("Selecteer eerst een artikel.");
+                return;
+            }
+
+            if (!int.TryParse(QuantityTextBox.Text, out quantity) || quantity <= 0)
+            {
+                MessageBox.Show("Geef een aantal op.");
+                return;
+            }
+
+            StackPanel orderItem = InitializeOrderItem(quantity);
+
+            SpOrder.Children.Add(orderItem);
+
+        }
+
+        //Put the order row together 
+        private StackPanel InitializeOrderItem(int quantity)
+        {
+            Pluralizer pluralizer = new Pluralizer();
             TextBlock printTextBlock = new TextBlock();
             TextBlock quantityTextBlock = new TextBlock();
             TextBlock times = new TextBlock();
             StackPanel orderItem = new StackPanel();
 
             orderItem.Orientation = Orientation.Horizontal;
-            int quantity;
 
-            if (TbDetailId.Text != "")
-            {
-                if (int.TryParse(QuantityTextBox.Text, out quantity))
-                {
-                    quantityTextBlock.Text = quantity.ToString();
-                    times.Text = "x  ";
-                    printTextBlock.Text = SelectedProduct.Name;
+            quantityTextBlock.Text = quantity.ToString();
+            times.Text = "x  ";
+            //printTextBlock.Text = SelectedProduct.Name;
 
-                    orderItem.Children.Add(quantityTextBlock);
-                    orderItem.Children.Add(times);
-                    orderItem.Children.Add(printTextBlock);
+            string word = SelectedProduct.Name;
+            int amount = int.Parse(QuantityTextBox.Text);
+            string plural = (amount == 1) ? word : pluralizer.Pluralize(word);
+            //myResultLabel.Content = $"{amount} {plural}";
+            printTextBlock.Text = plural;
 
-                    SpOrder.Children.Add(orderItem);                
-                }
-                else
-                {
-                    MessageBox.Show("Geef een aantal op.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Selecteer eerst een artikel.");
-            }
+            orderItem.Children.Add(quantityTextBlock);
+            orderItem.Children.Add(times);
+            orderItem.Children.Add(printTextBlock);
+
+            return orderItem;
         }
 
+        //Convert the cm to meters
+        private void btnConvert_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedProduct.IsCm = btnConvert.Content.ToString() != "Naar meters";
+
+            if(btnConvert.Content.ToString() == "Naar meters")
+            {
+                btnConvert.Content = "Naar centimeters";
+            }
+
+            else if (btnConvert.Content.ToString() == "Naar centimeters")
+            {
+                btnConvert.Content = "Naar meters";
+            }
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //Pluralizer pluralizer = new Pluralizer();
+
+            //string word = SelectedProduct.Name;
+            //int amount = int.Parse(QuantityTextBox.Text);
+            //string plural = (amount == 1) ? word : pluralizer.Pluralize(word);
+            ////myResultLabel.Content = $"{amount} {plural}";
+            //MessageBox.Show($"{amount} {plural}");
+        }
     }
 }

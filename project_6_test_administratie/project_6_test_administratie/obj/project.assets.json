@@ -609,6 +609,15 @@
           }
         }
       },
+      "Pluralize.NET/1.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Pluralize.NET.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Pluralize.NET.dll": {}
+        }
+      },
       "PluralNet/1.0.5": {
         "type": "package",
         "compile": {
@@ -616,6 +625,19 @@
         },
         "runtime": {
           "lib/portable-net45+win8+wpa81/PluralNet.dll": {}
+        }
+      },
+      "Soluling/1.0.69": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Soluling.Translator.Forms.dll": {},
+          "lib/net6.0/Soluling.Translator.WPF.dll": {},
+          "lib/net6.0/Soluling.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Soluling.Translator.Forms.dll": {},
+          "lib/net6.0/Soluling.Translator.WPF.dll": {},
+          "lib/net6.0/Soluling.dll": {}
         }
       }
     }
@@ -1397,6 +1419,22 @@
         "packageIcon.png"
       ]
     },
+    "Pluralize.NET/1.0.2": {
+      "sha512": "kr/sOAem5NPH7Ft0tNiaQOO7f/W7ExcLRERpgvg5BlVZimQ/d/MCxhnwnk+WL4dy5Bj/KjToHUl1azYYDfqzpA==",
+      "type": "package",
+      "path": "pluralize.net/1.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/Pluralize.NET.dll",
+        "lib/net451/Pluralize.NET.dll",
+        "lib/net46/Pluralize.NET.dll",
+        "lib/netstandard1.1/Pluralize.NET.dll",
+        "lib/netstandard2.0/Pluralize.NET.dll",
+        "pluralize.net.1.0.2.nupkg.sha512",
+        "pluralize.net.nuspec"
+      ]
+    },
     "PluralNet/1.0.5": {
       "sha512": "N/mN+IP1ZKkb0rqAyY+wyeGtpLk4y4JxKGeXXWnKSFllzqQ5L8YbHaD8U6oYQ3tK06yRSn6CC3j0hQer1aODuQ==",
       "type": "package",
@@ -1410,13 +1448,53 @@
         "pluralnet.1.0.5.nupkg.sha512",
         "pluralnet.nuspec"
       ]
+    },
+    "Soluling/1.0.69": {
+      "sha512": "xjv+wFPCAwjNGOiPujC3dS42bqtDlTukljEZwa4LcujG4a0CCdf0YSdhi522S6IVqBWIgd+EsYZvY2BqibAtdA==",
+      "type": "package",
+      "path": "soluling/1.0.69",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "images/icon.png",
+        "lib/NET.chm",
+        "lib/net20/Soluling.dll",
+        "lib/net40/Soluling.Translator.Forms.dll",
+        "lib/net40/Soluling.Translator.WPF.dll",
+        "lib/net40/Soluling.dll",
+        "lib/net45/Soluling.Translator.Forms.dll",
+        "lib/net45/Soluling.Translator.WPF.dll",
+        "lib/net45/Soluling.dll",
+        "lib/net48/Soluling.Translator.Forms.dll",
+        "lib/net48/Soluling.Translator.WPF.dll",
+        "lib/net48/Soluling.dll",
+        "lib/net5.0/Soluling.Translator.Forms.dll",
+        "lib/net5.0/Soluling.Translator.WPF.dll",
+        "lib/net5.0/Soluling.dll",
+        "lib/net6.0/Soluling.Translator.Forms.dll",
+        "lib/net6.0/Soluling.Translator.WPF.dll",
+        "lib/net6.0/Soluling.dll",
+        "lib/net7.0/Soluling.Translator.Forms.dll",
+        "lib/net7.0/Soluling.Translator.WPF.dll",
+        "lib/net7.0/Soluling.dll",
+        "lib/netcoreapp3.1/Soluling.Translator.Forms.dll",
+        "lib/netcoreapp3.1/Soluling.Translator.WPF.dll",
+        "lib/netcoreapp3.1/Soluling.dll",
+        "lib/netstandard2.0/Soluling.dll",
+        "lib/netstandard2.1/Soluling.dll",
+        "soluling.1.0.69.nupkg.sha512",
+        "soluling.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net6.0-windows7.0": [
       "Humanizer >= 2.14.1",
       "Newtonsoft.Json >= 13.0.3",
-      "PluralNet >= 1.0.5"
+      "PluralNet >= 1.0.5",
+      "Pluralize.NET >= 1.0.2",
+      "Soluling >= 1.0.69"
     ]
   },
   "packageFolders": {
@@ -1475,6 +1553,14 @@
           "PluralNet": {
             "target": "Package",
             "version": "[1.0.5, )"
+          },
+          "Pluralize.NET": {
+            "target": "Package",
+            "version": "[1.0.2, )"
+          },
+          "Soluling": {
+            "target": "Package",
+            "version": "[1.0.69, )"
           }
         },
         "imports": [
@@ -1496,7 +1582,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   },
