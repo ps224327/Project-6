@@ -31,8 +31,9 @@ Route::get('/products', [ProductController::class, 'fetchImagesFromApiProducts']
 Route::get('/', [ProductController::class, 'fetchImagesFromApiHome'])->name('home');    
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
 
-// Search Function
+// Search / Filter Function
 Route::get('/search', [ProductController::class, 'search'])->name('product.search');
+Route::get('/filter', [ProductController::class, 'filterProducts'])->name('products.filter');
 
 // Cart 
 Route::post('/products', [CartController::class, 'addItem'])->name('cart.add');

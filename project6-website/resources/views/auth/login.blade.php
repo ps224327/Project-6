@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
     <!-- Fontawesome -->
-    <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet"
+        href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
 
     <title>Login</title>
 </head>
@@ -16,7 +17,8 @@
     <header class="bg-gray-900 px-5">
         <nav class="flex items-center justify-between flex-wrap py-6">
             <div class="flex items-center flex-shrink-0 text-white mr-6">
-                <span class="font-bold text-xl">GroeneVingers</span>
+                <img src="{{ asset('images/GroeneVingersLogo.png') }}" alt="Logo" class="w-20 pr-2">
+                <span class="font-bold text-xl">Groene Vingers</span>
             </div>
             <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
                 <div class="text-sm lg:flex-grow">
@@ -27,7 +29,7 @@
                         Contact
                     </a>
                     <a href="/products" class="block mt-4 lg:inline-block lg:mt-0 text-gray-300 hover:text-white mr-4">
-                        Products
+                        Producten
                     </a>
                 </div>
                 <div>
@@ -46,21 +48,20 @@
                     @if (session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-4" role="alert">
                             <p class="font-bold">{{ session('success') }}</p>
-                        </div>
-                    @endif
+                        </div> @endif
                     {{-- Login --}}
                     <a href="/login"
-                        class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
-                        Log In
-                    </a>
-                    {{-- Signup --}}
-                    <a href="/signup"
-                        class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
-                        Sign Up
-                    </a>
-                </div>
-            </div>
-        </nav>
+        class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
+    Aanmelden
+    </a>
+    {{-- Signup --}}
+    <a href="/signup"
+        class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
+        Registreren
+    </a>
+    </div>
+    </div>
+    </nav>
     </header>
     @extends('layouts.app')
 
@@ -99,6 +100,6 @@
         </div>
     @endsection
 
-</body>
+    </body>
 
 </html>

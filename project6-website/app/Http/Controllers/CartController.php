@@ -12,21 +12,29 @@ class CartController extends Controller
     {
         $productId = $request->input('product_id');
         $quantity = $request->input('quantity');
-        $url = "http://kuin.summaict.nl/api/product";
+        $url = "http://kuin.summaict.nl/api/product/{$productId}";
         $token = '19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ';
 
-        $cart = session('cart', []);
+        $cart = session()->get('cart', []);
         if (isset($cart[$productId])) {
             $cart[$productId] += $quantity;
         } else {
             $cart[$productId] = $quantity;
         }
-        session(['cart' => $cart]);
+        session()->put('cart', $cart);
 
-        $product = Http::withToken($token)->get($url . $productId)->json();
-        $message = $quantity . ' ' . $product['name'] . ' added to cart';
-        return redirect()->back()->with('success', $message);
+        $response = Http::withToken($token)->get($url);
+
+        if ($response->successful()) {
+            $product = $response->json();
+            $message = $quantity . ' ' . $product['name'] . ' Toegevoegd aan het winkelwagentje';
+            return redirect()->back()->with('alert', ['type' => 'success', 'message' => $message, 'autoClose' => true]);
+        } else {
+            // Handle error response
+            return redirect()->back()->with('alert', ['type' => 'error', 'message' => 'fout met product informatie opnemen', 'autoClose' => false]);
+        }
     }
+
 
     public function showCart()
     {

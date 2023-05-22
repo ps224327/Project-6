@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,9 +18,12 @@
 
 <body>
     <header class="bg-gray-900 px-5">
-        <nav class="flex items-center justify-between flex-wrap py-6">
+        <nav class="flex items-center justify-between flex-wrap">
             <div class="flex items-center flex-shrink-0 text-white mr-6">
-                <span class="font-bold text-xl">GroeneVingers</span>
+                <a href="/">
+                <img src="{{ asset('images/GroeneVingersLogo.png') }}" alt="Logo" href="/" class="w-20 pr-2">
+                </a>
+                <span class="font-bold text-xl"><a href="/">Groene Vingers</a></span>
             </div>
             <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
                 <div class="text-sm lg:flex-grow">
@@ -28,15 +34,21 @@
                         Contact
                     </a>
                     <a href="/products" class="block mt-4 lg:inline-block lg:mt-0 text-gray-300 hover:text-white mr-4">
-                        Products
+                        Producten
                     </a>
                 </div>
                 <div>
                     {{-- Cart --}}
                     <a href="{{ route('cart.show') }}" class="relative">
-                        <span
-                            class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
-                            {{ array_sum(session('cart', [])) }}
+                        <span class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2
+                            @php
+                                $cartCount = array_sum(session('cart', []));
+                            @endphp
+                            @if ($cartCount === 0)
+                                hidden
+                            @endif
+                            ">
+                            {{ $cartCount }}
                         </span>
                         <span class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
                             <i class="fa-solid fa-cart-shopping"></i>
@@ -52,12 +64,12 @@
                     {{-- Login --}}
                     <a href="/login"
                         class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
-                        Log In
+                        Aanmelden
                     </a>
                     {{-- Signup --}}
                     <a href="/signup"
                         class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
-                        Sign Up
+                        Registreren
                     </a>
                 </div>
             </div>
@@ -65,7 +77,7 @@
     </header>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-bold mb-4">Shopping Cart</h1>
+        <h1 class="text-2xl font-bold mb-4">winkelwagentje</h1>
         <i class="fa-solid fa-cart-shopping"></i>
         @if (count($cartItems) > 0)
             <table class="border-collapse w-full">
@@ -83,10 +95,13 @@
                         <tr>
                             <td class="border px-4 py-2">
                                 <div class="flex items-center">
-                                    <img src="{{ $cartItem['image'] }}" alt="{{ $cartItem['name'] }}" width="100"
-                                        class="mr-4">
-                                    <div>
+                                    <a href="{{ route('product.show', ['id' => $cartItem['id']]) }}">
+                                        <img src="{{ $cartItem['image'] }}" alt="{{ $cartItem['name'] }}" width="100" class="mr-4">
+                                    </a>                                    
+                                    <div class="w-3/4">
+                                        <a href="{{ route('product.show', ['id' => $cartItem['id']]) }}">
                                         <h2 class="font-bold">{{ $cartItem['name'] }}</h2>
+                                        </a>
                                         <p class="text-gray-700">{{ $cartItem['description'] }}</p>
                                     </div>
                                 </div>
@@ -112,9 +127,9 @@
                                     </form>
                                     
                             </td>
-                            <td class="border px-4 py-2">&euro;{{ $cartItem['price'] }}</td>
-                            <td class="border px-4 py-2">&euro;{{ number_format($cartItem['totalPrice'], 2) }}</td>
-                            <td class="border px-4 py-2">
+                            <td class="border px-4 py-2 text-center">&euro;{{ $cartItem['price'] }}</td>
+                            <td class="border px-4 py-2 text-center">&euro;{{ number_format($cartItem['totalPrice'], 2) }}</td>
+                            <td class="border px-4 py-2 text-center">
                                 <form action="{{ route('cart.remove', $cartItem['id']) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
@@ -126,14 +141,14 @@
                 </tbody>
                 <tfoot>
                     <tr class="bg-gray-100">
-    <td class="px-4 py-2" colspan="3">Total:</td>
+    <td class="px-4 py-2" colspan="3">Totaal:</td>
     <td class="px-4 py-2">&euro;{{ number_format($cartItems->sum('totalPrice'), 2) }}</td>
     <td></td>
     </tr>
     </tfoot>
     </table>
 @else
-    <p>Your cart is empty</p>
+    <p>Uw winkelwagentje is leeg!</p>
     @endif
 
     </div>
@@ -141,3 +156,4 @@
     </body>
 
 </html>
+@endsection

@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,27 +8,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
-    <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
-    <!-- Include Leaflet library -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
-
-    <!-- Include Leaflet Routing Machine plugin -->
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
-
-    <!-- Fontawesome -->
-    <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
-
-
 </head>
 
 <body class="bg-green-100">
     <header class="bg-gray-900 px-5">
-        <nav class="flex items-center justify-between flex-wrap py-6">
+        <nav class="flex items-center justify-between flex-wrap">
             <div class="flex items-center flex-shrink-0 text-white mr-6">
-                <span class="font-bold text-xl">GroeneVingers</span>
+                <a href="/">
+                <img src="{{ asset('images/GroeneVingersLogo.png') }}" alt="Logo" href="/" class="w-20 pr-2">
+                </a>
+                <span class="font-bold text-xl"><a href="/">Groene Vingers</a></span>
             </div>
             <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
                 <div class="text-sm lg:flex-grow">
@@ -36,17 +28,25 @@
                         Contact
                     </a>
                     <a href="/products" class="block mt-4 lg:inline-block lg:mt-0 text-gray-300 hover:text-white mr-4">
-                        Products
+                        Producten
                     </a>
                 </div>
                 <div>
                     {{-- Cart --}}
                     <a href="{{ route('cart.show') }}" class="relative">
-                        <span
-                            class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
-                            {{ array_sum(session('cart', [])) }}
+                        <span class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2
+                            @php
+                                $cartCount = array_sum(session('cart', []));
+                            @endphp
+                            @if ($cartCount === 0)
+                                hidden
+                            @endif
+                            ">
+                            {{ $cartCount }}
                         </span>
-                        <span class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Cart</span>
+                        <span class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </span>
                     </a>
 
 
@@ -58,12 +58,12 @@
                     {{-- Login --}}
                     <a href="/login"
                         class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
-                        Log In
+                        Aanmelden
                     </a>
                     {{-- Signup --}}
                     <a href="/signup"
                         class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-4 rounded border-green-800">
-                        Sign Up
+                        Registreren
                     </a>
                 </div>
             </div>
@@ -84,8 +84,12 @@
             </div>
         </div>
     </div>
-    <div id="mapid" class="absolute left-0 w-full h-full"></div>
-
+    <div id="map-container" class="flex h-screen">
+        <div id="mapid" class="relative w-2/4 h-screen"></div>
+        <div>
+            <h1 class=" relative px-5 font-bold text-xl">Over ons: </h1>
+        </div>
+    </div>
     <script>
         var mymap = L.map('mapid');
         var routingControl;
@@ -100,15 +104,15 @@
 
                     // Add user location marker
                     var userMarker = L.marker([lat, lng]).addTo(mymap);
-                    userMarker.bindPopup("<b>Your Location</b>").openPopup();
+                    userMarker.bindPopup("<b>Uw Locatie</b>").openPopup();
 
                     // Add markers for each location
                     var markers = [];
                     locations.forEach(function(location) {
                         var marker = L.marker([location.latitude, location.longitude]).addTo(mymap);
                         marker.bindPopup(
-                            "<b>" + location.name + "</b><br>Address: " + location.address +
-                            "<br>Phone: " + location.Telefoon + "<br>Email: " + location.Email
+                            "<b>" + location.name + "</b><br>Adres: " + location.address +
+                            "<br>Telefoon: " + location.Telefoon + "<br>Email: " + location.Email
                         );
                         markers.push(marker);
                     });
@@ -150,7 +154,7 @@
 
                 });
             } else {
-                console.log('Geolocation is not supported by this browser.');
+                console.log('Geolocatie is wordt niet ondersteund door deze browser.');
             }
         }
 
@@ -167,3 +171,4 @@
 </body>
 
 </html>
+@endsection
