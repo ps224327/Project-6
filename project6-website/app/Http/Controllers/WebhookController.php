@@ -11,7 +11,7 @@ class WebhookController extends Controller
     public function handleWebhook(Request $request)
     {
         // Get the bearer token from your configuration or environment variables
-        $token = '19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ';
+        $token = getenv('API_KEY');
 
         // Send an authenticated request to the API provider using the bearer token
         $response = Http::withToken($token)->get('http://kuin.summaict.nl/api/product');

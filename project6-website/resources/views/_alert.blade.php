@@ -12,7 +12,7 @@
         <script>
             setTimeout(function() {
                 document.querySelector('.fixed.top-0.left-0.right-0').remove();
-            }, 5000); // Adjust the duration (in milliseconds) as needed
+            }, 3000); // Adjust the duration (in milliseconds) as needed
         </script>
     @endif
 @endif

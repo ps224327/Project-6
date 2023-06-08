@@ -20,6 +20,9 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        // Set the default string length
+        Schema::defaultStringLength(191);
     }
 
     /**

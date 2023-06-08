@@ -14,7 +14,9 @@ class UpdateDatabaseCommand extends Command
     public function handle()
     {
         $apiUrl = 'http://kuin.summaict.nl/api/product';
-        $apiResponse = Http::get($apiUrl);
+        $token = getenv('API_KEY');
+
+        $apiResponse = Http::withToken($token)->get($apiUrl);
 
         if ($apiResponse->successful()) {
             $apiProduct = $apiResponse->json();

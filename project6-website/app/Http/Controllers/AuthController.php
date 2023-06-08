@@ -7,17 +7,16 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-
 class AuthController extends Controller
 {
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
-
     public function showSignupForm()
     {
         return view('auth.signup');
+    }
+
+    public function showLoginForm()
+    {
+        return view('auth.login');
     }
 
     public function login(Request $request)
@@ -33,37 +32,79 @@ class AuthController extends Controller
             // Authentication successful
             // You can add additional logic here, such as redirecting to a dashboard page
 
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/');
         } else {
             // Authentication failed
-            throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
-            ]);
+            $message = 'Inloggegevens niet bekend';
+            return redirect()->back()->with('alert', ['type' => 'success', 'message' => $message, 'autoClose' => true]);
         }
     }
 
     public function signup(Request $request)
     {
-        // Validate the form data
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
+        try {
+            // Validate the form data
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|unique:users,email',
+                'password' => 'required|string|min:6|confirmed',
+            ]);
 
-        // Create a new user
-        $user = new User();
-        $user->name = $validatedData['name'];
-        $user->email = $validatedData['email'];
-        $user->password = bcrypt($validatedData['password']);
-        $user->save();
+            // Create a new user
+            User::create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'password' => bcrypt($validatedData['password']),
+            ]);
 
-        // You can add additional logic here, such as sending a welcome email, logging in the user, etc.
-
-        // Redirect the user to a success page or any other page you prefer
-        return redirect()->route('signup.success');
+            // Redirect the user to a success page or any other page you prefer
+            return redirect()->route('signup.success');
+        } catch (ValidationException $e) {
+            // Handle the validation error
+            return redirect()->back()->withErrors($e->validator->errors())->withInput();
+        }
     }
 
+    public function signupSuccess()
+    {
+        return view('auth.signup_success');
+    }
 
-    // Add logic for handling login and signup requests if needed
+    public function profile()
+    {
+        // Retrieve the authenticated user
+        $user = Auth::user();
+
+        // Return the profile view with the user data
+        return view('auth.profile', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        // Validate the form data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users,email,' . auth()->id(),
+            'password' => 'nullable|string|min:6|confirmed',
+        ]);
+
+        // Update the authenticated user's information
+        $user = User::find(auth()->id());
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        if ($validatedData['password']) {
+            $user->password = bcrypt($validatedData['password']);
+        }
+        $user->update();
+
+        // Redirect the user back to the profile page with a success message
+        return redirect()->route('profile')->with('success', 'Profile updated successfully.');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->route('home');
+    }
 }

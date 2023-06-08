@@ -7,6 +7,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\CheckoutController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,11 +37,16 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.
 Route::get('/search', [ProductController::class, 'search'])->name('product.search');
 Route::get('/filter', [ProductController::class, 'filterProducts'])->name('products.filter');
 
-// Cart 
-Route::post('/products', [CartController::class, 'addItem'])->name('cart.add');
-Route::get('/cart', [CartController::class , 'showCart'])->name('cart.show');
-Route::put('/cart/{id}', [CartController::class, 'updateItem'])->name('cart.update');
-Route::delete('/cart/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
+// Cart
+Route::post('/cart/add-item', [CartController::class, 'addItem'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+Route::patch('/cart/update/{id}', [CartController::class, 'updateItem'])->name('cart.update');
+Route::delete('/cart/remove/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
+
+// Checkout
+Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+Route::post('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
+Route::get('/thankyou', [CheckoutController::class, 'thankyou'])->name('thankyou');
 
 // Map 
 Route::get('/contact', [MapController::class, 'showMap'])->name('contact');
@@ -54,3 +61,13 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::get('/signup', [AuthController::class, 'showSignupForm'])->name('signup');
 Route::post('/signup', [AuthController::class, 'signup'])->name('signup');
+
+Route::get('/signup/success', [AuthController::class, 'signupSuccess'])->name('signup.success');
+
+// Profile
+Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+

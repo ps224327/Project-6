@@ -12,7 +12,7 @@ class ProductController extends Controller
     // Show Products products.blade.php
     public function fetchImagesFromApiProducts(Request $request)
     {
-        $token = '19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ';
+        $token = getenv('API_KEY');
         $search = $request->input('search');
         $url = "https://kuin.summaict.nl/api/product/search/{$search}";
 
@@ -35,7 +35,7 @@ class ProductController extends Controller
     // Show Products home.blade.php
     public function fetchImagesFromApiHome()
     {
-        $token = '19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ';
+        $token = getenv('API_KEY');
         $url = "https://kuin.summaict.nl/api/product";
 
         $response = Http::withHeaders([
@@ -60,24 +60,25 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $token = '19|RxAmlMsGtp7zu1oCDmW3YKLuMm5hkn6DtjJLLLsQ';
-        $url = "https://kuin.summaict.nl/api/product/{$id}";
+        $product = Product::find($id);
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->withOptions([
-            'verify' => false,
-        ])->get($url);
-
-        $product = $response->json();
+        if (!$product) {
+            // Handle error - product not found
+            return redirect()->back()->with('alert', [
+                'type' => 'error',
+                'message' => 'Product not found',
+                'autoClose' => false
+            ]);
+        }
 
         return view('products.show', compact('product'));
     }
 
-
     public function filterProducts(Request $request)
     {
         $priceRange = $request->input('price');
+        $sort = $request->input('sort');
+
         $products = Product::query();
 
         if ($priceRange) {
@@ -92,12 +93,16 @@ class ProductController extends Controller
             }
         }
 
-        $filteredProducts = $products->paginate(20)->appends(['price' => $priceRange]);
+        if ($sort === 'low-to-high') {
+            $products->orderBy('price', 'asc');
+        } elseif ($sort === 'high-to-low') {
+            $products->orderBy('price', 'desc');
+        }
+
+        $filteredProducts = $products->paginate(20)->appends(['price' => $priceRange, 'sort' => $sort]);
 
         return view('products', ['products' => $filteredProducts]);
     }
-
-
 
     public function getProduct($id)
     {
