@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Pluralize.NET;
 using System.Globalization;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace project_6_test_administratie
 {
@@ -28,7 +29,7 @@ namespace project_6_test_administratie
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window ,INotifyPropertyChanged
-    {
+    {      
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
@@ -54,12 +55,16 @@ namespace project_6_test_administratie
                 OnPropertyChanged(); 
             }
         }
+        decimal Tprice;
+        decimal Oprice;
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
         }
+
+        
 
         //IPluralize pluralizer = new Pluralizer();
 
@@ -114,13 +119,12 @@ namespace project_6_test_administratie
             Pluralizer pluralizer = new Pluralizer();
             TextBlock printTextBlock = new TextBlock();
             TextBlock quantityTextBlock = new TextBlock();
-            TextBlock times = new TextBlock();
+            TextBlock price = new TextBlock();
             StackPanel orderItem = new StackPanel();
 
             orderItem.Orientation = Orientation.Horizontal;
 
-            quantityTextBlock.Text = quantity.ToString();
-            times.Text = "x  ";
+            quantityTextBlock.Text = quantity.ToString() + "x  ";
             //printTextBlock.Text = SelectedProduct.Name;
 
             string word = SelectedProduct.Name;
@@ -129,9 +133,12 @@ namespace project_6_test_administratie
             //myResultLabel.Content = $"{amount} {plural}";
             printTextBlock.Text = plural;
 
+            price_calculator(null, null, quantity);
+            price.Text = " €" + Tprice.ToString();
+
             orderItem.Children.Add(quantityTextBlock);
-            orderItem.Children.Add(times);
             orderItem.Children.Add(printTextBlock);
+            orderItem.Children.Add(price);
 
             return orderItem;
         }
@@ -155,13 +162,41 @@ namespace project_6_test_administratie
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //Pluralizer pluralizer = new Pluralizer();
+            GroeneVingersDb _db = new GroeneVingersDb();
 
-            //string word = SelectedProduct.Name;
-            //int amount = int.Parse(QuantityTextBox.Text);
-            //string plural = (amount == 1) ? word : pluralizer.Pluralize(word);
-            ////myResultLabel.Content = $"{amount} {plural}";
-            //MessageBox.Show($"{amount} {plural}");
+            Order order = new Order();
+            order.TotalPrice = Oprice;
+
+            bool insertionResult = _db.InsertOrder(order);
+
+            if (insertionResult)
+            {
+                MessageBox.Show("Order inserted successfully!");
+                SpOrder.Children.Clear();
+            }
+            else
+            {
+                MessageBox.Show(Oprice.ToString());
+                MessageBox.Show("Failed to insert order.");
+            }
+        }
+
+        private void price_calculator(object sender, RoutedEventArgs e, int quantity)
+        {
+            decimal Pprice = SelectedProduct.Price;                      
+
+            Tprice = Pprice * quantity;
+
+            Oprice = Oprice + Tprice;
+
+            tbTotaalPrijs.Text = "Totaal prijs: €" + Oprice.ToString();
+            
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Orderlist ord = new Orderlist();
+            ord.Show();
         }
     }
 }

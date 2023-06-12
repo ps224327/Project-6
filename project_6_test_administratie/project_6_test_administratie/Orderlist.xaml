@@ -1,0 +1,25 @@
+﻿<Window x:Class="project_6_test_administratie.Orderlist"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:project_6_test_administratie"
+        mc:Ignorable="d"
+        Title="Orderlist" Height="450" Width="800">
+    <Grid Background="LightGreen">
+
+        <ListView x:Name="lvOrder" Margin="316,32,87,102" ItemsSource="{Binding Orders}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                    <GridViewColumn Header="Naam" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}"/>
+                    <GridViewColumn Header="Prijs" DisplayMemberBinding="{Binding TotalPrice}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
+        <Button Content="Update" Margin="370,337,306,44"/>
+
+    </Grid>
+</Window>

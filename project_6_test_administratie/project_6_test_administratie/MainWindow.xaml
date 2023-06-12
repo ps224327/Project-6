@@ -18,20 +18,21 @@
             <RowDefinition/>
             <RowDefinition Height="95"/>
         </Grid.RowDefinitions>
+        
         <ListView x:Name="LvProduct" ItemsSource="{Binding Products}" Width="250" VerticalAlignment="Top" Grid.Row="1" Grid.RowSpan="2"
                   SelectedItem="{Binding SelectedProduct}" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Naam" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Naam" DisplayMemberBinding="{Binding Name}" Width="250"/>
 
                 </GridView>
             </ListView.View>
         </ListView>
 
-        <Button x:Name="btnConvert" Width="185" Height="30"  Content="Naar meters" Click="btnConvert_Click" Grid.Column="1"/>
+        <Button x:Name="btnConvert" Width="270" Height="30"  Content="Naar meters" Click="btnConvert_Click" Grid.Column="1"/>
 
         <ScrollViewer Height="{Binding RelativeSource={RelativeSource FindAncestor, 
-                        AncestorType={x:Type StackPanel}}, Path=ActualHeight}" Width="250" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
+                        AncestorType={x:Type StackPanel}}, Path=ActualHeight}" Width="270" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
             <StackPanel x:Name="SpDetails" Background="White" DataContext="{Binding SelectedProduct}" CanVerticallyScroll="True">
                 <TextBlock x:Name="TbDetailId" Text="{Binding Id, StringFormat=Id: {0}}"/>
                 <TextBlock Text="{Binding Name, StringFormat=Naam: {0}}"/>
@@ -48,21 +49,25 @@
         <TextBlock Text="Aantal:" Height="20" Width="40" VerticalAlignment="Bottom" Margin="0,0,20,63" Grid.Column="1" Grid.Row="3"/>
         <TextBox x:Name="QuantityTextBox" Height="20" Width="30" VerticalAlignment="Bottom" Margin="70,0,20,63" Grid.Column="1" Grid.Row="3"/>
 
+        <TextBlock Text="Naam:" Margin="155,0,0,0" VerticalAlignment="Center" Grid.Column="2"/>
+        <TextBox Height="20" Width="120" Grid.Column="2"/>
+
         <ScrollViewer Height="{Binding RelativeSource={RelativeSource FindAncestor, 
-                        AncestorType={x:Type StackPanel}}, Path=ActualHeight}" Width="290" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2">
+                        AncestorType={x:Type StackPanel}}, Path=ActualHeight}" Width="310" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2">
             <StackPanel x:Name="SpOrder" Background="White" CanVerticallyScroll="True" DataContext="{Binding SelectedProduct}">
 
 
             </StackPanel>
         </ScrollViewer>
 
-        <TextBlock Text="Totaal prijs: €" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,63"  Grid.Column="2" Grid.Row="3"/>
-
         <TextBlock Text="Telefoonnummer: 06-91204657" VerticalAlignment="Bottom" Margin="30" Grid.Row="3"/>
 
         <Button x:Name="btnAdd" Width="120" Height="30" VerticalAlignment="Bottom" Margin="40,0,20,16" Grid.Column="1" Grid.Row="3" Content="Toevoegen" Click="BtnAdd_Click"/>
 
-        <Button Width="120" Height="30" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,16"  Grid.Column="2" Grid.Row="3" Content="Bestellen" Click="Button_Click"/>
+        <TextBlock x:Name="tbTotaalPrijs" Text="Totaal prijs: €" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="100,0,0,63"  Grid.Column="2" Grid.Row="3"/>
+        <Button Width="120" Height="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="100,0,0,16"  Grid.Column="2" Grid.Row="3" Content="Bestellen" Click="Button_Click"/>
+
+        <Button Width="120" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,30,16"  Grid.Column="2" Grid.Row="3" Content="Bestellingen inzien" Click="Button_Click_1"/>
 
     </Grid>
 </Window>
