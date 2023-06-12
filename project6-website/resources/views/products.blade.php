@@ -10,11 +10,11 @@
                     {{-- Search --}}
 
                     <form method="GET" action="{{ route('product.search') }}" class="mb-4 flex flex-col">
-                        <label class="text-gray-700 font-bold mb-2" for="search">Search</label>
+                        <label class="text-gray-700 font-bold mb-2" for="search">Zoeken</label>
                         <div class="relative flex">
                             <input type="text" name="search" id="search"
                                 class="shadow appearance-none border rounded-l w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                placeholder="Search products...">
+                                placeholder="Zoek...">
                             <button type="submit"
                                 class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-r ml-2">
                                 <i class="fas fa-search"></i>
@@ -43,7 +43,7 @@
                             <label class="block text-gray-700 font-bold mb-2" for="sort">Sorteren op prijs</label>
                             <select name="sort" id="sort"
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                <option value="">Sorteren op</option>
+                                <option value="">Normaal</option>
                                 <option value="low-to-high" {{ request('sort') == 'low-to-high' ? 'selected' : '' }}>Prijs:
                                     Laag naar Hoog</option>
                                 <option value="high-to-low" {{ request('sort') == 'high-to-low' ? 'selected' : '' }}>Prijs:

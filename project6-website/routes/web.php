@@ -29,9 +29,9 @@ Route::get('/contact', function () {
 });
 
 // Show Products
-Route::get('/products', [ProductController::class, 'fetchImagesFromApiProducts'])->name('products');
+Route::get('/producten', [ProductController::class, 'fetchImagesFromApiProducts'])->name('products');
 Route::get('/', [ProductController::class, 'fetchImagesFromApiHome'])->name('home');    
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/producten/{id}', [ProductController::class, 'show'])->name('product.show');
 
 // Search / Filter Function
 Route::get('/search', [ProductController::class, 'search'])->name('product.search');
@@ -39,14 +39,14 @@ Route::get('/filter', [ProductController::class, 'filterProducts'])->name('produ
 
 // Cart
 Route::post('/cart/add-item', [CartController::class, 'addItem'])->name('cart.add');
-Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
+Route::get('/winkelwagentje', [CartController::class, 'showCart'])->name('cart.show');
 Route::patch('/cart/update/{id}', [CartController::class, 'updateItem'])->name('cart.update');
 Route::delete('/cart/remove/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
 
 // Checkout
-Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+Route::get('/betalen', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::post('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
-Route::get('/thankyou', [CheckoutController::class, 'thankyou'])->name('thankyou');
+Route::get('/bedankt', [CheckoutController::class, 'thankyou'])->name('thankyou');
 
 // Map 
 Route::get('/contact', [MapController::class, 'showMap'])->name('contact');
@@ -56,16 +56,16 @@ Route::get('/contact', [MapController::class, 'showMap'])->name('contact');
 Route::post('/webhook', [WebhookController::class, 'handleWebhook']);
 
 // Login / Signup
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/aanmelden', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/aanmelden', [AuthController::class, 'login'])->name('login');
 
-Route::get('/signup', [AuthController::class, 'showSignupForm'])->name('signup');
-Route::post('/signup', [AuthController::class, 'signup'])->name('signup');
+Route::get('/registreren', [AuthController::class, 'showSignupForm'])->name('signup');
+Route::post('/registreren', [AuthController::class, 'signup'])->name('signup');
 
 Route::get('/signup/success', [AuthController::class, 'signupSuccess'])->name('signup.success');
 
 // Profile
-Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+Route::get('/profiel', [AuthController::class, 'profile'])->name('profile');
 Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

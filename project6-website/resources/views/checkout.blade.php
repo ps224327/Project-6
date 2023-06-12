@@ -10,11 +10,11 @@
                     <img src="{{ $cartItem->product->image }}" alt="{{ $cartItem->product->name }}" class="w-20 h-20 mr-4">
                     <div>
                         <h3 class="text-lg font-bold">{{ $cartItem->product->name }}</h3>
-                        <p class="text-gray-600">Quantity: {{ $cartItem->quantity }}</p>
+                        <p class="text-gray-600">Aantal: {{ $cartItem->quantity }}</p>
                     </div>
                 </div>
             @endforeach
-            <p class="font-bold mb-6">Totaal: &euro;{ $total }}</p>
+            <p class="font-bold mb-6">Totaal: &euro;{{ $total }}</p>
             <div class="flex items-center justify-between">
                 <a href="{{ route('cart.show') }}"
                     class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">

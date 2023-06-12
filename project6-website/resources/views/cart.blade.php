@@ -5,6 +5,11 @@
         <h1 class="text-2xl font-bold mb-4">winkelwagentje</h1>
         <i class="fa-solid fa-cart-shopping"></i>
         @if (count($cartItems) > 0)
+            @php
+                $alert = session('alert');
+            @endphp
+
+            @include('_alert')
             <table class="border-collapse w-full">
                 <thead>
                     <tr class="text-left bg-gray-100">
@@ -21,11 +26,12 @@
                             <td class="border px-4 py-2">
                                 <div class="flex items-center">
                                     <a href="{{ route('product.show', ['id' => $cartItem['id']]) }}">
-                                        <img src="{{ $cartItem['image'] }}" alt="{{ $cartItem['name'] }}" width="100" class="mr-4">
-                                    </a>                                    
+                                        <img src="{{ $cartItem['image'] }}" alt="{{ $cartItem['name'] }}" width="100"
+                                            class="mr-4">
+                                    </a>
                                     <div class="w-3/4">
                                         <a href="{{ route('product.show', ['id' => $cartItem['id']]) }}">
-                                        <h2 class="font-bold">{{ $cartItem['name'] }}</h2>
+                                            <h2 class="font-bold">{{ $cartItem['name'] }}</h2>
                                         </a>
                                         <p class="text-gray-700">{{ $cartItem['description'] }}</p>
                                     </div>
@@ -34,25 +40,23 @@
                             <td class="border px-4 py-2">
                                 <form method="POST" action="{{ route('cart.update', ['id' => $cartItem['id']]) }}">
                                     @csrf
-                                    @method('PUT')
-                                    <form method="POST" action="{{ route('cart.update', ['id' => $cartItem['id']]) }}">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="flex items-center">
-                                            <button type="submit"
-                                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                                    name="action" value="decrease">-</button>
-                                            <input type="number" name="quantity" id="quantity_{{ $cartItem['id'] }}"
-                                                   value="{{ $cartItem['quantity'] }}" readonly
-                                                   class="form-input w-16 mx-2 text-center">
-                                            <button type="submit"
-                                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                                    name="action" value="increase">+</button>
-                                        </div>
-                                    </form>
-                            </td>
+                                    @method('PATCH')
+                                    <div class="flex items-center">
+                                        <button type="submit"
+                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                            name="action" value="decrease">-</button>
+                                        <input type="number" name="quantity" id="quantity_{{ $cartItem['id'] }}"
+                                            value="{{ $cartItem['quantity'] }}" readonly
+                                            class="form-input w-16 mx-2 text-center">
+                                        <button type="submit"
+                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                            name="action" value="increase">+</button>
+                                    </div>
+                                </form>
+
                             <td class="border px-4 py-2 text-center">&euro;{{ $cartItem['price'] }}</td>
-                            <td class="border px-4 py-2 text-center">&euro;{{ number_format($cartItem['totalPrice'], 2) }}</td>
+                            <td class="border px-4 py-2 text-center">&euro;{{ number_format($cartItem['totalPrice'], 2) }}
+                            </td>
                             <td class="border px-4 py-2 text-center">
                                 <form action="{{ route('cart.remove', $cartItem['id']) }}" method="POST">
                                     @csrf
@@ -61,7 +65,8 @@
                                         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">Verwijder</button>
                                 </form>
                             </td>
-                        </tr> @endforeach
+                        </tr>
+                    @endforeach
                 </tbody>
                 <tfoot>
                     <tr class="bg-gray-100">
@@ -72,12 +77,12 @@
                 </tfoot>
             </table>
             <div class="mt-4">
-                <a href="{{ route('checkout') }}"
-                   class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Bestellen</a>
+                <a href="{{ route('checkout.show') }}"
+                    class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Bestellen</a>
             </div>
         @else
-        <p>Uw winkelwagentje is leeg!</p>
+            <p>Uw winkelwagentje is leeg!</p>
         @endif
 
-        </div>
+    </div>
 @endsection

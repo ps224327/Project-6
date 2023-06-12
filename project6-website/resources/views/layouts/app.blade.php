@@ -4,7 +4,7 @@
 <head>
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-    <!-- Tailwindcss -->
+    <!-- Tailwind CSS -->
     <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
     <!-- Include Leaflet library -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
@@ -36,7 +36,7 @@
                     <a href="/contact" class="block mt-4 lg:inline-block lg:mt-0 text-gray-300 hover:text-white mr-4">
                         Contact
                     </a>
-                    <a href="/products" class="block mt-4 lg:inline-block lg:mt-0 text-gray-300 hover:text-white mr-4">
+                    <a href="/producten" class="block mt-4 lg:inline-block lg:mt-0 text-gray-300 hover:text-white mr-4">
                         Producten
                     </a>
                 </div>
@@ -73,21 +73,22 @@
 
                     {{-- Cart --}}
                     <a href="{{ route('cart.show') }}" class="relative pl-5">
-                        <span
-                            class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2
+                        @auth
                             @php
-$cartCount = Auth::user()->carts()->sum('quantity'); @endphp
-                        
-                        @if ($cartCount === 0) hidden @endif">
-
-                            {{ $cartCount }}
-                        </span>
-
-
+                                $cartCount = Auth::user()->carts()->sum('quantity');
+                            @endphp
+                            @if ($cartCount > 0)
+                                <span class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
+                                    {{ $cartCount }}
+                                </span>
+                            @endif
+                        @endauth
+                    
                         <span class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
                             <i class="fas fa-shopping-cart"></i>
                         </span>
                     </a>
+                    
 
                     @if (session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-4" role="alert">

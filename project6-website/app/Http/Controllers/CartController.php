@@ -30,31 +30,33 @@ class CartController extends Controller
         // Retrieve the user ID
         $userId = $user->id;
 
-        // Find the cart for the user or create a new one if it doesn't exist
-        $cart = Cart::firstOrCreate(['user_id' => $userId]);
+        // Check if the product already exists in the user's cart
+        $existingCartItem = Cart::where('user_id', $userId)
+            ->where('product_id', $productId)
+            ->first();
 
-        // Check if the cart already contains the product
-        $existingCartItem = $cart->where('product_id', $productId)->first();
         if ($existingCartItem) {
             // Update the quantity of the existing cart item
-            $existingCartItem->quantity += $quantity;
+            $existingCartItem->quantity += $quantity ?: 1; // Add 1 to quantity if not provided
             $existingCartItem->save();
         } else {
-            // Create a new cart item
-            $newCartItem = [
-                'product_id' => $productId,
-                'user_id' => $userId,
-                'quantity' => $quantity,
-            ];
-            Cart::create($newCartItem);
+            if ($productId) {
+                // Create a new cart item only if product_id is provided
+                $newCartItem = [
+                    'product_id' => $productId,
+                    'user_id' => $userId,
+                    'quantity' => $quantity ?: 1, // Set a default quantity of 1 if not provided
+                ];
+                Cart::create($newCartItem);
+            }
         }
 
         // Get the product name
         $product = Product::find($productId);
-        $productName = $product->name;
+        $productName = $product ? $product->name : '';
 
         // Set the success alert message
-        $message = '' . $productName . ' (' . $quantity . 'x) toegevoegd aan het winkelwagentje';
+        $message = $productName ? $productName . ' (' . $quantity . 'x) toegevoegd aan het winkelwagentje' : '';
 
         // Redirect back to the previous page with the success alert
         return redirect()->back()->with('alert', [
@@ -64,11 +66,9 @@ class CartController extends Controller
         ]);
     }
 
+
     public function showCart()
     {
-        $token = getenv('API_KEY');
-        $url = "http://kuin.summaict.nl/api/product";
-
         $user = Auth::user();
         if (!$user) {
             // Handle error - user not authenticated
@@ -76,39 +76,27 @@ class CartController extends Controller
         }
 
         $userId = $user->id;
-
-        $cartItems = Cart::where('user_id', $userId)->get();
+        $cartItems = Cart::with('product')->where('user_id', $userId)->get();
 
         if ($cartItems->isEmpty()) {
             return view('cart', compact('cartItems'));
         }
 
-        $productIds = $cartItems->pluck('product_id')->toArray();
-        $response = Http::withToken($token)->get($url, ['ids' => $productIds]);
+        $cartItems = $cartItems->map(function ($cartItem) {
+            $totalPrice = $cartItem->quantity * $cartItem->product->price;
+            return [
+                'id' => $cartItem->product->id,
+                'name' => $cartItem->product->name,
+                'image' => $cartItem->product->image,
+                'description' => $cartItem->product->description,
+                'quantity' => $cartItem->quantity,
+                'price' => $cartItem->product->price,
+                'totalPrice' => $totalPrice
+            ];
+        });
 
-        if ($response->successful()) {
-            $products = $response->json();
-            $cartItems = $cartItems->map(function ($cartItem) use ($products) {
-                $product = collect($products)->firstWhere('id', $cartItem->product_id);
-                $totalPrice = $cartItem->quantity * $product['price'];
-                return [
-                    'id' => $cartItem->product_id,
-                    'name' => $product['name'],
-                    'image' => $product['image'],
-                    'description' => $product['description'],
-                    'quantity' => $cartItem->quantity,
-                    'price' => $product['price'],
-                    'totalPrice' => $totalPrice
-                ];
-            });
-
-            return view('cart', compact('cartItems'));
-        } else {
-            // Handle error response
-            return response()->json(['message' => 'Error retrieving products'], $response->status());
-        }
+        return view('cart', compact('cartItems'));
     }
-
 
     public function updateItem(Request $request, $id)
     {
