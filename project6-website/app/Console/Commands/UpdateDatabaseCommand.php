@@ -19,26 +19,26 @@ class UpdateDatabaseCommand extends Command
         $apiResponse = Http::withToken($token)->get($apiUrl);
 
         if ($apiResponse->successful()) {
-            $apiProduct = $apiResponse->json();
+            $apiProducts = $apiResponse->json();
 
-            if (!empty($apiProduct)) {
-                $product = Product::where('id', $apiProduct['id'])->first();
-                if ($product) {
-                    $product->name = $apiProduct['name'];
-                    $product->description = $apiProduct['description'];
-                    $product->price = $apiProduct['price'];
-                    $product->image = $apiProduct['image'];
-                    $product->color = $apiProduct['color'];
-                    $product->height_cm = $apiProduct['height_cm'];
-                    $product->width_cm = $apiProduct['width_cm'];
-                    $product->depth_cm = $apiProduct['depth_cm'];
-                    $product->weight_gr = $apiProduct['weight_gr'];
-                    $product->save();
+            if (!empty($apiProducts)) {
+                // Get the IDs of products from the API response
+                $apiProductIds = collect($apiProducts)->pluck('id')->all();
 
-                    $this->info('Product updated successfully.');
-                } else {
-                    $this->error('Product not found in the database.');
+                // Find the products in the database that are not present in the API response
+                $productsToRemove = Product::whereNotIn('id', $apiProductIds)->get();
+
+                // Remove the products from the database
+                foreach ($productsToRemove as $product) {
+                    $product->delete();
                 }
+
+                // Iterate over the API products and update/create records in the database
+                foreach ($apiProducts as $apiProduct) {
+                    $product = Product::updateOrCreate(['id' => $apiProduct['id']], $apiProduct);
+                }
+
+                $this->info('Products updated successfully.');
             } else {
                 $this->error('Empty API response or invalid product data.');
             }

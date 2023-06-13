@@ -19,21 +19,20 @@ class WebhookController extends Controller
         // Get the response body as an array of products
         $apiProducts = $response->json();
 
-        // Loop through each product in the database and update it with new information from the API
+        // Get the IDs of products from the API response
+        $apiProductIds = collect($apiProducts)->pluck('id')->all();
+
+        // Find the products in the database that are not present in the API response
+        $productsToRemove = Product::whereNotIn('id', $apiProductIds)->get();
+
+        // Remove the products from the database
+        foreach ($productsToRemove as $product) {
+            $product->delete();
+        }
+
+        // Iterate over the API products and update/create records in the database
         foreach ($apiProducts as $apiProduct) {
-            $product = Product::where('id', $apiProduct['id'])->firstOrFail();
-            $product->name = $apiProduct['name'];
-            $product->description = $apiProduct['description'];
-            $product->price = $apiProduct['price'];
-            $product->image = $apiProduct['image'];
-            $product->color = $apiProduct['color'];
-            $product->height_cm = $apiProduct['height_cm'];
-            $product->width_cm = $apiProduct['width_cm'];
-            $product->depth_cm = $apiProduct['depth_cm'];
-            $product->weight_gr = $apiProduct['weight_gr'];
-            $product->created_at = $apiProduct['created_at'];
-            $product->updated_at = $apiProduct['updated_at'];
-            $product->save();
+            $product = Product::updateOrCreate(['id' => $apiProduct['id']], $apiProduct);
         }
 
         // Respond to the webhook with a success message

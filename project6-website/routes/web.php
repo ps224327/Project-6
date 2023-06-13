@@ -25,12 +25,12 @@ Route::get('/', function () {
     return view('home');
 });
 Route::get('/contact', function () {
-    return view('contact'); 
+    return view('contact');
 });
 
 // Show Products
 Route::get('/producten', [ProductController::class, 'fetchImagesFromApiProducts'])->name('products');
-Route::get('/', [ProductController::class, 'fetchImagesFromApiHome'])->name('home');    
+Route::get('/', [ProductController::class, 'fetchImagesFromApiHome'])->name('home');
 Route::get('/producten/{id}', [ProductController::class, 'show'])->name('product.show');
 
 // Search / Filter Function
@@ -43,10 +43,15 @@ Route::get('/winkelwagentje', [CartController::class, 'showCart'])->name('cart.s
 Route::patch('/cart/update/{id}', [CartController::class, 'updateItem'])->name('cart.update');
 Route::delete('/cart/remove/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
 
-// Checkout
+// Checkout / Address
 Route::get('/betalen', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::post('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
 Route::get('/bedankt', [CheckoutController::class, 'thankyou'])->name('thankyou');
+
+Route::get('/address', function () {
+    return view('address');
+})->name('address');
+Route::post('/checkout/process', [CheckoutController::class, 'payment'])->name('checkout.process');
 
 // Map 
 Route::get('/contact', [MapController::class, 'showMap'])->name('contact');
@@ -69,5 +74,3 @@ Route::get('/profiel', [AuthController::class, 'profile'])->name('profile');
 Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-

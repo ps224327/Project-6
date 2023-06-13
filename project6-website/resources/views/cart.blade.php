@@ -77,7 +77,7 @@
                 </tfoot>
             </table>
             <div class="mt-4">
-                <a href="{{ route('checkout.show') }}"
+                <a href="{{ route('address') }}"
                     class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Bestellen</a>
             </div>
         @else

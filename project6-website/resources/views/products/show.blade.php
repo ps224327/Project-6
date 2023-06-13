@@ -26,7 +26,7 @@
                     <input type="hidden" name="product_id" value="{{ $product['id'] }}">
                     <div>
                         <label for="quantity" class="font-bold">Aantal:</label>
-                        <input type="number" name="quantity" value="1" min="1" max="10" class="w-10 outline-none bg-green-100">
+                        <input type="number" name="quantity" value="1" min="1" max="10" class="w-10 outline-none">
                     </div>
                     <button type="submit" class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Voeg toe</button>
                 </form>

@@ -14,7 +14,7 @@
                     </div>
                 </div>
             @endforeach
-            <p class="font-bold mb-6">Totaal: &euro;{{ $total }}</p>
+            <p class="font-bold mb-6">Totaal: &euro;{{ number_format($total, 2) }}</p>
             <div class="flex items-center justify-between">
                 <a href="{{ route('cart.show') }}"
                     class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
