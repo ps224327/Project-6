@@ -12,13 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->increments('id');
+            $table->engine = 'InnoDB';
+            $table->increments('id')->unsigned(false);
             $table->string('name')->nullable(true);
-            $table->integer('barcode')->unique(true);
+            $table->integer('barcode')->nullable(true);
             $table->string('description')->nullable(true);
             $table->decimal('price')->nullable(true);
             $table->string('image')->nullable(true);
             $table->string('color')->nullable(true);
+            $table->integer('stock')->nullable(true);
             $table->integer('height_cm')->nullable(true);
             $table->integer('width_cm')->nullable(true);
             $table->integer('depth_cm')->nullable(true);

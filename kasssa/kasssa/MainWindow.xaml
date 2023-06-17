@@ -63,19 +63,14 @@
            
             <TextBlock x:Name="TXTTotal" VerticalAlignment="Center" FontSize="20"></TextBlock>
         </StackPanel>
-
+        <TextBlock Grid.Column="8" Background="LightBlue" Margin="50,20,0,15" TextAlignment="Right" FontSize="20">Aantal: </TextBlock>
+        <TextBox x:Name="TbAmount" FontSize="20"  Grid.Column="10" Background="LightBlue" Margin="20,20,20,15" PreviewTextInput="NumberValidationTextBox"></TextBox>
         <Border Grid.Column="8" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="5">
-            <ListBox x:Name="LbPrices" MouseDoubleClick="LbPrices_MouseDoubleClick">
-                
+            <ListBox x:Name="LbPrices">
+
             </ListBox>
         </Border>
 
-        <ComboBox x:Name="CBCurrency" Grid.Row="10" Grid.Column="8" SelectionChanged="Currency_Changed" Margin="20,20,20,20">
-            <ComboBoxItem Name="EURO" IsSelected="True">EURO</ComboBoxItem>
-            <ComboBoxItem Name="USD">USD</ComboBoxItem>
-            <ComboBoxItem Name="CAD">CAD</ComboBoxItem>
-            
-        </ComboBox>
         <Button Grid.Column="10" Grid.Row="10" Background="Blue" FontSize="20" Foreground="White" Click="Btn_Bon">Print bon</Button>
     </Grid>
 </Window>

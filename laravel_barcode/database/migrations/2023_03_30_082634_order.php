@@ -12,9 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order', function (Blueprint $table) {
-            $table->increments('id');
-            $table->boolean('deliverd');
-            $table->integer('invoice')->unique(true);
+            $table->engine = 'InnoDB';
+            $table->increments('id')->unsigned(false);
+            $table->string('status')->nullable(true);
+            $table->unsignedInteger('user_id')->value(11)->unsigned(false);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('employee_number')->nullable();
+            $table->integer('total_price')->unique(true);
             $table->timestamps();
         });
     }

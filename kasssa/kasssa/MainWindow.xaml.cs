@@ -2,6 +2,7 @@
 using System;
 using Newtonsoft.Json;
 using PdfSharp.Drawing;
+using System.Text.RegularExpressions;
 using System.IO;
 using PdfSharp.Pdf;
 using System.Collections.Generic;
@@ -29,6 +30,9 @@ using System.Net.Http;
 using com.itextpdf.text.pdf;
 using static iTextSharp.text.pdf.AcroFields;
 using PdfSharp.Pdf.Content.Objects;
+using System.Text.RegularExpressions;
+using kasssa.Models;
+using iTextSharp.text;
 
 namespace kasssa
 {
@@ -41,20 +45,22 @@ namespace kasssa
         private string _currentString = "";
         //decimal for total price
         private decimal _totalPrice = 0;
-
+        private string Employee_number = "";
         private decimal _ChangedTotal = 0;
+        private decimal _MultiScanned = 0;
         private string s;
         private int SPItems;
 
         //stackpanel
         private StackPanel sp;
 
-
-        public MainWindow()
+        ProjectDB _db = new ProjectDB();
+        public MainWindow(int employee_number)
         {
             InitializeComponent();
             CurrentStringTextBlock.DataContext = this;
-
+            Employee_number = employee_number.ToString();
+            MessageBox.Show(Employee_number);
             this.KeyDown += Add_Num_key;
         }
 
@@ -66,14 +72,16 @@ namespace kasssa
             set { _currentString = value; }
         }
 
+
         public void UpdateTextBlock()
         {
             CurrentStringTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
         }
         private void Add_Num_key(object sender, KeyEventArgs e)
         {
+
             //cope logic for the numbers, adds number to string
-            if (e.Key >= Key.D0 && e.Key <= Key.D9)
+            if (!TbAmount.IsFocused && e.Key >= Key.D0 && e.Key <= Key.D9)
             {
                 _currentString += e.Key.ToString().Substring(1); // append the digit to the string
                 UpdateTextBlock();
@@ -87,11 +95,11 @@ namespace kasssa
             //code logic for the enter key, 
             else if (e.Key == Key.Return && _currentString.Length > 0)
             {
-               
+
             }
-           
+
         }
-        
+
         private void Btn_Numbers(object sender, RoutedEventArgs e)
         {
             //checks the 'content' of each button and adds it to an string
@@ -99,13 +107,15 @@ namespace kasssa
             string digit = button.Content.ToString();
             if (digit == "," && _currentString.Contains(","))
             {
-                MessageBox.Show("De prijs heeft al een komma");
+            }
+            else if (_currentString.Count(ch => ch == ',') == 1 && _currentString.Length - _currentString.IndexOf(",") > 2)
+            {
             }
             else
             {
                 _currentString += digit;
             }
-            
+
             UpdateTextBlock();
         }
 
@@ -114,20 +124,19 @@ namespace kasssa
             if (_currentString.Length > 0)
             {
                 _currentString = _currentString.Remove(_currentString.Length - 1);
-             
+
                 UpdateTextBlock();
             }
-           
+
         }
 
-       
+
 
         public void Add_price(object sender, RoutedEventArgs e)
         {
             int i = 0;
-            
-            string CBSelectedCurrency = ((ComboBoxItem)CBCurrency.SelectedItem).Name.ToString();
-             sp = new StackPanel()
+
+            sp = new StackPanel()
             {
                 Background = Brushes.AliceBlue,
                 Orientation = Orientation.Horizontal,
@@ -138,13 +147,16 @@ namespace kasssa
             }
             else
             {
+                Grid container = new Grid();
+                container.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                container.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+
                 // transfers string into decimal
                 decimal d = decimal.Parse(_currentString);
                 string s = d.ToString("0.00");
                 TextBlock Pricing;
                 TextBlock Valuta;
-                TextBlock USDPricing;
-                TextBlock CADPricing;
+                Button RemoveSP;
                 Valuta = new TextBlock()
                 {
                     Foreground = Brushes.Black,
@@ -156,73 +168,66 @@ namespace kasssa
                     Foreground = Brushes.Black,
                     Text = " " + s.ToString(),
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    Name = "SinglePrice"+i,
+                    Name = "AllPrice" + i,
                 };
-                USDPricing = new TextBlock()
-
+                RemoveSP = new Button()
                 {
-                    Foreground = Brushes.Black,
-                    Text = " " + s.ToString(),
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    Name = "USDSinglePrice"+i,
-                    Visibility = Visibility.Collapsed,
-                };
-                CADPricing = new TextBlock()
+                    Content = "X",
+                    HorizontalAlignment = HorizontalAlignment.Right,
 
-                {
-                    Foreground = Brushes.Black,
-                    Text = " " + s.ToString(),
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    Name = "CADSinglePrice"+i,
-                    Visibility = Visibility.Collapsed,
                 };
+
+                Grid.SetColumn(sp, 0);
+                Grid.SetColumn(RemoveSP, 1);
+
+                container.Children.Add(sp);
+                container.Children.Add(RemoveSP);
+
                 sp.Children.Add(Valuta);
                 sp.Children.Add(Pricing);
-                sp.Children.Add(USDPricing);
-                sp.Children.Add(CADPricing);
-                LbPrices.Items.Add(sp);
+
+                RemoveSP.Click += LbPrices_MouseDoubleClick;
+
+                LbPrices.Items.Add(container);
+
                 _totalPrice = _totalPrice + d;
                 string total = _totalPrice.ToString("0.00");
-            //    TXTTotal.Text = total;
+                TXTTotal.Text = total;
                 _currentString = "";
                 UpdateTextBlock();
-                UpdateCurrency(CBSelectedCurrency);
-                SPItems =+ 1;
+                SPItems = +1;
                 i++;
             }
-          
-            
+
+
         }
 
-        private void LbPrices_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void LbPrices_MouseDoubleClick(object sender, RoutedEventArgs e)
         {
-            string CBSelectedCurrency = ((ComboBoxItem)CBCurrency.SelectedItem).Name.ToString();
+
             if (LbPrices.SelectedIndex > -1)
             {
-                if ((MessageBox.Show("weet u zeker dat u dit wilt verwijderen?", "", MessageBoxButton.YesNo) == MessageBoxResult.No))
+                if (MessageBox.Show("Weet u zeker dat u dit wilt verwijderen?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-
-                }
-                else
-                {
-                    StackPanel sp = LbPrices.SelectedItem as StackPanel;
+                    Grid container = LbPrices.SelectedItem as Grid;
                     decimal prijsRegel = 0;
 
-                    foreach(TextBlock item in sp.Children.OfType<TextBlock>())
+                    foreach (StackPanel sp in container.Children.OfType<StackPanel>())
                     {
-                        if (item.Name.StartsWith("SinglePrice"))
+                        foreach (TextBlock item in sp.Children.OfType<TextBlock>())
                         {
-                            string prijs = item.Text;
-                            prijsRegel = decimal.Parse(prijs);
+                            if (item.Name.StartsWith("AllPrice"))
+                            {
+                                string prijs = item.Text;
+                                prijsRegel = decimal.Parse(prijs);
+                            }
                         }
                     }
 
-                  
                     LbPrices.Items.Remove(LbPrices.SelectedItem);
-                    _totalPrice = _totalPrice - prijsRegel;
+                    _totalPrice -= prijsRegel;
                     string total = _totalPrice.ToString("0.00");
-                //    TXTTotal.Text = total;
-                    UpdateCurrency(CBSelectedCurrency);
+                    TXTTotal.Text = total;
                 }
             }
         }
@@ -232,10 +237,150 @@ namespace kasssa
             Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
             BarcodeReader reader = new BarcodeReader();
         }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
         private void ScanBarCode(object sender, RoutedEventArgs e)
         {
+            //opens new window to scan barcode and get the scanned barcode
             scanner scan = new scanner();
-            scan.Show();
+            scan.ShowDialog();
+            string FetchedBarcode = scan.BarcodeNumbers;
+            MessageBox.Show(FetchedBarcode);
+
+            string isBarcodeFound = _db.GetScannedBarcode(FetchedBarcode);
+            if (isBarcodeFound != "")
+            {
+                string[] data = isBarcodeFound.Split('-');
+                Add_Product(isBarcodeFound);
+            }
+            else
+            {
+
+            }
+        }
+
+        private void Add_Product(string isBarcodeFound)
+        {
+            string[] data = isBarcodeFound.Split('-');
+            // Display three message boxes with the values
+            string name = data[0].Trim();
+            string barcode = data[1].Trim();
+            string price = data[2].Trim();
+            string Putamount = TbAmount.Text;
+
+            decimal putprice = Convert.ToDecimal(price);
+
+            if (Putamount == "" || Putamount == null || Putamount == "0")
+            {
+                putprice = putprice;
+                Putamount = "1";
+            }
+            else
+            {
+                putprice = putprice * Convert.ToInt32(Putamount);
+            }
+            sp = new StackPanel()
+            {
+                Background = Brushes.AliceBlue,
+                Orientation = Orientation.Horizontal,
+            };
+
+            Grid container = new Grid();
+
+            // create a grid inside the stackpanel
+            container.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(20) });
+            container.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(20) });
+            container.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+            container.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+
+            // transfers string into decimal
+            TextBlock Name;
+            TextBlock Barcode;
+            TextBlock BarcodeBack;
+            TextBlock Pricing;
+            TextBlock Amount;
+            TextBlock PutAmt;
+            Button RemoveSP;
+
+            Name = new TextBlock()
+            {
+                Foreground = Brushes.Black,
+                Text = name,
+                Name = "ProductName",
+            };
+            Barcode = new TextBlock()
+            {
+                Foreground = Brushes.Black,
+                Text = barcode,
+                Name = "Barcode",
+            };
+            BarcodeBack = new TextBlock()
+            {
+                Foreground = Brushes.Black,
+                Text = barcode,
+                Name = "BarcodeUsed",
+                Visibility = Visibility.Hidden,
+            };
+            Pricing = new TextBlock()
+            {
+                Foreground = Brushes.Black,
+                Text = price,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Name = "SinglePrice",
+            };
+            Amount = new TextBlock()
+            {
+                Foreground = Brushes.Black,
+                Text = Putamount,
+                Name = "Amount",
+            };
+            PutAmt = new TextBlock()
+            {
+                Text = putprice.ToString(),
+                Visibility = Visibility.Hidden,
+                Name = "AllPrice",
+            };
+            RemoveSP = new Button()
+            {
+                Content = "X",
+                HorizontalAlignment = HorizontalAlignment.Right,
+
+            };
+
+            Grid.SetColumn(sp, 0);
+            Grid.SetColumn(RemoveSP, 1);
+            Grid.SetRow(Barcode, 1);
+            Grid.SetColumn(Amount, 1);
+            Grid.SetRow(Amount, 1);
+
+            container.Children.Add(sp);
+            container.Children.Add(RemoveSP);
+            container.Children.Add(Barcode);
+            container.Children.Add(Amount);
+            //   container.Children.Add(PutAmt);
+
+            sp.Children.Add(Name);
+            //   sp.Children.Add(Barcode);
+            sp.Children.Add(Pricing);
+            //add child to sp so the delete function works
+            sp.Children.Add(PutAmt);
+            sp.Children.Add(BarcodeBack);
+            RemoveSP.Click += LbPrices_MouseDoubleClick;
+
+            LbPrices.Items.Add(container);
+
+            _totalPrice = _totalPrice + putprice;
+            string total = _totalPrice.ToString("0.00");
+            TXTTotal.Text = total;
+            _currentString = "";
+            UpdateTextBlock();
+            SPItems = +1;
+
+
         }
         private void Btn_Bon(object sender, RoutedEventArgs e)
         {
@@ -248,31 +393,22 @@ namespace kasssa
 
                 PrintListBox(LbPrices, _totalPrice);
             }
-           
+
         }
         private void PrintListBox(ListBox LbPrices, decimal _totalPrice)
         {
-            string CurrencySign = "$";
-            string CBSelectedCurrency = ((ComboBoxItem)CBCurrency.SelectedItem).Name.ToString();
-            switch (CBSelectedCurrency)
-            {
-                case "EURO":
-                    CurrencySign = "€";
-                        break;
-                case "USD":
-                    CurrencySign = "USD $";
-                    break;
-                case "CAD":
-                    CurrencySign = "CAD $";
-                    break;
-            };
+
             //Strings that needs to be added in the pdf
             //text for header of the pdf
             string CompanyName = "Groene Vingers";
 
             //data for the company to add to the invoice
-            string KVKNummer = "KVK: 18057469"; 
+            string KVKNummer = "KVK: 18057469";
             string Invoice = "23041";
+            string Employee_line = "Werknemers nummer : " + Employee_number;
+
+
+            string ProductName = "";
             // Create a new PDF document
             PdfDocument document = new PdfDocument();
 
@@ -296,130 +432,111 @@ namespace kasssa
             //text for total price stirng
             string TotalText = "totaal ";
             string TotalPrice = TotalText + '€' + _totalPrice.ToString("0.00");
-            
-             if (CBSelectedCurrency == "USD")
-            {
-                TotalPrice = TotalText + "USD $" + TXTTotal.Text;
-            }
-            else if (CBSelectedCurrency == "CAD")
-            {
-                 TotalPrice = TotalText + "CAD $" + TXTTotal.Text;
-            }
-         
-        
 
-            gfx.DrawString(CompanyName, HeaderFont, XBrushes.Black, new XRect(225, 50 ,0 , 20), XStringFormats.TopLeft);
-            gfx.DrawString(CompanyName, font, XBrushes.Black, new XRect(500, 50, 0, 0));
-            gfx.DrawString(KVKNummer, font, XBrushes.Black, new XRect(500, 70, 0, 0));
+
+
+
+
+            gfx.DrawString(CompanyName, HeaderFont, XBrushes.Black, new XRect(225, 50, 0, 20), XStringFormats.TopLeft);
+            gfx.DrawString(CompanyName, font, XBrushes.Black, new XRect(420, 50, 0, 0));
+            gfx.DrawString(KVKNummer, font, XBrushes.Black, new XRect(420, 70, 0, 0));
+            gfx.DrawString(Employee_line, font, XBrushes.Black, new XRect(420, 90, 0, 0));
             // Loop through the items in the listbox and draw them on the page
-            int i = 2;
+            int i = 3;
 
-            switch (CBSelectedCurrency)
+
+            foreach (var item in LbPrices.Items)
             {
-                case "EURO":
-                    foreach (var item in LbPrices.Items)
+                // retrieve the Grid containing the StackPanels
+                Grid container = item as Grid;
+
+                if (container != null)
+                {
+                    // loop through each StackPanel in the Grid
+                    foreach (var child in container.Children)
                     {
-                        // retrieve the StackPanel containing the TextBlocks
-                        StackPanel stackPanel = item as StackPanel;
+                        StackPanel stackPanel = child as StackPanel;
 
                         if (stackPanel != null)
                         {
-
+                            string productName = string.Empty;
+                            string allPrice = string.Empty;
+                            string barcodeUsed = string.Empty;
                             // loop through each TextBlock in the StackPanel
-                            foreach (var child in stackPanel.Children)
+                            foreach (var grandChild in stackPanel.Children)
                             {
+                                TextBlock textBlock = grandChild as TextBlock;
 
-                                TextBlock textBlock = child as TextBlock;
-
-                                if (textBlock.Name.StartsWith("SinglePrice"))
+                                if (textBlock != null)
                                 {
-                                    i++;
-                                    // retrieve the text from the TextBlock
+                                    if (textBlock.Name.StartsWith("ProductName"))
+                                    {
+                                        productName = textBlock.Text;
+                                    }
 
-                                    string text = CurrencySign + textBlock.Text;
-                                    gfx.DrawString(text, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
-
-                                    gfx.DrawLine(lineBlack, 50, 50 + i * 25, page.Width - 50, 50 + i * 25);
+                                    // Retrieve the price from the TextBlock with the name "AllPrice"
+                                    if (textBlock.Name.StartsWith("AllPrice"))
+                                    {
+                                        allPrice = textBlock.Text;
+                                    }
+                                    //retrieve the barcode from the TextBlock with the name "BarcodeUsed"
+                                    if (textBlock.Name.StartsWith("BarcodeUsed"))
+                                    {
+                                        barcodeUsed = textBlock.Text;
+                                    }
                                 }
 
-
                             }
-                        }
-                    }
-                    break;
-                case "USD":
-                    foreach (var item in LbPrices.Items)
-                    {
-                        // retrieve the StackPanel containing the TextBlocks
-                        StackPanel stackPanel = item as StackPanel;
-
-                        if (stackPanel != null)
-                        {
-
-                            // loop through each TextBlock in the StackPanel
-                            foreach (var child in stackPanel.Children)
+                            if (!string.IsNullOrEmpty(productName) && !string.IsNullOrEmpty(barcodeUsed) && !string.IsNullOrEmpty(allPrice))
                             {
-
-                                TextBlock textBlock = child as TextBlock;
-
-                                if (textBlock.Name.StartsWith("USDSinglePrice"))
-                                {
-                                    i++;
-                                    // retrieve the text from the TextBlock
-
-                                    string text = CurrencySign + textBlock.Text;
-                                    gfx.DrawString(text, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
-
-                                    gfx.DrawLine(lineBlack, 50, 50 + i * 25, page.Width - 50, 50 + i * 25);
-                                }
-
-
+                                // All three values exist, display them together
+                                string displayText = $"{productName} ({barcodeUsed}): {allPrice}";
+                                gfx.DrawString(displayText, font, XBrushes.Black, new XRect(100, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
                             }
-                        }
-                    }
-                    break;
-                case "CAD":
-                    foreach (var item in LbPrices.Items)
-                    {
-                        // retrieve the StackPanel containing the TextBlocks
-                        StackPanel stackPanel = item as StackPanel;
-
-                        if (stackPanel != null)
-                        {
-
-                            // loop through each TextBlock in the StackPanel
-                            foreach (var child in stackPanel.Children)
+                          /*  else if (!string.IsNullOrEmpty(productName) && !string.IsNullOrEmpty(barcodeUsed))
                             {
+                                // Only product name and barcode used exist, display them together
+                                string displayText = $"{productName} ({barcodeUsed})";
+                                gfx.DrawString(displayText, font, XBrushes.Black, new XRect(100, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+                            }
+                            else if (!string.IsNullOrEmpty(productName) && !string.IsNullOrEmpty(allPrice))
+                            {
+                                // Only product name and all price exist, display them together
+                                string displayText = $"{productName}: {allPrice}";
+                                gfx.DrawString(displayText, font, XBrushes.Black, new XRect(100, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+                            }
+                            else if (!string.IsNullOrEmpty(productName))
+                            {
+                                // Only product name exists, display it alone
+                                gfx.DrawString(productName, font, XBrushes.Black, new XRect(100, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+                            }*/
+                            else if (!string.IsNullOrEmpty(allPrice))
+                            {
+                                // Only all price exists, display it alone
+                                gfx.DrawString(allPrice, font, XBrushes.Black, new XRect(100, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+                            }
 
-                                TextBlock textBlock = child as TextBlock;
 
-                                if (textBlock.Name.StartsWith("CADSinglePrice"))
-                                {
-                                    i++;
-                                    // retrieve the text from the TextBlock
-
-                                    string text = CurrencySign + textBlock.Text;
-                                    gfx.DrawString(text, font, XBrushes.Black, new XRect(50, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
-
-                                    gfx.DrawLine(lineBlack, 50, 50 + i * 25, page.Width - 50, 50 + i * 25);
-                                }
-
-
+                            if (!string.IsNullOrEmpty(productName) || !string.IsNullOrEmpty(allPrice))
+                            {
+                                gfx.DrawLine(lineBlack, 50, 65 + i * 20, page.Width - 50, 65 + i * 20);
+                                i++;
                             }
                         }
-                    }
-                    break;
-            };
-           
 
-            
+                    }
+                }
+            }
+
+
+
 
             //creates a red line
-         
-            gfx.DrawLine(lineRed, 0,750, page.Width,750);
+
+            gfx.DrawLine(lineRed, 0, 750, page.Width, 750);
 
             //output of the total price
-            gfx.DrawString(TotalPrice, font, XBrushes.Black, new XRect(400,800, 0, 0));
+            gfx.DrawString(TotalPrice, font, XBrushes.Black, new XRect(400, 800, 0, 0));
             // Save the PDF document to a file
             string filePath = "listbox.pdf";
             document.Save(filePath);
@@ -429,156 +546,6 @@ namespace kasssa
         }
 
 
-      private async void UpdateCurrency( string CBSelectedcurrency)
-        {
-            int i = 0;
-            decimal prijsRegel = 0;
-            switch (CBSelectedcurrency)
-            {
-                case "EURO":
-                    TXTTotal.Text = _totalPrice.ToString("0.00");
-                    TextTekens.Text = "Totaal prijs €";
-
-                 
-
-                    //for the listbox items
-                    foreach (StackPanel number in LbPrices.Items)
-                    {
-                        foreach (TextBlock item in sp.Children.OfType<TextBlock>())
-                        {
-                            if (item.Name.StartsWith("SinglePrice"))
-                            {
-                              
-                                item.Visibility = Visibility.Visible;
-
-                            }
-                            if (item.Name.StartsWith("USDSinglePrice"))
-                            {
-                                item.Visibility = Visibility.Hidden;
-                            }
-                            if (item.Name.StartsWith("CADSinglePrice"))
-                            {
-                                item.Visibility = Visibility.Hidden;
-                            }
-                        }
-                    }
-                    break;
-                case "USD":
-                    using (HttpClient client = new HttpClient())
-                    {
-                        
-                        try
-                        {
-                            // for the API to fetch data
-                            HttpResponseMessage USDResponse = await client.GetAsync("https://api.freecurrencyapi.com/v1/latest?apikey=meYps5nLQL78E4cz5oNAAz13I6DWWnClVP9OAgCt&currencies=USD&base_currency=EUR");
-                            USDResponse.EnsureSuccessStatusCode();
-
-                            string UsdResponse = await USDResponse.Content.ReadAsStringAsync();
-
-                            dynamic jsonResponse = JsonConvert.DeserializeObject(UsdResponse);
-                            decimal usdRate = jsonResponse.data.USD;
-                            //convert total price to usd price
-
-                            decimal usd = _totalPrice * usdRate;
-
-                      
-                            TXTTotal.Text = usd.ToString("0.00");
-                            TextTekens.Text = "Totaal prijs USD $";
-
-                          
-                          
-
-                            //for the listbox items
-                            foreach (StackPanel number in LbPrices.Items)
-                            {
-                          
-
-                                foreach (TextBlock item in sp.Children.OfType<TextBlock>())
-                                {
-                                    if (item.Name.StartsWith("SinglePrice"))
-                                    {
-                                        string prijs = item.Text;
-                                        prijsRegel = decimal.Parse(prijs);
-                                        item.Visibility = Visibility.Collapsed;
-
-                                    }
-                                    if (item.Name.StartsWith("USDSinglePrice"))
-                                    {
-                                       // MessageBox.Show(item.Text);
-                                        item.Visibility = Visibility.Visible;
-                                        decimal PrijsRegel = prijsRegel * usdRate;
-                                        item.Text = PrijsRegel.ToString("0.00");
-                                    }
-                                    if (item.Name.StartsWith("CADSinglePrice"))
-                                    {
-                                        item.Visibility = Visibility.Hidden;
-                                    }
-                                }
-                            }
-                         
-                        }
-                        catch (HttpRequestException ex)
-                        {
-                            MessageBox.Show("error returning USD");
-                        }
-                    }
-                
-                    break;
-
-                case "CAD":
-                    using (HttpClient client = new HttpClient())
-                    {
-                        try
-                        {
-                            HttpResponseMessage CADRespone = await client.GetAsync("https://api.freecurrencyapi.com/v1/latest?apikey=meYps5nLQL78E4cz5oNAAz13I6DWWnClVP9OAgCt&currencies=CAD&base_currency=EUR");
-                            CADRespone.EnsureSuccessStatusCode();
-
-                            string CadResponse = await CADRespone.Content.ReadAsStringAsync();
-
-                            dynamic jsonResponse = JsonConvert.DeserializeObject(CadResponse);
-                            decimal cadRate = jsonResponse.data.CAD;
-
-
-                            decimal cad = _totalPrice * cadRate;
-
-                            TXTTotal.Text = cad.ToString("0.00");
-                            TextTekens.Text = "Totaal prijs CAD $";
-
-
-                            foreach (StackPanel number in LbPrices.Items)
-                            {
-                                foreach (TextBlock item in sp.Children.OfType<TextBlock>())
-                                {
-                                    if (item.Name.StartsWith("SinglePrice"))
-                                    {
-                                        string prijs = item.Text;
-                                        prijsRegel = decimal.Parse(prijs);
-                                        item.Visibility = Visibility.Collapsed;
-
-                                    }
-                                    if (item.Name.StartsWith("USDSinglePrice"))
-                                    {
-                                        item.Visibility = Visibility.Collapsed;
-
-                                    }
-                                    if (item.Name.StartsWith("CADSinglePrice"))
-                                    {
-                                        item.Visibility = Visibility.Visible;
-                                        decimal PrijsRegel = prijsRegel * cadRate;
-                                        item.Text = PrijsRegel.ToString("0.00");
-                                    }
-                                }
-                            }
-                        }
-                        catch (HttpRequestException ex)
-                        {
-                            MessageBox.Show("error returning CAD");
-                        }
-                    }
-                    break;
-
-            }
-        }
 
         private T FindVisualChild<T>(DependencyObject parentElement) where T : DependencyObject
         {
@@ -601,15 +568,7 @@ namespace kasssa
             }
             return null;
         }
-        private async void Currency_Changed(object sender, SelectionChangedEventArgs e)
-        {
 
-            string CBSelectedCurrency = ((ComboBoxItem)CBCurrency.SelectedItem).Name.ToString();
-            UpdateCurrency(CBSelectedCurrency);
-           
-
-
-        }
     }
 }
 

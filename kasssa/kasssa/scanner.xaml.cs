@@ -1,6 +1,8 @@
 ﻿using AForge.Video.DirectShow;
+using kasssa.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -25,15 +27,21 @@ namespace kasssa
     /// </summary>
     public partial class scanner : Window
     {
+        ProjectDB _db = new ProjectDB();
         public scanner()
         {
             InitializeComponent();
-            
+      
         }
+
+
+        public string BarcodeNumbers { get; private set; }
 
         FilterInfoCollection filterInfoCollection;
         VideoCaptureDevice videoCaptureDevice;
 
+
+        
         private void Scanner_load(object sender, EventArgs e)
         {
             filterInfoCollection = new FilterInfoCollection(FilterCategory.VideoInputDevice);
@@ -60,8 +68,10 @@ namespace kasssa
 
         }
 
+
         private void VideoCaptureDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
+
             Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
             BarcodeReader reader = new BarcodeReader();
             var BarCodeResult = reader.Decode(bitmap);
@@ -69,7 +79,27 @@ namespace kasssa
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    txtBarcode.Text = BarCodeResult.ToString();
+                    string CodeResult = BarCodeResult.ToString();
+              
+                    //get data from the database using the barcode string
+                    string isBarcodeFound = _db.GetScannedBarcode(CodeResult);
+                    if (isBarcodeFound != "")
+                    {
+                    
+                        
+                            BarcodeNumbers = BarCodeResult.ToString();
+                            IMGCam.Source = null;
+                            this.Close();
+                       
+                        //BarcodeNumbers will be passed to the main window
+                       
+                    }
+                    else
+                    {
+                        MessageBox.Show("Barcode not found: error");
+                    }
+                    
+                 
                 });
 
             }
@@ -88,6 +118,12 @@ namespace kasssa
             {
                 IMGCam.Source = bitmapImage;
             });
+           
+        }
+
+        public void Scanned_barcode(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
   

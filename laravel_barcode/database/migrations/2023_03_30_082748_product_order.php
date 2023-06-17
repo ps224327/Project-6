@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_order', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id')->unsigned(false);
             $table->unsignedInteger('product_id')->value(11)->unsigned(false);
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->unsignedInteger('order_id')->value(11)->unsigned(false);
             $table->foreign('order_id')->references('id')->on('order')->onDelete('cascade');
+            $table->integer('amount')->nullable(false);
 
         });
     }
