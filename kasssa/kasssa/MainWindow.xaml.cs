@@ -33,6 +33,7 @@ using PdfSharp.Pdf.Content.Objects;
 using System.Text.RegularExpressions;
 using kasssa.Models;
 using iTextSharp.text;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace kasssa
 {
@@ -60,7 +61,6 @@ namespace kasssa
             InitializeComponent();
             CurrentStringTextBlock.DataContext = this;
             Employee_number = employee_number.ToString();
-            MessageBox.Show(Employee_number);
             this.KeyDown += Add_Num_key;
         }
 
@@ -249,7 +249,7 @@ namespace kasssa
             scanner scan = new scanner();
             scan.ShowDialog();
             string FetchedBarcode = scan.BarcodeNumbers;
-            MessageBox.Show(FetchedBarcode);
+          
 
             string isBarcodeFound = _db.GetScannedBarcode(FetchedBarcode);
             if (isBarcodeFound != "")
@@ -430,8 +430,8 @@ namespace kasssa
             //color of the black line for the data that needs to be paid
             XPen lineBlack = new XPen(XColors.Black, 2);
             //text for total price stirng
-            string TotalText = "totaal ";
-            string TotalPrice = TotalText + '€' + _totalPrice.ToString("0.00");
+      
+            string TotalPrice = '€' + _totalPrice.ToString("0.00");
 
 
 
@@ -441,8 +441,14 @@ namespace kasssa
             gfx.DrawString(CompanyName, font, XBrushes.Black, new XRect(420, 50, 0, 0));
             gfx.DrawString(KVKNummer, font, XBrushes.Black, new XRect(420, 70, 0, 0));
             gfx.DrawString(Employee_line, font, XBrushes.Black, new XRect(420, 90, 0, 0));
+
+            //header line,like bold letters
+            int BoldSpacing = 50;
+            string BoldLine = "Naam" + new string(' ', BoldSpacing - 4) + "Barcode" +new string(' ', 44) + "Totaal";
+
+            gfx.DrawString(BoldLine, font, XBrushes.Black, new XRect(100, 110, page.Width, page.Height), XStringFormats.TopLeft);
             // Loop through the items in the listbox and draw them on the page
-            int i = 3;
+            int i = 4;
 
 
             foreach (var item in LbPrices.Items)
@@ -489,9 +495,17 @@ namespace kasssa
                             }
                             if (!string.IsNullOrEmpty(productName) && !string.IsNullOrEmpty(barcodeUsed) && !string.IsNullOrEmpty(allPrice))
                             {
-                                // All three values exist, display them together
-                                string displayText = $"{productName} ({barcodeUsed}): {allPrice}";
-                                gfx.DrawString(displayText, font, XBrushes.Black, new XRect(100, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+                     
+                                int barcodeUsedX = 285; // set the Barcode on a specific X position 
+                                int allPriceX = 480; // same goes for the allPrice
+                        
+                                string ProductText = $"{productName}";
+                                string BarcodeText = $"{barcodeUsed}";
+                                string PriceText = $"{allPrice}";
+                              
+                                gfx.DrawString(ProductText, font, XBrushes.Black, new XRect(100, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+                                gfx.DrawString(BarcodeText, font, XBrushes.Black, new XRect(barcodeUsedX, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
+                                gfx.DrawString(PriceText, font, XBrushes.Black, new XRect(allPriceX, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
                             }
                           /*  else if (!string.IsNullOrEmpty(productName) && !string.IsNullOrEmpty(barcodeUsed))
                             {
@@ -528,15 +542,8 @@ namespace kasssa
                 }
             }
 
-
-
-
-            //creates a red line
-
-            gfx.DrawLine(lineRed, 0, 750, page.Width, 750);
-
             //output of the total price
-            gfx.DrawString(TotalPrice, font, XBrushes.Black, new XRect(400, 800, 0, 0));
+            gfx.DrawString(TotalPrice, font, XBrushes.Black, new XRect(480, 50 + i * 20, page.Width, page.Height), XStringFormats.TopLeft);
             // Save the PDF document to a file
             string filePath = "listbox.pdf";
             document.Save(filePath);
