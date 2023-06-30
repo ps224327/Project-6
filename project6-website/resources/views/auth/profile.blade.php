@@ -5,6 +5,7 @@
         <h1 class="text-2xl font-bold mb-4">Profiel</h1>
 
         <p class="mb-4">Welkom, {{ auth()->user()->name }}!</p>
+        <p {{auth()->user()->role}}></p>
 
         {{-- Update profile form --}}
         <form action="{{ route('profile.update') }}" method="POST" class="max-w-md mx-auto">
@@ -44,6 +45,7 @@
                 <p class="italic text-gray-700 text-xs">(minimaal 6 tekens)</p>
                 <input type="password" name="password" id="password"
                     class="border border-green-800 rounded px-3 py-2 w-full">
+                    <p class="text-gray-500 text-sm mt-1">Laat leeg als je het wachtwoord niet wilt veranderen</p>
             </div>
 
             <div class="mb-4">

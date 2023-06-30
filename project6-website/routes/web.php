@@ -8,7 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\CheckoutController;
-
+use App\Http\Controllers\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +26,16 @@ Route::get('/', function () {
 });
 Route::get('/contact', function () {
     return view('contact');
+});
+
+// Admin
+Route::middleware('can:webAdmin')->group(function () {
+    Route::get('/medewerkers', [EmployeeController::class, 'index'])->name('employees.index');
+    Route::get('/medewerkers/toevoegen', [EmployeeController::class, 'create'])->name('employees.create');
+    Route::post('/medewerkers', [EmployeeController::class, 'store'])->name('employees.store');
+    Route::get('/medewerker/{employee}/verander', [EmployeeController::class, 'edit'])->name('employees.edit');
+    Route::put('/medewerker/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+    Route::delete('/medewerker/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
 });
 
 // Show Products
@@ -64,6 +74,8 @@ Route::post('/webhook', [WebhookController::class, 'handleWebhook']);
 Route::get('/aanmelden', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/aanmelden', [AuthController::class, 'login'])->name('login');
 
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 Route::get('/registreren', [AuthController::class, 'showSignupForm'])->name('signup');
 Route::post('/registreren', [AuthController::class, 'signup'])->name('signup');
 
@@ -73,4 +85,3 @@ Route::get('/signup/success', [AuthController::class, 'signupSuccess'])->name('s
 Route::get('/profiel', [AuthController::class, 'profile'])->name('profile');
 Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

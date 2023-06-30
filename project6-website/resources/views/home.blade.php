@@ -67,7 +67,7 @@
         </div>
 
         <div class="flex justify-center items-center py-5">
-            <a href="/products"
+            <a href="/producten"
                 class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-r-lg rounded-l-lg 
                         border border-green-800 w-32 text-center">Meer Zien</a>
         </div>

@@ -18,6 +18,9 @@
 </head>
 
 <body>
+    <!-- Include the alert box -->
+    @include('_alert', ['alert' => session('alert')])
+
     <!-- Navbar -->
     <header class="bg-gray-900 px-5">
         <nav class="flex items-center justify-between flex-wrap">
@@ -43,18 +46,27 @@
                 <div>
                     {{-- Login / Signup --}}
                     @if (Auth::check())
-                        <a href="{{ route('profile') }}" class="relative">
+                        @if (Gate::allows('webAdmin'))
+                        <!-- Display elements only for webAdmin role -->
+                        <a href="{{ route('employees.index') }}" class="relative">
+                            <span
+                                class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-2 rounded border-green-800">
+                                Medewerker Dashboard
+                            </span>
+                        </a>
+                        @endif
+                        <a href="{{ route('profile') }}" class="relative pl-2 btn-profile">
                             <span
                                 class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-2 rounded border-green-800">
                                 Profiel
                             </span>
                         </a>
-                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                        <form action="{{ route('logout') }}" method="POST" class="inline relative pl-2">
                             @csrf
-                            <button type="submit"
+                            <button
                                 class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-2 rounded border-green-800">
                                 Uitloggen
-                            </button>
+                        </button>
                         </form>
                     @else
                         <a href="{{ route('login') }}" class="relative">
@@ -75,20 +87,23 @@
                     <a href="{{ route('cart.show') }}" class="relative pl-5">
                         @auth
                             @php
-                                $cartCount = Auth::user()->carts()->sum('quantity');
+                                $cartCount = Auth::user()
+                                    ->carts()
+                                    ->sum('quantity');
                             @endphp
                             @if ($cartCount > 0)
-                                <span class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
+                                <span
+                                    class="bg-red-500 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center absolute bottom-0 right-0 transform translate-x-1/2 translate-y-1/2">
                                     {{ $cartCount }}
                                 </span>
                             @endif
                         @endauth
-                    
+
                         <span class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
                             <i class="fas fa-shopping-cart"></i>
                         </span>
                     </a>
-                    
+
 
                     @if (session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-4" role="alert">

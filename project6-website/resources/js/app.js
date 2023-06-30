@@ -37,3 +37,41 @@ images.forEach((image) => {
         };
     }
 });
+
+// Search functionality
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', function () {
+    const filter = searchInput.value.toLowerCase();
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+        const name = row.querySelector('td:nth-child(1)').innerText.toLowerCase();
+        row.style.display = name.includes(filter) ? '' : 'none';
+    });
+});
+
+// Role checkbox changes
+const roleCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+roleCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        const employeeId = checkbox.id.split('_')[1];
+        const enabled = checkbox.checked;
+
+        // Send an AJAX request to update the role status
+        fetch(`/employees/${employeeId}/toggle-role`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ enabled })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle success or error response if needed
+            })
+            .catch(error => {
+                // Handle error if needed
+            });
+    });
+});

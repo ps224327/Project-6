@@ -46,7 +46,7 @@ class CheckoutController extends Controller
 
         if (!empty($insufficientStockProducts)) {
             // Handle insufficient stock error and specify the products
-            $message = 'Insufficient stock for the following product(s): ' . implode(', ', $insufficientStockProducts);
+            $message = 'Onvoldoende voorraad voor de volgend(e) product(en): ' . implode(', ', $insufficientStockProducts);
 
             return redirect()->route('cart.show')->with('alert', [
                 'type' => 'error',
@@ -60,7 +60,6 @@ class CheckoutController extends Controller
 
         return redirect()->route('thankyou');
     }
-
 
     public function thankyou()
     {

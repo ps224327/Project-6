@@ -5,6 +5,7 @@
         <form action="{{ route('checkout.process') }}" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             @csrf
             <div class="mb-4">
+                <h1>Vul hier uw adres in</h1>
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
                     Name
                 </label>
@@ -40,7 +41,7 @@
                 <button
                     class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="submit">
-                    Proceed to Payment
+                    Verder naar betalen
                 </button>
             </div>
         </form>

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Hash;
+
 
 class AuthController extends Controller
 {
@@ -36,7 +38,7 @@ class AuthController extends Controller
         } else {
             // Authentication failed
             $message = 'Inloggegevens niet bekend';
-            return redirect()->back()->with('alert', ['type' => 'success', 'message' => $message, 'autoClose' => true]);
+            return redirect()->back()->with('alert', ['type' => 'error', 'message' => $message, 'autoClose' => true]);
         }
     }
 
@@ -61,8 +63,8 @@ class AuthController extends Controller
             return redirect()->route('signup.success');
         } catch (ValidationException $e) {
             // Handle the validation error
-            return redirect()->back()->withErrors($e->validator->errors())->withInput();
-        }
+            $message = 'Profiel niet aangemaakt';
+            return redirect()->back()->with('alert', ['type' => 'error', 'message' => $message, 'autoClose' => true]);        }
     }
 
     public function signupSuccess()
@@ -93,12 +95,13 @@ class AuthController extends Controller
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
         if ($validatedData['password']) {
-            $user->password = bcrypt($validatedData['password']);
+            $user->password = Hash::make($validatedData['password']);
         }
         $user->update();
 
         // Redirect the user back to the profile page with a success message
-        return redirect()->route('profile')->with('success', 'Profile updated successfully.');
+        $message = 'Profiel succesvol aangepast';
+        return redirect()->back()->with('alert', ['type' => 'message', 'message' => $message, 'autoClose' => true]);
     }
 
     public function logout()
