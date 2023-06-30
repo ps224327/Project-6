@@ -14,14 +14,23 @@ using System.Windows.Shapes;
 using System.Data.SqlClient;
 using project_6_test_administratie.Models;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace project_6_test_administratie
 {
     /// <summary>
     /// Interaction logic for Orderlist.xaml
     /// </summary>
-    public partial class Orderlist : Window
+    public partial class Orderlist : Window ,INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
         private ObservableCollection<Models.Order> orders = new ObservableCollection<Models.Order>();
         public ObservableCollection<Models.Order> Orders
         {
@@ -29,10 +38,22 @@ namespace project_6_test_administratie
             set { orders = value; }
         }
 
+        private Order _selectedOrder;
+
+        public Order SelectedOrder
+        {
+            get { return _selectedOrder; }
+            set
+            {
+                _selectedOrder = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Orderlist()
         {
             InitializeComponent();
-            LoadData();
+            //LoadData();
             filldatagrid();
         }
 
@@ -50,6 +71,12 @@ namespace project_6_test_administratie
             //{
             //    Order.Add(menuItem);
             //}
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string test = _selectedOrder.ToString();
+            MessageBox.Show(test);
         }
     }
 }

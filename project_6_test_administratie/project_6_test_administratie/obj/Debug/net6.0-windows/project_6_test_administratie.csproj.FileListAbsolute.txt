@@ -93,3 +93,7 @@ D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_admin
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\Orderlist.g.cs
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\Orderlist.baml
 D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\project_6_test_administratie.dll.config
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\MaterialDesignColors.dll
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\MaterialDesignThemes.Wpf.dll
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\bin\Debug\net6.0-windows\Microsoft.Xaml.Behaviors.dll
+D:\school\leerjaar 3\Project-6\project_6_test_administratie\project_6_test_administratie\obj\Debug\net6.0-windows\App.baml

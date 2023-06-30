@@ -57,6 +57,8 @@ namespace project_6_test_administratie
         }
         decimal Tprice;
         decimal Oprice;
+        TextBlock putId = new TextBlock();
+
 
         public MainWindow()
         {
@@ -110,6 +112,7 @@ namespace project_6_test_administratie
             StackPanel orderItem = InitializeOrderItem(quantity);
 
             SpOrder.Children.Add(orderItem);
+            //itemsToOrder.add(SelectedProduct.Id);
 
         }
 
@@ -126,7 +129,8 @@ namespace project_6_test_administratie
 
             quantityTextBlock.Text = quantity.ToString() + "x  ";
             //printTextBlock.Text = SelectedProduct.Name;
-
+            putId.Text = SelectedProduct.id.ToString();
+       
             string word = SelectedProduct.Name;
             int amount = int.Parse(QuantityTextBox.Text);
             string plural = (amount == 1) ? word : pluralizer.Pluralize(word);
@@ -135,10 +139,12 @@ namespace project_6_test_administratie
 
             price_calculator(null, null, quantity);
             price.Text = " €" + Tprice.ToString();
-
+            putId.Visibility = Visibility.Collapsed;
             orderItem.Children.Add(quantityTextBlock);
             orderItem.Children.Add(printTextBlock);
             orderItem.Children.Add(price);
+
+            QuantityTextBox.Clear();
 
             return orderItem;
         }
@@ -160,27 +166,6 @@ namespace project_6_test_administratie
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            GroeneVingersDb _db = new GroeneVingersDb();
-
-            Order order = new Order();
-            order.TotalPrice = Oprice;
-
-            bool insertionResult = _db.InsertOrder(order);
-
-            if (insertionResult)
-            {
-                MessageBox.Show("Order inserted successfully!");
-                SpOrder.Children.Clear();
-            }
-            else
-            {
-                MessageBox.Show(Oprice.ToString());
-                MessageBox.Show("Failed to insert order.");
-            }
-        }
-
         private void price_calculator(object sender, RoutedEventArgs e, int quantity)
         {
             decimal Pprice = SelectedProduct.Price;                      
@@ -197,6 +182,51 @@ namespace project_6_test_administratie
         {
             Orderlist ord = new Orderlist();
             ord.Show();
+        }
+
+        private void btnOrder_Click_1(object sender, RoutedEventArgs e/*, int quantity*/)
+        {
+            GroeneVingersDb _db = new GroeneVingersDb();
+            try
+            {
+                int PId = Convert.ToInt32(putId.Text);
+
+                Order order = new Order();
+                order.TotalPrice = Oprice;
+                order.Name = tbName.Text;
+
+                Product_Order product_Order = new Product_Order();
+
+                product_Order.Product_id = PId;
+                //product_Order.Order_id = 4;                    //aanpassen
+                                                               //Porder.amount = quantity;
+                string test = PId.ToString();
+                //MessageBox.Show(test);
+
+                if (tbName.Text != "")
+                {
+                    bool insertionResult = _db.InsertOrder(order, product_Order);
+
+                    if (insertionResult)
+                    {
+                        MessageBox.Show("Bestelling voltooid");
+                        tbName.Text = "";
+                        SpOrder.Children.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Bestelling kon niet worden voltooid");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Geef een naam op");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("U bestelling is leeg");
+            }          
         }
     }
 }

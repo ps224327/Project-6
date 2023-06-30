@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:project_6_test_administratie"
         mc:Ignorable="d"
         Title="Orderlist" Height="450" Width="800">
-    <Grid Background="LightGreen">
+    <Grid Background="LightGreen" DataContext="{Binding}">
 
-        <ListView x:Name="lvOrder" Margin="316,32,87,102" ItemsSource="{Binding Orders}">
+        <ListView x:Name="lvOrder" Margin="316,32,87,102" ItemsSource="{Binding Orders}" 
+                  SelectedItem="{Binding SelectedOrder}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
@@ -18,8 +19,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        
-        <Button Content="Update" Margin="370,337,306,44"/>
+
+        <Button Content="Update" Margin="370,337,306,44" Click="Button_Click"/>
 
     </Grid>
 </Window>
