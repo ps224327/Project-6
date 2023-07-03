@@ -79,7 +79,7 @@ class CartController extends Controller
         $cartItems = Cart::with('product')->where('user_id', $userId)->get();
 
         if ($cartItems->isEmpty()) {
-            return view('cart', compact('cartItems'));
+            return view('cart.cart', compact('cartItems'));
         }
 
         $cartItems = $cartItems->map(function ($cartItem) {
@@ -95,7 +95,7 @@ class CartController extends Controller
             ];
         });
 
-        return view('cart', compact('cartItems'));
+        return view('cart.cart', compact('cartItems'));
     }
 
     public function updateItem(Request $request, $id)

@@ -17,8 +17,8 @@
                     <p><span class="font-bold">Kleur:</span> {{ $product['color'] }}</p>
                     <p><span class="font-bold">Dimensies (cm):</span> 
                         Hoogte {{ $product['height_cm'] }} cm 
-                        x Breedte {{ $product['width_cm'] }} cm 
-                        x Lengte {{ $product['depth_cm'] }} cm</p>
+                        x Lengte {{ $product['depth_cm'] }} cm
+                        x Breedte {{ $product['width_cm'] }} cm </p>
                     <p><span class="font-bold">Gewicht (g):</span> {{ $product['weight_gr'] }} Gram</p>
                 </div>
                 <form method="POST" action="{{ route('cart.add') }}" class="flex gap-4 items-center mt-4">

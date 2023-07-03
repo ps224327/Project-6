@@ -28,7 +28,8 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-// Admin
+// Protected Routes (Requires authentication and role-based middleware)
+// Employee CRUD
 Route::middleware('can:webAdmin')->group(function () {
     Route::get('/medewerkers', [EmployeeController::class, 'index'])->name('employees.index');
     Route::get('/medewerkers/toevoegen', [EmployeeController::class, 'create'])->name('employees.create');
@@ -37,6 +38,19 @@ Route::middleware('can:webAdmin')->group(function () {
     Route::put('/medewerker/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
     Route::delete('/medewerker/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
 });
+
+// Protected Routes (Requires authentication and role-based middleware)
+// Product CRUD
+Route::middleware('can:webAdmin')->prefix('product')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('products.index');
+    Route::get('create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/', [ProductController::class, 'store'])->name('products.store');
+    Route::get('{product}/bewerk', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('dashboard', [ProductController::class, 'dashboard'])->name('products.dashboard');
+});
+
 
 // Show Products
 Route::get('/producten', [ProductController::class, 'fetchImagesFromApiProducts'])->name('products');
@@ -84,4 +98,3 @@ Route::get('/signup/success', [AuthController::class, 'signupSuccess'])->name('s
 // Profile
 Route::get('/profiel', [AuthController::class, 'profile'])->name('profile');
 Route::post('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
-

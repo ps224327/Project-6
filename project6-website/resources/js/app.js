@@ -49,29 +49,3 @@ searchInput.addEventListener('input', function () {
         row.style.display = name.includes(filter) ? '' : 'none';
     });
 });
-
-// Role checkbox changes
-const roleCheckboxes = document.querySelectorAll('input[type="checkbox"]');
-roleCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', function () {
-        const employeeId = checkbox.id.split('_')[1];
-        const enabled = checkbox.checked;
-
-        // Send an AJAX request to update the role status
-        fetch(`/employees/${employeeId}/toggle-role`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ enabled })
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Handle success or error response if needed
-            })
-            .catch(error => {
-                // Handle error if needed
-            });
-    });
-});

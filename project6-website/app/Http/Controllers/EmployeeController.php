@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Role;
 
 class EmployeeController extends Controller
 {
@@ -18,8 +17,6 @@ class EmployeeController extends Controller
 
         return view('employees.index', compact('employees', 'search'));
     }
-
-
 
     public function create()
     {

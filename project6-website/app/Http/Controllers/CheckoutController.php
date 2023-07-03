@@ -63,6 +63,6 @@ class CheckoutController extends Controller
 
     public function thankyou()
     {
-        return view('thankyou');
+        return view('cart.thankyou');
     }
 }

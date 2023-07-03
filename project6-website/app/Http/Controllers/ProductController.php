@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -28,7 +29,7 @@ class ProductController extends Controller
         // Paginate the results
         $products = DB::table('products')->paginate(20);
 
-        return view('products', ['products' => $products, 'search' => $search]);
+        return view('products.products', ['products' => $products, 'search' => $search]);
     }
 
 
@@ -108,5 +109,114 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         return view('product', ['product' => $product]);
+    }
+
+    // PRODUCT CRUD
+    public function index(Request $request)
+    {
+        $search = $request->query('search');
+        $products = Product::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->paginate(10);
+
+        return view('products.index', compact('products', 'search'));
+    }
+
+    public function create()
+    {
+        return view('products.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'barcode' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'color' => 'required',
+            'stock' => 'required|numeric',
+            'height_cm' => 'required|numeric',
+            'width_cm' => 'required|numeric',
+            'depth_cm' => 'required|numeric',
+            'weight_gr' => 'required|numeric',
+        ]);
+
+        $imagePath = $request->file('image')->store('public/images');
+        $imageName = basename($imagePath);
+
+        $product = Product::create([
+            'name' => $validatedData['name'],
+            'barcode' => $validatedData['barcode'],
+            'description' => $validatedData['description'],
+            'price' => $validatedData['price'],
+            'image' => $imageName,
+            'color' => $validatedData['color'],
+            'stock' => $validatedData['stock'],
+            'height_cm' => $validatedData['height_cm'],
+            'width_cm' => $validatedData['width_cm'],
+            'depth_cm' => $validatedData['depth_cm'],
+            'weight_gr' => $validatedData['weight_gr'],
+        ]);
+
+        return redirect()->route('products.index')->with('success', 'Product successfully created.');
+    }
+
+    public function edit(Product $product)
+    {
+        return view('products.edit', compact('product'));
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'barcode' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'color' => 'required',
+            'stock' => 'required|numeric',
+            'height_cm' => 'required|numeric',
+            'width_cm' => 'required|numeric',
+            'depth_cm' => 'required|numeric',
+            'weight_gr' => 'required|numeric',
+        ]);
+
+        $product->update([
+            'name' => $validatedData['name'],
+            'barcode' => $validatedData['barcode'],
+            'description' => $validatedData['description'],
+            'price' => $validatedData['price'],
+            'color' => $validatedData['color'],
+            'stock' => $validatedData['stock'],
+            'height_cm' => $validatedData['height_cm'],
+            'width_cm' => $validatedData['width_cm'],
+            'depth_cm' => $validatedData['depth_cm'],
+            'weight_gr' => $validatedData['weight_gr'],
+        ]);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/images');
+            $imageName = basename($imagePath);
+
+            Storage::delete('public/images/' . $product->image);
+
+            $product->image = $imageName;
+            $product->save();
+        }
+
+        return redirect()->route('products.index')->with('success', 'Product successfully updated.');
+    }
+
+    public function destroy(Product $product)
+    {
+        Storage::delete('public/images/' . $product->image);
+        $product->delete();
+
+        return redirect()->route('products.index')->with('success', 'Product successfully deleted.');
     }
 }
