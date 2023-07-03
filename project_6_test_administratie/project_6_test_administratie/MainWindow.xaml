@@ -44,6 +44,7 @@
                 <TextBlock x:Name="TbWidth" Text="{Binding Width, StringFormat=Breedte: {0}}"/>
                 <TextBlock x:Name="TbDepth" Text="{Binding Depth, StringFormat=Diepte: {0}}"/>
                 <TextBlock Text="{Binding Weight_gr, StringFormat=Gewicht: {0}gr}"/>
+
             </StackPanel>
         </ScrollViewer>
         <TextBlock Text="Aantal:" Height="20" Width="40" VerticalAlignment="Bottom" Margin="0,0,20,63" Grid.Column="1" Grid.Row="3"/>

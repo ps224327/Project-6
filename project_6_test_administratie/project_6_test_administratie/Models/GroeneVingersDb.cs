@@ -63,6 +63,7 @@ namespace project_6_test_administratie.Models
         {
             bool result = true;
             int latestorderid = 0;
+            string amount = "1";
             try
             {
                 if (_conn.State == ConnectionState.Closed)
@@ -77,17 +78,17 @@ namespace project_6_test_administratie.Models
                     INSERT INTO kuin_order
                         (name, total_price)
                     VALUES
-                    (@name, @price);
+                    (@name, @price)";
 
-                    INSERT INTO kuin_product_order
-                    (product_id, order_id, amount)
-                    VALUES
-                    (@product_id, (SELECT MAX(id) FROM kuin_order), @amount);";
+             //       INSERT INTO kuin_product_order
+             //       (product_id, order_id, amount)
+             //       VALUES
+             //       (@product_id, (SELECT MAX(id) FROM kuin_order) @amount);";
 
                 mySql.Parameters.AddWithValue("@name", order.Name);
                 mySql.Parameters.AddWithValue("@price", order.TotalPrice);
                 mySql.Parameters.AddWithValue("@product_id", product_Order.Product_id);
-                mySql.Parameters.AddWithValue("@amount", product_Order.amount);
+                mySql.Parameters.AddWithValue("@amount",amount /*product_Order.amount*/);
 
                 mySql.ExecuteNonQuery();
 
@@ -141,6 +142,39 @@ namespace project_6_test_administratie.Models
             return latestOrderId;
         }
 
+        public string GetPivot_ID()
+        {
+            string table_id = "";
+
+            try
+            {
+                _conn.Open();
+                MySqlCommand id_command = _conn.CreateCommand();
+                id_command.CommandText = "SELECT id FROM `order` kuin_order BY id DESC LIMIT 1";
+
+                // Execute the query and retrieve the result
+                using (MySqlDataReader reader = id_command.ExecuteReader())
+                {
+                    if (reader.Read()) // Check if there is a record
+                    {
+                        // Read the ID value from the reader
+                        table_id = reader["id"].ToString();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
+
+            return table_id;
+        }
+
 
 
         //// Create an instance of the class with UpdateStock
@@ -150,15 +184,16 @@ namespace project_6_test_administratie.Models
         //int recordId = 1; // Example record ID
         //int newStockValue = 100; // Example new stock value
         //_db.UpdateStock(recordId, newStockValue);
-        public void UpdateStock(int recordId, int newStockValue)
+        public void UpdateStock(int newStockValue, Order order)
         {
             try
             {
                 _conn.Open();
                 MySqlCommand command = _conn.CreateCommand();
-                command.CommandText = "UPDATE products SET stock = @newStock WHERE id = @recordId";
+                command.CommandText = "UPDATE products SET stock = @newStock, status = Geleverd WHERE id = @recordId";
+                command.Parameters.AddWithValue("@status", order.Status);
                 command.Parameters.AddWithValue("@newStock", newStockValue);
-                command.Parameters.AddWithValue("@recordId", recordId);
+                command.Parameters.AddWithValue("@recordId", GetLatestOrderId());
                 command.ExecuteNonQuery();
             }
             catch (Exception e)

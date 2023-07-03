@@ -17,6 +17,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace project_6_test_administratie
 {
@@ -53,7 +54,6 @@ namespace project_6_test_administratie
         public Orderlist()
         {
             InitializeComponent();
-            //LoadData();
             filldatagrid();
         }
 
@@ -64,19 +64,19 @@ namespace project_6_test_administratie
             lvOrder.ItemsSource = _conn.GetAllOrders();
         }
 
-        private void LoadData()
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            //Order.Clear();
-            //foreach (Models.Order menuItem in _conn.GetAllOrders())
-            //{
-            //    Order.Add(menuItem);
-            //}
-        }
+            GroeneVingersDb db = new GroeneVingersDb();
+            Order order = new Order();
+            Product_Order product_order = new Product_Order();
+            var selectedItem = lvOrder.SelectedItem as Order;                       
+            int newStockValue = product_order.amount;
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            string test = _selectedOrder.ToString();
-            MessageBox.Show(test);
+            //MessageBox.Show(newStockValue.ToString());
+
+            //db.UpdateStock(newStockValue, order);
+
+            //MessageBox.Show(selectedItem.Name);
         }
     }
 }

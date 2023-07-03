@@ -58,6 +58,8 @@ namespace project_6_test_administratie
         decimal Tprice;
         decimal Oprice;
         TextBlock putId = new TextBlock();
+        TextBlock putAmount = new TextBlock();
+
 
 
         public MainWindow()
@@ -123,14 +125,18 @@ namespace project_6_test_administratie
             TextBlock printTextBlock = new TextBlock();
             TextBlock quantityTextBlock = new TextBlock();
             TextBlock price = new TextBlock();
+            TextBlock times = new TextBlock();
             StackPanel orderItem = new StackPanel();
 
             orderItem.Orientation = Orientation.Horizontal;
 
-            quantityTextBlock.Text = quantity.ToString() + "x  ";
+            quantityTextBlock.Text = quantity.ToString();
             //printTextBlock.Text = SelectedProduct.Name;
             putId.Text = SelectedProduct.id.ToString();
-       
+            putAmount.Text = QuantityTextBox.Text.ToString();
+            times.Text = "x ";
+
+
             string word = SelectedProduct.Name;
             int amount = int.Parse(QuantityTextBox.Text);
             string plural = (amount == 1) ? word : pluralizer.Pluralize(word);
@@ -140,7 +146,9 @@ namespace project_6_test_administratie
             price_calculator(null, null, quantity);
             price.Text = " €" + Tprice.ToString();
             putId.Visibility = Visibility.Collapsed;
+            putAmount.Visibility = Visibility.Collapsed;
             orderItem.Children.Add(quantityTextBlock);
+            orderItem.Children.Add(times);
             orderItem.Children.Add(printTextBlock);
             orderItem.Children.Add(price);
 
@@ -190,6 +198,7 @@ namespace project_6_test_administratie
             try
             {
                 int PId = Convert.ToInt32(putId.Text);
+                int PAmount = Convert.ToInt32(putAmount.Text);
 
                 Order order = new Order();
                 order.TotalPrice = Oprice;
@@ -199,7 +208,8 @@ namespace project_6_test_administratie
 
                 product_Order.Product_id = PId;
                 //product_Order.Order_id = 4;                    //aanpassen
-                                                               //Porder.amount = quantity;
+                product_Order.amount = PAmount;                                               //Porder.amount = quantity;
+
                 string test = PId.ToString();
                 //MessageBox.Show(test);
 

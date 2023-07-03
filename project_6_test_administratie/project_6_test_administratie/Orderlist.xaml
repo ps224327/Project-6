@@ -20,7 +20,7 @@
             </ListView.View>
         </ListView>
 
-        <Button Content="Update" Margin="370,337,306,44" Click="Button_Click"/>
+        <Button Content="Is geleverd" Margin="370,337,306,44" Click="btnUpdate_Click"/>
 
     </Grid>
 </Window>

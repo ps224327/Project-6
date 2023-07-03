@@ -108,5 +108,12 @@ namespace project_6_test_administratie.Models
             get { return weight_gr; }
             set { weight_gr = value; }
         }
+        public int stock;
+
+        public int Stock
+        {
+            get { return stock; }
+            set { stock = value; }
+        }
     }
 }
