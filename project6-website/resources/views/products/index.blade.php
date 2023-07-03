@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-2xl font-bold mb-4">Products</h1>
         <!-- Search Bar -->
@@ -24,19 +28,16 @@
                             Afbeelding
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Naam
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Afmetingen
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Prijs
                         </th>
-                        <th class="relative px-6 py-3">
-                            <span class="sr-only">Bewerk</span>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <span>Bewerk</span>
                         </th>
-                        <th class="relative px-6 py-3">
-                            <span class="sr-only">Verwijder</span>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <span>Verwijder</span>
                         </th>
                     </tr>
                 </thead>
@@ -68,7 +69,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <form action="{{ route('products.destroy', $product) }}" method="POST"
-                                    onsubmit="return confirm('Are you sure you want to delete this product?')">
+                                    onsubmit="return confirm('Weet je zeker dat je dit product wilt verwijderen?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-900">Verwijder</button>

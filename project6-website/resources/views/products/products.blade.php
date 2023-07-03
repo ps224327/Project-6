@@ -9,7 +9,7 @@
 
                     {{-- Search --}}
 
-                    <form method="GET" action="{{ route('product.search') }}" class="mb-4 flex flex-col">
+                    <form method="GET" action="{{ route('products.search') }}" class="mb-4 flex flex-col">
                         <label class="text-gray-700 font-bold mb-2" for="search">Zoeken</label>
                         <div class="relative flex">
                             <input type="text" name="search" id="search"

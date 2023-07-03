@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
+
 
 class ProductController extends Controller
 {
@@ -56,7 +58,7 @@ class ProductController extends Controller
         $search = $request->input('search');
         $products = DB::table('products')->where('name', 'LIKE', "%{$search}%")->paginate(20);
 
-        return view('products', ['products' => $products]);
+        return view('products.products', ['products' => $products]);
     }
 
     public function show($id)
@@ -102,7 +104,7 @@ class ProductController extends Controller
 
         $filteredProducts = $products->paginate(20)->appends(['price' => $priceRange, 'sort' => $sort]);
 
-        return view('products', ['products' => $filteredProducts]);
+        return view('products.products', ['products' => $filteredProducts]);
     }
 
     public function getProduct($id)
@@ -131,38 +133,34 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required',
             'barcode' => 'required',
             'description' => 'required',
-            'price' => 'required|numeric',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'price' => 'required',
+            'image_url' => 'required|url',
             'color' => 'required',
-            'stock' => 'required|numeric',
-            'height_cm' => 'required|numeric',
-            'width_cm' => 'required|numeric',
-            'depth_cm' => 'required|numeric',
-            'weight_gr' => 'required|numeric',
+            'height_cm' => 'required',
+            'width_cm' => 'required',
+            'depth_cm' => 'required',
+            'weight_gr' => 'required',
         ]);
 
-        $imagePath = $request->file('image')->store('public/images');
-        $imageName = basename($imagePath);
+        $product = new Product();
+        $product->name = $request->input('name');
+        $product->barcode = $request->input('barcode');
+        $product->description = $request->input('description');
+        $product->price = $request->input('price');
+        $product->image = $request->input('image_url');
+        $product->color = $request->input('color');
+        $product->height_cm = $request->input('height_cm');
+        $product->width_cm = $request->input('width_cm');
+        $product->depth_cm = $request->input('depth_cm');
+        $product->weight_gr = $request->input('weight_gr');
+        $product->save();
 
-        $product = Product::create([
-            'name' => $validatedData['name'],
-            'barcode' => $validatedData['barcode'],
-            'description' => $validatedData['description'],
-            'price' => $validatedData['price'],
-            'image' => $imageName,
-            'color' => $validatedData['color'],
-            'stock' => $validatedData['stock'],
-            'height_cm' => $validatedData['height_cm'],
-            'width_cm' => $validatedData['width_cm'],
-            'depth_cm' => $validatedData['depth_cm'],
-            'weight_gr' => $validatedData['weight_gr'],
-        ]);
-
-        return redirect()->route('products.index')->with('success', 'Product successfully created.');
+        $message = 'Product succesvol aangemaakt';
+        return redirect()->back()->with('alert', ['type' => 'message', 'message' => $message, 'autoClose' => true]);
     }
 
     public function edit(Product $product)
@@ -172,51 +170,44 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required',
             'barcode' => 'required',
             'description' => 'required',
-            'price' => 'required|numeric',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'price' => 'required',
+            'image_url' => 'url',
             'color' => 'required',
-            'stock' => 'required|numeric',
-            'height_cm' => 'required|numeric',
-            'width_cm' => 'required|numeric',
-            'depth_cm' => 'required|numeric',
-            'weight_gr' => 'required|numeric',
+            'height_cm' => 'required',
+            'width_cm' => 'required',
+            'depth_cm' => 'required',
+            'weight_gr' => 'required',
         ]);
 
-        $product->update([
-            'name' => $validatedData['name'],
-            'barcode' => $validatedData['barcode'],
-            'description' => $validatedData['description'],
-            'price' => $validatedData['price'],
-            'color' => $validatedData['color'],
-            'stock' => $validatedData['stock'],
-            'height_cm' => $validatedData['height_cm'],
-            'width_cm' => $validatedData['width_cm'],
-            'depth_cm' => $validatedData['depth_cm'],
-            'weight_gr' => $validatedData['weight_gr'],
-        ]);
+        $product->name = $request->input('name');
+        $product->barcode = $request->input('barcode');
+        $product->description = $request->input('description');
+        $product->price = $request->input('price');
+        $product->color = $request->input('color');
+        $product->height_cm = $request->input('height_cm');
+        $product->width_cm = $request->input('width_cm');
+        $product->depth_cm = $request->input('depth_cm');
+        $product->weight_gr = $request->input('weight_gr');
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('public/images');
-            $imageName = basename($imagePath);
-
-            Storage::delete('public/images/' . $product->image);
-
-            $product->image = $imageName;
-            $product->save();
+        if ($request->has('image_url')) {
+            // Update the image URL if provided
+            $product->image = $request->input('image_url');
         }
 
-        return redirect()->route('products.index')->with('success', 'Product successfully updated.');
+        $product->save();
+        $message = 'Product succesvol veranderd';
+        return redirect()->back()->with('alert', ['type' => 'message', 'message' => $message, 'autoClose' => true]);
     }
 
     public function destroy(Product $product)
     {
-        Storage::delete('public/images/' . $product->image);
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Product successfully deleted.');
+        $message = 'Product succesvol verwijderd';
+        return redirect()->back()->with('alert', ['type' => 'message', 'message' => $message, 'autoClose' => true]);
     }
 }

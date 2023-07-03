@@ -57,7 +57,7 @@
                     required>
                     <option value="webAdmin" {{ $employee->role === 'webAdmin' ? 'selected' : '' }}>Web Admin</option>
                     <option value="customer" {{ $employee->role === 'customer' ? 'selected' : '' }}>Customer</option>
-                    <option value="webemployee" {{ $employee->role === 'webemployee' ? 'selected' : '' }}>Web Medewerker</option>
+                    <option value="webEmployee" {{ $employee->role === 'webEmployee' ? 'selected' : '' }}>Web Medewerker</option>
                 </select>
             </div>
             <div class="flex items-center justify-between">

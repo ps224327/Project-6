@@ -1,5 +1,5 @@
 @if ($alert)
-    <div class="fixed top-0 left-0 right-0 flex justify-center mt-4">
+    <div class="fixed top-0 left-0 right-0 flex justify-center items-center mt-4 z-50">
         @if ($alert['type'] === 'error')
             <div class="bg-red-500 text-white font-bold py-2 px-4 rounded border-2 border-red-700 flex flex-col items-center">
                 <span>{{ $alert['message'] }}</span>
@@ -13,7 +13,7 @@
                         </ul>
                     </div>
                 @endif
-                <button type="button" class="text-white mt-4 font-bold block" onclick="this.parentNode.parentNode.remove()">
+                <button type="button" class="text-white mt-4 font-bold block self-stretch" onclick="this.parentNode.parentNode.remove()">
                     &times;
                 </button>
             </div>

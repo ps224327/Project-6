@@ -48,8 +48,8 @@ class User extends Authenticatable
     /**
      * Get the roles associated with the user.
      */
-    public function roles()
-    {
-        return $this->hasMany(Role::class);
-    }
+    // public function roles()
+    // {
+    //     return $this->hasMany(Role::class);
+    // }
 }

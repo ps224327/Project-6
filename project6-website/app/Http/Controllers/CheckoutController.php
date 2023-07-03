@@ -14,7 +14,7 @@ class CheckoutController extends Controller
             return $item->product->price * $item->quantity;
         });
 
-        return view('checkout', compact('cartItems', 'total'));
+        return view('cart.checkout', compact('cartItems', 'total'));
     }
 
     public function payment(Request $request)
@@ -52,14 +52,15 @@ class CheckoutController extends Controller
                 'type' => 'error',
                 'message' => $message,
                 'autoClose' => false
-            ]);            
+            ]);
         } else {
             // Clear the cart after successful payment
             Cart::where('user_id', $user->id)->delete();
         }
 
-        return redirect()->route('thankyou');
+        return redirect()->route('cart.thankyou');
     }
+
 
     public function thankyou()
     {

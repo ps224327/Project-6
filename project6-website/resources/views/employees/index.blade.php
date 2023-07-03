@@ -32,11 +32,11 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Rol
                         </th>
-                        <th class="relative px-6 py-3">
-                            <span class="sr-only">Bewerk</span>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <span>Bewerk</span>
                         </th>
-                        <th class="relative px-6 py-3">
-                            <span class="sr-only">Verwijder</span>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <span>Verwijder</span>
                         </th>
                     </tr>
                 </thead>
@@ -65,7 +65,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <form action="{{ route('employees.destroy', $employee) }}" method="POST"
-                                    onsubmit="return confirm('Are you sure you want to delete this employee?')">
+                                    onsubmit="return confirm('Weet je zeker dat je deze medewerker wilt verwijderen?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-900">Verwijder</button>

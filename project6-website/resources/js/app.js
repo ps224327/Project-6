@@ -49,3 +49,16 @@ searchInput.addEventListener('input', function () {
         row.style.display = name.includes(filter) ? '' : 'none';
     });
 });
+
+// Add event listener to the price input field
+const priceInput = document.getElementById('price');
+priceInput.addEventListener('input', validatePrice);
+
+function validatePrice() {
+    const price = parseFloat(priceInput.value);
+    if (isNaN(price)) {
+        priceInput.setCustomValidity('Voeg een geldige prijs toe');
+    } else {
+        priceInput.setCustomValidity('');
+    }
+}

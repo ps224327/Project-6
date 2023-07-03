@@ -41,14 +41,14 @@ Route::middleware('can:webAdmin')->group(function () {
 
 // Protected Routes (Requires authentication and role-based middleware)
 // Product CRUD
-Route::middleware('can:webAdmin')->prefix('product')->group(function () {
-    Route::get('/', [ProductController::class, 'index'])->name('products.index');
-    Route::get('create', [ProductController::class, 'create'])->name('products.create');
-    Route::post('/', [ProductController::class, 'store'])->name('products.store');
-    Route::get('{product}/bewerk', [ProductController::class, 'edit'])->name('products.edit');
-    Route::put('{product}', [ProductController::class, 'update'])->name('products.update');
-    Route::delete('{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-    Route::get('dashboard', [ProductController::class, 'dashboard'])->name('products.dashboard');
+Route::middleware('can:webAdmin')->group(function () {
+    Route::get('/product', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/product/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/product', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/product/{product}/bewerk', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/product/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/product/product', [ProductController::class, 'dashboard'])->name('products.dashboard');
 });
 
 
@@ -58,7 +58,7 @@ Route::get('/', [ProductController::class, 'fetchImagesFromApiHome'])->name('hom
 Route::get('/producten/{id}', [ProductController::class, 'show'])->name('product.show');
 
 // Search / Filter Function
-Route::get('/search', [ProductController::class, 'search'])->name('product.search');
+Route::get('/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/filter', [ProductController::class, 'filterProducts'])->name('products.filter');
 
 // Cart
@@ -70,11 +70,11 @@ Route::delete('/cart/remove/{id}', [CartController::class, 'removeItem'])->name(
 // Checkout / Address
 Route::get('/betalen', [CheckoutController::class, 'show'])->name('checkout.show');
 Route::post('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
-Route::get('/bedankt', [CheckoutController::class, 'thankyou'])->name('thankyou');
+Route::get('/bedankt', [CheckoutController::class, 'thankyou'])->name('cart.thankyou');
 
 Route::get('/address', function () {
-    return view('address');
-})->name('address');
+    return view('cart.address');
+})->name('cart.address');
 Route::post('/checkout/process', [CheckoutController::class, 'payment'])->name('checkout.process');
 
 // Map 

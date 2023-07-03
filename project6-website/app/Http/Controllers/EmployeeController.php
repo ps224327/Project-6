@@ -82,15 +82,4 @@ class EmployeeController extends Controller
         $message = 'Medewerker succesvol verwijderd';
         return redirect()->back()->with('alert', ['type' => 'message', 'message' => $message, 'autoClose' => true]);
     }
-
-    // Update role status
-    public function toggleRole(Request $request, User $employee)
-    {
-        $enabled = $request->input('enabled', false);
-        $employee->role_enabled = $enabled;
-        $employee->save();
-
-        // Return a response if needed
-        return response()->json(['success' => true]);
-    }
 }
