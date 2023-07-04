@@ -41,16 +41,15 @@ Route::middleware('can:webAdmin')->group(function () {
 
 // Protected Routes (Requires authentication and role-based middleware)
 // Product CRUD
-Route::middleware('can:webAdmin')->group(function () {
+Route::middleware('webAdminOrEmployee')->group(function () {
     Route::get('/product', [ProductController::class, 'index'])->name('products.index');
     Route::get('/product/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/product', [ProductController::class, 'store'])->name('products.store');
     Route::get('/product/{product}/bewerk', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/product/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-    Route::get('/product/product', [ProductController::class, 'dashboard'])->name('products.dashboard');
+    Route::get('/product/dashboard', [ProductController::class, 'dashboard'])->name('products.dashboard');
 });
-
 
 // Show Products
 Route::get('/producten', [ProductController::class, 'fetchImagesFromApiProducts'])->name('products');

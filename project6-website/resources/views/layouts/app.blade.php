@@ -47,23 +47,22 @@
                     {{-- Login / Signup --}}
                     @if (Auth::check())
                         @if (Gate::allows('webEmployee') || Gate::allows('webAdmin'))
-                            <!-- Display elements for webEmployee & webAdmin roles -->
-                            @if (Gate::allows('webAdmin'))
-                                <a href="{{ route('products.index') }}" class="relative">
-                                    <span
-                                        class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-2 rounded border-green-800">
-                                        Product Dashboard
-                                    </span>
-                                </a>
-                            @endif
-                            @if (Gate::allows('webAdmin'))
-                                <a href="{{ route('employees.index') }}" class="relative pl-2">
-                                    <span
-                                        class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-2 rounded border-green-800">
-                                        Medewerker Dashboard
-                                    </span>
-                                </a>
-                            @endif
+                            <!-- Display elements for webAdmin & webEmployee roles -->
+                            <a href="{{ route('products.index') }}" class="relative">
+                                <span
+                                    class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-2 rounded border-green-800">
+                                    Product Dashboard
+                                </span>
+                            </a>
+                        @endif
+                        @if (Gate::allows('webAdmin'))
+                            <!-- Display elements for webAdmin role only -->
+                            <a href="{{ route('employees.index') }}" class="relative pl-2">
+                                <span
+                                    class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-2 rounded border-green-800">
+                                    Medewerker Dashboard
+                                </span>
+                            </a>
                         @endif
 
                         <a href="{{ route('profile') }}" class="relative pl-2">

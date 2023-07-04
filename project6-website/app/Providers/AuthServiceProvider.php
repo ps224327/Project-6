@@ -21,23 +21,44 @@ class AuthServiceProvider extends ServiceProvider
      * Register any authentication / authorization services.
      */
     public function boot()
-    {
-        $this->registerPolicies();
+{
+    $this->registerPolicies();
 
-        Gate::define('webAdmin', function ($user) {
-            return $user->role === 'webAdmin';
-        });
+    Gate::define('webAdmin', function ($user) {
+        return $user->role === 'webAdmin';
+    });
 
-        Gate::define('edit-employee', function ($user, $employee) {
-            return $user->role === 'webAdmin';
-        });
+    Gate::define('edit-employee', function ($user, $employee) {
+        return $user->role === 'webAdmin';
+    });
 
-        Gate::define('create-employee', function ($user) {
-            return $user->role === 'webAdmin';
-        });
+    Gate::define('create-employee', function ($user) {
+        return $user->role === 'webAdmin';
+    });
 
-        Gate::define('delete-employee', function ($user, $employee) {
-            return $user->role === 'webAdmin';
-        });
-    }
+    Gate::define('delete-employee', function ($user, $employee) {
+        return $user->role === 'webAdmin';
+    });
+
+    Gate::define('webEmployee', function ($user) {
+        return $user->role === 'webEmployee';
+    });
+
+    Gate::define('view-products', function ($user) {
+        return Gate::allows('webAdmin') || Gate::allows('webEmployee');
+    });
+
+    Gate::define('create-product', function ($user) {
+        return Gate::allows('webAdmin') || Gate::allows('webEmployee');
+    });
+
+    Gate::define('edit-product', function ($user, $product) {
+        return Gate::allows('webAdmin') || Gate::allows('webEmployee');
+    });
+
+    Gate::define('delete-product', function ($user, $product) {
+        return Gate::allows('webAdmin') || Gate::allows('webEmployee');
+    });
+}
+
 }
