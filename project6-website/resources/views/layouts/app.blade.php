@@ -64,7 +64,7 @@
                                 </span>
                             </a>
                         @endif
-
+    
                         <a href="{{ route('profile') }}" class="relative pl-2">
                             <span
                                 class="bg-green-700 hover:bg-green-600 text-white font-bold right-20 py-2 px-2 rounded border-green-800">
@@ -92,7 +92,7 @@
                             </span>
                         </a>
                     @endif
-
+    
                     {{-- Cart --}}
                     <a href="{{ route('cart.show') }}" class="relative pl-5">
                         @auth
@@ -108,13 +108,13 @@
                                 </span>
                             @endif
                         @endauth
-
+    
                         <span class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
                             <i class="fas fa-shopping-cart"></i>
                         </span>
                     </a>
-
-
+    
+    
                     @if (session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-4" role="alert">
                             <p class="font-bold">{{ session('success') }}</p>
@@ -124,7 +124,7 @@
             </div>
         </nav>
     </header>
-    <div class="container mx-auto">
+        <div class="container mx-auto">
         @yield('content')
     </div>
 
