@@ -17,6 +17,7 @@ class products extends Model
         'price',
         'image',
         'color',
+        'stock',
         'height_cm',
         'width_cm',
         'depth_cm',

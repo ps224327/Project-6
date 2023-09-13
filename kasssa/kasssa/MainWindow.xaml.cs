@@ -77,6 +77,40 @@ namespace kasssa
         {
             CurrentStringTextBlock.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
         }
+
+        public void After_order()
+        {
+            TbAmount.Text = "";
+            foreach (var item in LbPrices.Items)
+            {
+                if (LbPrices.SelectedIndex > -1)
+                {
+
+
+                    Grid container = LbPrices.SelectedItem as Grid;
+                    decimal prijsRegel = 0;
+
+                    foreach (StackPanel sp in container.Children.OfType<StackPanel>())
+                    {
+                        foreach (TextBlock item in sp.Children.OfType<TextBlock>())
+                        {
+                            if (item.Name.StartsWith("AllPrice"))
+                            {
+                                string prijs = item.Text;
+                                prijsRegel = decimal.Parse(prijs);
+                            }
+                        }
+                    }
+
+                    LbPrices.Items.Remove(LbPrices.SelectedItem);
+                    _totalPrice -= prijsRegel;
+                    string total = _totalPrice.ToString("0.00");
+                    TXTTotal.Text = total;
+
+                }
+            }
+           
+        }
         private void Add_Num_key(object sender, KeyEventArgs e)
         {
 

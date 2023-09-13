@@ -29,8 +29,8 @@ class ProductController extends Controller
         */
         $products = products::all();
         foreach ($products as $product) {
-            $barcode = rand(100000, 999999); // Generate random 6-digit barcode
-            $product->barcode = $barcode;
+            $stock = rand(100, 300); // Generate random 6-digit barcode
+            $product->stock = $stock;
             $product->save();
         }
         
